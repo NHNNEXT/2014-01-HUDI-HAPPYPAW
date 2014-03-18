@@ -7,22 +7,18 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-public class Join_email_list extends HttpServlet {
-
+ 
+public class BeerSelect extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		String first = req.getParameter("first");
-		String last = req.getParameter("last");
-		String email = req.getParameter("email");
+		String color = req.getParameter("color");
 		
 		
-		req.setAttribute("first", first);
-		req.setAttribute("last", last);
-		req.setAttribute("email", email);
+		
+		req.setAttribute("color", color);
+		
 		//req.removeAttribute("email");//이건 왜 안 지워지지 
 		
-		RequestDispatcher dispatcher = req.getRequestDispatcher("join_email_list.jsp");
+		RequestDispatcher dispatcher = req.getRequestDispatcher("selectbeer.jsp");
 		dispatcher.forward(req, resp);
-	}
-}
+	}}

@@ -14,7 +14,7 @@
 		
 	%>
 	Input your information
-	<form action = "join_email_list" method="get">
+	<form action = "join_email_list" method="post">
 	<table cellspacing="5" cellpadding="5" border="1">
 		<tr>
 			<td align="right">First name:</td>

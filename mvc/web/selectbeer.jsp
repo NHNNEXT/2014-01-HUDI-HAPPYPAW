@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+	color: ${color}
+	
 </body>
 </html>

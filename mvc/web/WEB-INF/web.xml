@@ -31,5 +31,16 @@
       <url-pattern>/join_email_list</url-pattern>
       
   </servlet-mapping>
+  
+      <servlet>
+      <servlet-name>select</servlet-name>
+      <servlet-class>test.BeerSelect</servlet-class>
+   
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>select</servlet-name>
+      <url-pattern>/SelectBeer.do</url-pattern>
+      
+  </servlet-mapping>
 </web-app>
 
