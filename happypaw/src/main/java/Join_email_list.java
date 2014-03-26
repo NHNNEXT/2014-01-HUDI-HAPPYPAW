@@ -1,4 +1,4 @@
-package test;
+
 
 import java.io.IOException;
 
@@ -20,7 +20,6 @@ public class Join_email_list extends HttpServlet {
 		req.setAttribute("first", first);
 		req.setAttribute("last", last);
 		req.setAttribute("email", email);
-		//req.removeAttribute("email");//이건 왜 안 지워지지 
 		
 		RequestDispatcher dispatcher = req.getRequestDispatcher("join_email_list.jsp");
 		dispatcher.forward(req, resp);

@@ -1,4 +1,5 @@
-package test;
+
+
 
 import java.io.IOException;
 
@@ -16,8 +17,7 @@ public class BeerSelect extends HttpServlet {
 		
 		
 		req.setAttribute("color", color);
-		
-		//req.removeAttribute("email");//이건 왜 안 지워지지 
+		 
 		
 		RequestDispatcher dispatcher = req.getRequestDispatcher("selectbeer.jsp");
 		dispatcher.forward(req, resp);
