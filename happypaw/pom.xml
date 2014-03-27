@@ -5,6 +5,7 @@
 	<artifactId>happypaw</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
+	<!-- 이런게 주석이다. -->
 	<build>
 		<plugins>
 			<plugin>
