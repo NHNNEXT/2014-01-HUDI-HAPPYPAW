@@ -33,6 +33,5 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/dayoungle/Desktop/sonar/extensions/jdbc-driver/mysql/mysql-connector-java-5.1.24.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

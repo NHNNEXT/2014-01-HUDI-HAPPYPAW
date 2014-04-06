@@ -11,8 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import model.DAO;
 import model.StampHistory;
-
-public class NyamHistory extends HttpServlet {
+import annotation.Controller;
+@Controller
+public class NyamHistory extends HttpServlet{
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		DAO db = DAO.getInstance();

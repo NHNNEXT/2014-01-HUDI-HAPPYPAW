@@ -17,7 +17,6 @@ public class Login extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		DAO db = DAO.getInstance();
 		HttpSession session = request.getSession();
 		String id = (String) session.getAttribute("users_id");
 		if(id == null || id.equals("")){
