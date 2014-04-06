@@ -8,14 +8,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class NyamDb {
+public class DAO {
 	private String url = "jdbc:mysql://10.73.45.131/happypaw";
 	private String user = "dayoungles";
 	private String pw = "ekdudrmf2";
 	private Connection con;
-	static NyamDb nyam;
+	static DAO nyam;
 
-	private NyamDb() {
+	private DAO() {
 		connect();
 	}
 
@@ -38,9 +38,9 @@ public class NyamDb {
 		return con;
 	}
 
-	public static NyamDb getInstance() {
+	public static DAO getInstance() {
 		if (nyam == null) {
-			nyam = new NyamDb();
+			nyam = new DAO();
 		}
 		return nyam;
 	}
@@ -79,6 +79,58 @@ public class NyamDb {
 			e.printStackTrace();
 		}
 		return stampList;
-
 	}
+	
+	/**
+	 * 정보 받으면 db에 insert하는 함수.
+	 * @param users_id
+	 * @param regdate
+	 * @param restaurant
+	 */
+	public void insertHistory(String users_id, String regdate, int restaurant){
+		PreparedStatement insertHistory;
+		ResultSet rs;
+		String insertQuery = "INSERT INTO stamp_history(users_id, regdate, restaurant) VALUES ?, ?, ?";
+		try {
+			insertHistory = con.prepareStatement(insertQuery);
+			insertHistory.setString(1, users_id);
+			insertHistory.setString(2, regdate);
+			insertHistory.setInt(3, restaurant);
+			insertHistory.execute();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public User getUser(String id){
+		String query = "select * from users where id = ?";
+		
+		try {
+			PreparedStatement statement = con.prepareStatement(query);
+			statement.setString(1, id);
+			ResultSet rs = statement.executeQuery();
+			while (rs.next()) {
+				String users_id = rs.getString("id");
+				String ps = "next";
+				String name = rs.getString("name");
+				
+				User user = new User(users_id, ps, name);
+				rs.close();
+				statement.close();
+				return user;
+			}
+			rs.close();
+			statement.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+		
+	}
+	
+	
 }
