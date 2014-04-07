@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.DAO;
-import model.StampHistory;
 import model.User;
 
 public class LoginCheck extends HttpServlet {

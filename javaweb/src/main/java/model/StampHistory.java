@@ -1,4 +1,4 @@
-package controller;
+package model;
 
 public class StampHistory {
 	private String users_id;
