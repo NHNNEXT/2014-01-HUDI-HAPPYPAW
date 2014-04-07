@@ -12,7 +12,7 @@ import model.User;
 
 public class Logout {
 	
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		DAO db = DAO.getInstance();
 		
@@ -20,15 +20,6 @@ public class Logout {
 		if(session != null){
 			session.invalidate();
 		}
-		if(users_id == null || users_id.equals("")){
-			
-			} else {
-				response.sendRedirect("./login");
-			}
-		} else {
-			response.sendRedirect("./nyamHistory");
-		}
-		
 
 	}
 }
