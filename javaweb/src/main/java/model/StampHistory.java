@@ -18,6 +18,7 @@ public class StampHistory {
 	public String toString() {
 		return "StampHistory [users_id=" + users_id + ", regdate=" + regdate
 				+ ", restaurant=" + restaurant + "]";
+		
 	}
 	public String getUsers_id() {
 		return users_id;
