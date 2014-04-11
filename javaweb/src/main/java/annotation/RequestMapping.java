@@ -6,8 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target( {ElementType.TYPE} )
-
-public @interface Hontroller {
-	public String value() default "";
+@Target({ElementType.TYPE, ElementType.METHOD})
+public @interface RequestMapping {
+	public String method() default "GET";
+	public String value() default "/";
+	
 }

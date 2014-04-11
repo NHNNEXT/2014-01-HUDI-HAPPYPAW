@@ -19,12 +19,17 @@ import annotation.RequestMapping;
 
 public class Core extends HttpServlet {
 	Start start;
-
+	//서블릿을 시작할 때 불러오는 메소드.
 	public void init() {
+		//네이밍 다시 합시다.
 		start = Start.getInstance();
-
+		//컨트롤러와 매핑정보를 담겨있는 클래스.
+		
+		//클래스를 전부 찾아와 저장한다. 
 		List<Class<?>> classes = ClassFinder.find("");
+		
 		for (Class c : classes) {
+			//Controller 어노테이션이 있는지 확인.
 			if (c.isAnnotationPresent(Controller.class))
 				start.addMapping(c);
 		}
@@ -47,9 +52,11 @@ public class Core extends HttpServlet {
 
 	public void requestMapping(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		//서블릿 url을 보여준다. 가장 상위 주소이면 null이다.
 		String url = request.getPathInfo();
 		url = url == null ? "/" : url;
-		System.out.println(url);
+		
+
 		HttpSession session = request.getSession();
 		Method method = start.getMapping(url);
 		if (method == null) {

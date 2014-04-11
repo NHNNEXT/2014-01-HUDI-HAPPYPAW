@@ -45,5 +45,14 @@
 		<servlet-name>logout</servlet-name>
 		<url-pattern>/logout</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>core</servlet-name>
+		<servlet-class>core.Core</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>core</servlet-name>
+		<url-pattern>/app/*</url-pattern>
+	</servlet-mapping>
 </web-app>
 

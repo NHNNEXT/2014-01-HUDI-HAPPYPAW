@@ -36,7 +36,12 @@ public class Start {
 		Object obj;
 		try {
 			obj = c.newInstance();
+			//해당 클래스를 통해 새로운 인스턴스를 만든다.
+			//메소드를 부르기 위해 인스턴스가 필요하다.
+			
 			start.addClassObject(c.getName(), obj);
+			//해당 클래스의 인스턴스를 저장한다.
+			
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -59,12 +64,12 @@ public class Start {
 				// RequestMapping에 대한 Annotation 정보 가져오기.
 				RequestMapping mapping = (RequestMapping) methodAnnotation;
 
-				// System.out.println("method : " + method.getName());
-				this.addMapping(mapping.url(), method);
+				//해당 주소에 대한 메소드를 넣는다.
+				this.addMapping(mapping.value(), method);
 			}
 		}
 	}
-
+	//해당 url에 대한 매핑 메소드를 가져온다.
 	public Method getMapping(String url) {
 		return mappingMethod.get(url);
 	}
