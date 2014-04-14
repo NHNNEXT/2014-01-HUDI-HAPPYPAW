@@ -41,7 +41,12 @@ public class Core extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		requestMapping(request, response);
+		requestMapping(request, response, RequestMapping.Method.GET);
+	}
+	@Override
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		requestMapping(request, response, RequestMapping.Method.POST);
 	}
 
 	public void requestJSP(String url, HttpServletRequest request,
@@ -51,7 +56,7 @@ public class Core extends HttpServlet {
 	}
 
 	public void requestMapping(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+			HttpServletResponse response, RequestMapping.Method doMethod) throws ServletException, IOException {
 		//서블릿 url을 보여준다. 가장 상위 주소이면 null이다.
 		String url = request.getPathInfo();
 		url = url == null ? "/" : url;
@@ -80,20 +85,27 @@ public class Core extends HttpServlet {
 		Class<?>[] parameterType = method.getParameterTypes();
 		// Parameter Type
 		for (Class<?> pc : parameterType) {
-			if (pc.isInstance(HttpServletRequest.class)) {
+			if (pc == (HttpServletRequest.class)) {
 				parameterArray.add(request);
-			} else if (pc.isInstance(HttpServletResponse.class)) {
+			} else if (pc == HttpServletResponse.class) {
 				parameterArray.add(response);
-			} else if (pc.isInstance(HttpSession.class)) {
+			} else if (pc == HttpSession.class) {
 				parameterArray.add(session);
 			}
+			System.out.println(pc.getName());
 		}
 
 		try {
+			System.out.println(url+"   " + method.getName() );
+
 			String str = (String) method.invoke(classObject,
 					parameterArray.toArray());
-			RequestDispatcher dispatcher = request.getRequestDispatcher(str);
-			dispatcher.forward(request, response);
+			if(str.startsWith("redirect:")) {
+				response.sendRedirect(str.substring(9));
+			}else {
+				RequestDispatcher dispatcher = request.getRequestDispatcher(str);
+				dispatcher.forward(request, response);
+			}
 		} catch (IllegalArgumentException e) { // TODO Auto-generated catch
 			e.printStackTrace();
 		} catch (IllegalAccessException e) { // TODO

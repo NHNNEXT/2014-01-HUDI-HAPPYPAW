@@ -15,7 +15,7 @@
 			out.println(stampList.get(i));
 		}
 	%>
-	
+	<br/>
 	<a href ="./logout">logout</a>
 </body>
 </html> 
