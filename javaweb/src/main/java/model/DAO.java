@@ -87,9 +87,9 @@ public class DAO {
 	 * @param qrDate
 	 * @param restaurant
 	 */
-	public void insertHistory(String users_id, String qrDate, int restaurant){
+	public boolean insertHistory(String users_id, String qrDate, int restaurant){
 		if(!checkRestaurant(qrDate, restaurant)){
-			return;
+			return false;
 		}
 		
 		PreparedStatement insertHistory;
@@ -109,7 +109,9 @@ public class DAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
 	
 	private boolean checkRestaurant(String qrDate, int restaurant) {

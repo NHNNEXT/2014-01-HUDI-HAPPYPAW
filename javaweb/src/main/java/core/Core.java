@@ -104,13 +104,14 @@ public class Core extends HttpServlet {
 			String str = (String) method.invoke(classObject,
 					parameterArray.toArray());
 			
-
-			/*if(str == null || str == "") {
+			if(str == null || str == "")
+				str = "text:";
+			if(str.startsWith("text:")) {
 				response.setContentType("text/html"); 			
 				PrintWriter pw = response.getWriter();
-				pw.write(""); 
+				pw.write(str.substring(5)); 
 				pw.close();
-			} else */if(str.startsWith("redirect:")) {
+			} else if(str.startsWith("redirect:")) {
 				response.sendRedirect(str.substring(9));
 			} else {
 				requestJSP(str, request, response);

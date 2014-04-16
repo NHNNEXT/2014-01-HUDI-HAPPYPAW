@@ -20,13 +20,15 @@ public class MobileController {
 		DAO dao = DAO.getInstance();
 		
 		String qrcode = request.getParameter("qrcode");
+		if(qrcode == null)
+				return "text:false";
 		// 임시로
 		String id = request.getParameter("id");
 		String[] data = qrcode.split("&");
 		String date = data[0];
 		int restaurant_no = Integer.parseInt(data[1]);
-		dao.insertHistory(id, date, restaurant_no);
+		boolean is_insert = dao.insertHistory(id, date, restaurant_no);
 		System.out.println(dao.selectMonthHistory("121001"));
-		return null;
+		return "text:" + is_insert;
 	}
 }
