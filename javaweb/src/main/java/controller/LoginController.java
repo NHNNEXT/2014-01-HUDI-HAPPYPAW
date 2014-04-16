@@ -30,7 +30,7 @@ public class LoginController {
 		if(session != null){
 			session.invalidate();
 		}
-		return "redirect:/nyam/app/login";
+		return "redirect:/nyam/login";
 	}
 	
 	@RequestMapping("/login_check")

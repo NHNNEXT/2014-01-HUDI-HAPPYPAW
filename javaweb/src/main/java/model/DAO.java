@@ -73,39 +73,42 @@ public class DAO {
 			}
 			rs.close();
 			selHistory.close();
-	
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return stampList;
 	}
-	
+
 	/**
 	 * 정보 받으면 db에 insert하는 함수.
+	 * 
 	 * @param users_id
 	 * @param qrDate
 	 * @param restaurant
 	 */
-	public boolean insertHistory(String users_id, String qrDate, int restaurant){
-		if(!checkRestaurant(qrDate, restaurant)){
+	public boolean insertHistory(String users_id, String qrDate, int restaurant) {
+		if (!checkRestaurant(qrDate, restaurant)) {
+			System.out.println("해당 정보 없음... date : " + qrDate
+					+ "   restaurant : " + restaurant);
 			return false;
 		}
-		
+
 		PreparedStatement insertHistory;
 		ResultSet rs;
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String nowDate = sdf.format(cal.getTime());
-		
-		String insertQuery = "INSERT INTO stamp_history(users_id, regdate, restaurant) VALUES ?, ?, ?";
+
+		String insertQuery = "INSERT INTO stamp_history(users_id, regdate, restaurant_no) VALUES (?, ?, ?)";
 		try {
 			insertHistory = con.prepareStatement(insertQuery);
 			insertHistory.setString(1, users_id);
 			insertHistory.setString(2, nowDate);
 			insertHistory.setInt(3, restaurant);
 			insertHistory.execute();
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -113,34 +116,36 @@ public class DAO {
 		}
 		return true;
 	}
-	
+
 	private boolean checkRestaurant(String qrDate, int restaurant) {
 		/*
-		 * 레스토랑 테이블에서 레스토랑 넘버를 가지고 업데이트 날짜를 받아온다. 
-		 * 업데이트 날짜랑 큐알데이트가 다르면 return false; 
-		 * 업데이트 날짜랑 같으면 return true;
+		 * 레스토랑 테이블에서 레스토랑 넘버를 가지고 업데이트 날짜를 받아온다. 업데이트 날짜랑 큐알데이트가 다르면 return
+		 * false; 업데이트 날짜랑 같으면 return true;
 		 */
-		String checkQuery="select * from restaurant where no = ? and update = ?";
+		String checkQuery = "select * from restaurant where no = ? and renew = ?;";
 		try {
-			PreparedStatement statement=con.prepareStatement(checkQuery);
+			PreparedStatement statement = con.prepareStatement(checkQuery);
 			statement.setInt(1, restaurant);
 			statement.setString(2, qrDate);
 			ResultSet rs = statement.executeQuery();
-			if(rs.getFetchSize()==1){
+			int count = 0;
+			while (rs.next()) {
+				count++;
+			}
+			if (count == 1)
 				return true;
-			} 
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;
-		
-		
+
 	}
 
-	public User getUser(String id){
+	public User getUser(String id) {
 		String query = "select * from users where id = ?";
-		
+
 		try {
 			PreparedStatement statement = con.prepareStatement(query);
 			statement.setString(1, id);
@@ -149,7 +154,7 @@ public class DAO {
 				String users_id = rs.getString("id");
 				String ps = "next";
 				String name = rs.getString("name");
-				
+
 				User user = new User(users_id, ps, name);
 				rs.close();
 				statement.close();
@@ -161,10 +166,9 @@ public class DAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return null;
-		
+
 	}
-	
-	
+
 }
