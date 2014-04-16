@@ -10,7 +10,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-public class hFilter implements Filter {
+public class HFilter implements Filter {
 
 	public void destroy() {
 		// TODO Auto-generated method stub

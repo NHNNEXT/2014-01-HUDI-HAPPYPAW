@@ -1,6 +1,7 @@
 package core;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -80,6 +81,8 @@ public class Core extends HttpServlet {
 				.getAnnotation(RequestMapping.class);
 		RequestMapping mapping = (RequestMapping) methodAnnotation;
 
+		
+		
 		ArrayList<Object> parameterArray = new ArrayList<Object>();
 
 		Class<?>[] parameterType = method.getParameterTypes();
@@ -100,9 +103,14 @@ public class Core extends HttpServlet {
 
 			String str = (String) method.invoke(classObject,
 					parameterArray.toArray());
-			if(str.startsWith("redirect:")) {
+			if(str == null || str == "") {
+				response.setContentType("text/html"); 			
+				PrintWriter pw = response.getWriter();
+				pw.write(""); 
+				pw.close();
+			} else if(str.startsWith("redirect:")) {
 				response.sendRedirect(str.substring(9));
-			}else {
+			} else {
 				RequestDispatcher dispatcher = request.getRequestDispatcher(str);
 				dispatcher.forward(request, response);
 			}

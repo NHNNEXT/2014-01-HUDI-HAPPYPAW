@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -54,7 +55,6 @@ public class DAO {
 		int nextYear;
 		int year = cal.get(cal.YEAR);
 		ArrayList<StampHistory> stampList = new ArrayList<StampHistory>();
-
 		String firstDay = year + "-" + month + "-01 00:00:00";
 		String lastDay = year + "-" + month + "-31 23:59:59";
 		String query = "select * from stamp_history where users_id = ? and regdate > ? and regdate < ?";
@@ -84,17 +84,25 @@ public class DAO {
 	/**
 	 * 정보 받으면 db에 insert하는 함수.
 	 * @param users_id
-	 * @param regdate
+	 * @param qrDate
 	 * @param restaurant
 	 */
-	public void insertHistory(String users_id, String regdate, int restaurant){
+	public void insertHistory(String users_id, String qrDate, int restaurant){
+		if(!checkRestaurant(qrDate, restaurant)){
+			return;
+		}
+		
 		PreparedStatement insertHistory;
 		ResultSet rs;
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String nowDate = sdf.format(cal.getTime());
+		
 		String insertQuery = "INSERT INTO stamp_history(users_id, regdate, restaurant) VALUES ?, ?, ?";
 		try {
 			insertHistory = con.prepareStatement(insertQuery);
 			insertHistory.setString(1, users_id);
-			insertHistory.setString(2, regdate);
+			insertHistory.setString(2, nowDate);
 			insertHistory.setInt(3, restaurant);
 			insertHistory.execute();
 			
@@ -104,6 +112,30 @@ public class DAO {
 		}
 	}
 	
+	private boolean checkRestaurant(String qrDate, int restaurant) {
+		/*
+		 * 레스토랑 테이블에서 레스토랑 넘버를 가지고 업데이트 날짜를 받아온다. 
+		 * 업데이트 날짜랑 큐알데이트가 다르면 return false; 
+		 * 업데이트 날짜랑 같으면 return true;
+		 */
+		String checkQuery="select * from restaurant where no = ? and update = ?";
+		try {
+			PreparedStatement statement=con.prepareStatement(checkQuery);
+			statement.setInt(1, restaurant);
+			statement.setString(2, qrDate);
+			ResultSet rs = statement.executeQuery();
+			if(rs.getFetchSize()==1){
+				return true;
+			} 
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+		
+		
+	}
+
 	public User getUser(String id){
 		String query = "select * from users where id = ?";
 		
