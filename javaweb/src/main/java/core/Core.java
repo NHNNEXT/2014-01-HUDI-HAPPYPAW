@@ -62,14 +62,14 @@ public class Core extends HttpServlet {
 		String url = request.getPathInfo();
 		url = url == null ? "/" : url;
 		
-
+		System.out.println(url);
 		HttpSession session = request.getSession();
 		Method method = start.getMapping(url);
 		if (method == null) {
 			requestJSP(url, request, response);
 			return;
 		}
-
+		
 		Object classObject = start.getClassObject(method.getDeclaringClass()
 				.getName());
 		if (classObject == null) {
@@ -99,20 +99,21 @@ public class Core extends HttpServlet {
 		}
 
 		try {
-			System.out.println(url+"   " + method.getName() );
+			
 
 			String str = (String) method.invoke(classObject,
 					parameterArray.toArray());
-			if(str == null || str == "") {
+			
+
+			/*if(str == null || str == "") {
 				response.setContentType("text/html"); 			
 				PrintWriter pw = response.getWriter();
 				pw.write(""); 
 				pw.close();
-			} else if(str.startsWith("redirect:")) {
+			} else */if(str.startsWith("redirect:")) {
 				response.sendRedirect(str.substring(9));
 			} else {
-				RequestDispatcher dispatcher = request.getRequestDispatcher(str);
-				dispatcher.forward(request, response);
+				requestJSP(str, request, response);
 			}
 		} catch (IllegalArgumentException e) { // TODO Auto-generated catch
 			e.printStackTrace();

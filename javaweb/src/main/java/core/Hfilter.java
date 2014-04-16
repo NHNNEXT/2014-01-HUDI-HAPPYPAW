@@ -10,7 +10,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-public class HFilter implements Filter {
+public class Hfilter implements Filter {
 
 	public void destroy() {
 		// TODO Auto-generated method stub
@@ -25,11 +25,12 @@ public class HFilter implements Filter {
 				req.getContextPath().length());
 		String uri = req.getRequestURI();
 		if (path.startsWith("/resources")) {
+			System.out.println("path");
 			chain.doFilter(request, response); // Goes to container's own
 												// default servlet.
 		} else {
-			request.getRequestDispatcher("/app" +  path).forward(request,
-					response); // Goes to controller servlet.
+			System.out.println("request" + path);
+			request.getRequestDispatcher("/app" +  path).forward(request, response); // Goes to controller servlet.
 		}
 
 	}
