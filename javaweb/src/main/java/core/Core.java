@@ -62,7 +62,7 @@ public class Core extends HttpServlet {
 		String url = request.getPathInfo();
 		url = url == null ? "/" : url;
 		
-		System.out.println(url);
+		//System.out.println(url);
 		HttpSession session = request.getSession();
 		Method method = start.getMapping(url);
 		if (method == null) {
@@ -95,7 +95,7 @@ public class Core extends HttpServlet {
 			} else if (pc == HttpSession.class) {
 				parameterArray.add(session);
 			}
-			System.out.println(pc.getName());
+			//System.out.println(pc.getName());
 		}
 
 		try {

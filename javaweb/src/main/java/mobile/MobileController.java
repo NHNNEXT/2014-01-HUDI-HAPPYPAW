@@ -1,9 +1,13 @@
 package mobile;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import model.DAO;
+import model.StampHistory;
 import annotation.Controller;
 import annotation.RequestMapping;
 
@@ -17,9 +21,12 @@ public class MobileController {
 	@RequestMapping(value = "/addHistory", method = RequestMapping.Method.POST)
 	public String addHistory(HttpServletRequest request) {
 		try {
+			
 			DAO dao = DAO.getInstance();
 
+			
 			String qrcode = request.getParameter("qrcode");
+			System.out.println("METHOD :  " + request.getMethod());
 			if (qrcode == null) {
 				System.out.println("QRCode is Null");
 				return "text:false";
@@ -41,6 +48,32 @@ public class MobileController {
 			e.printStackTrace();
 		}
 		return "text:false";
+	}
+	
+	@RequestMapping("/m_nyamHistory")
+	public String m_nyamHistory(HttpSession session, HttpServletRequest request){
+		DAO db = DAO.getInstance();
+		String jsonString = "[";
+		//세션에서 아이디를 못찾으면 로그인 페이지로 퉁 
+		String id =(String) session.getAttribute("users_id");
+		if(id ==null || id==""){
+			return "text:false";
+		}
+		//아이디가 있을 때는 월별 히스토리를 검색해서 결과를 보여준다. 
+		ArrayList<StampHistory> stampList = db.selectMonthHistory(id);
+		request.setAttribute("record", stampList);
+		//json으로 만든걸 쉼표로 모두 연결?
+		for(int i = 0; i <stampList.size(); i++){
+			if(i!=0)
+				jsonString +=",";
+			jsonString += JSON.makeJSON(stampList.get(i));
+		}
+		jsonString +="]";
+
+		
+		//얘네 json 어떻게 html로 보내주지?
+		return "text:"+jsonString;
+	
 	}
 
 }

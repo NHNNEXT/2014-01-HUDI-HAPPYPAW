@@ -25,11 +25,11 @@ public class Hfilter implements Filter {
 				req.getContextPath().length());
 		String uri = req.getRequestURI();
 		if (path.startsWith("/resources")) {
-			System.out.println("path");
+			//System.out.println("path");
 			chain.doFilter(request, response); // Goes to container's own
 												// default servlet.
 		} else {
-			System.out.println("request" + path);
+			//System.out.println("request" + path);
 			request.getRequestDispatcher("/app" +  path).forward(request, response); // Goes to controller servlet.
 		}
 
