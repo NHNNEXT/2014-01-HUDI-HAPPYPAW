@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	    <script type="text/javascript" src="daylight.js"></script>
+
+</head>
+<body>
+	<header class="mainHeader">
+	<div class="logo">naver</div>
+	<div class="searchArea">
+		<form class="inputSearch" method="get">
+			<input type="text" class="query" name ="query" />
+			<button name="button" class="button"></button>
+		</form>
+	</div>
+</header>
+<nav class="menu" style="width: 10%">
+	<ul>
+		<li data="news" class="selected">뉴스</li>
+		<li data="ent">연예</li>
+		<li data="sports">스포츠</li>
+		<li data="life">라이프</li>
+		<li data ="fun">FUN</li>
+		<li data="shopping">샤핑</li>
+		<li data="now">NOW</li>
+	</ul>
+</nav>
+
+
+		<section class="mainNews" data="news">
+			<div src ="" class ="news">
+				<ul>
+				
+					<li>11뉴스라고 anjf ej fdskfljsd</li>
+					<li>말했잖아sdfsdfs</li>
+					<li>바보야sdfsdfsfsdf</li>
+					<li>ㅋㅋㅋㅋsdfsfdfsdㅋ</li>
+					<li>귀찮은거 sdfsdfsdfsdfsd시키지마</li>
+					<li>졸려요sdfsdfsdfsdfs </li>
+				</ul>
+			</div>
+			
+			<section class="pic">
+				<ul>
+					<li><img src = "http://dthumb.phinf.naver.net/?src=http://mimgnews2.naver.net/image//origin/001/2014/04/04/6845593.jpg&twidth=480&theight=999999&opts=18&qlt=100&refresh=1&rf=news" alt="기사제목"> 
+						<p>일본을 어떡하노</p>
+					</li>
+					<li><img src = "http://dthumb.phinf.naver.net/?src=http://mimgnews2.naver.net/image//origin/001/2014/04/04/6845593.jpg&twidth=480&theight=999999&opts=18&qlt=100&refresh=1&rf=news" alt="apfhd"/>
+						<p>일본을 어떡하노</p>
+					</li>
+					<li><img src = "http://dthumb.phinf.naver.net/?src=http://mimgnews2.naver.net/image//origin/001/2014/04/04/6845593.jpg&twidth=480&theight=999999&opts=18&qlt=100&refresh=1&rf=news" alt="dkdls"/>
+						<p>일본을 어떡하노</p>
+					</li>		
+				</ul>
+				
+			</section>
+		</section>
+
+
+</body>
+<script>
+	//console.log($("nav [src=aa]").html());
+/*
+	console.log($("[data]"));
+	console.log($(".pic img").attr("src", "valurd"));
+	console.log($(".pic img").attr("src"));
+*/
+	//console.log($(".menu").css("width", "200px"));
+/*
+	$(".pic img").on("click", function(e){
+		alert($(this).attr("alt"));//어떤 엘레먼트든지 프레임워크의 함수를 쓰려면 $()안에 넣어야된다. 
+	});
+*/
+	console.log($(".pic").find("p").get(2));
+	
+</script>
+</html>
