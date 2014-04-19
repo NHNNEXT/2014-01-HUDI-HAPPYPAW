@@ -57,5 +57,6 @@ public class LoginController {
 			return "redirect:/nyam/app/nyamhistory";
 		}
 	}
+
 	
 }

@@ -19,11 +19,11 @@ public class MobileController {
 	 * 문자열을 나눠서 변수에 저장한다. 다오에 insertHistory를 써서, 정보 넣는다. 콘솔에 찍는다.
 	 */
 	@RequestMapping(value = "/addHistory", method = RequestMapping.Method.POST)
-	public String addHistory(HttpServletRequest request) {
+	public String addHistory(HttpServletRequest request, HttpSession session) {
 		try {
 			
 			DAO dao = DAO.getInstance();
-
+			String users_id = (String)session.getAttribute("users_id");
 			
 			String qrcode = request.getParameter("qrcode");
 			System.out.println("METHOD :  " + request.getMethod());
@@ -32,8 +32,7 @@ public class MobileController {
 				return "text:false";
 			}
 			System.out.println("QRCode is " + qrcode);
-			// 임시로
-			String id = request.getParameter("id");
+			
 			String[] data = qrcode.split("@");
 			
 			if(data.length != 2)
@@ -41,8 +40,8 @@ public class MobileController {
 			
 			String date = data[0];
 			int restaurant_no = Integer.parseInt(data[1]);
-			boolean is_insert = dao.insertHistory(id, date, restaurant_no);
-			System.out.println(dao.selectMonthHistory("121001"));
+			boolean is_insert = dao.insertHistory(users_id, date, restaurant_no);
+			System.out.println(dao.selectMonthHistory(users_id));
 			return "text:" + is_insert;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -54,6 +53,7 @@ public class MobileController {
 	public String m_nyamHistory(HttpSession session, HttpServletRequest request){
 		DAO db = DAO.getInstance();
 		String jsonString = "[";
+		
 		//세션에서 아이디를 못찾으면 로그인 페이지로 퉁 
 		String id =(String) session.getAttribute("users_id");
 		if(id ==null || id==""){
@@ -62,6 +62,7 @@ public class MobileController {
 		//아이디가 있을 때는 월별 히스토리를 검색해서 결과를 보여준다. 
 		ArrayList<StampHistory> stampList = db.selectMonthHistory(id);
 		request.setAttribute("record", stampList);
+		
 		//json으로 만든걸 쉼표로 모두 연결?
 		for(int i = 0; i <stampList.size(); i++){
 			if(i!=0)

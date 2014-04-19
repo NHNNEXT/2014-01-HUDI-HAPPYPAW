@@ -4,7 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class JSON {
-	public static String makeJSON(Object obj){//스태틱으로 해야하는 이유를 정확히 예상 못하겠음..
+	public static String makeJSON(Object obj){
 		Method[] methods = obj.getClass().getMethods();
 		String sValue = "";
 		String json = "{";
