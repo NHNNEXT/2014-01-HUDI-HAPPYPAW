@@ -65,7 +65,9 @@ public class M_loginController {
 	public String getLoginUser(HttpSession session){
 		DAO dao = DAO.getInstance();
 		String users_id = (String)session.getAttribute("users_id");
+		
 		User user = dao.getUser(users_id);
+		//user가 널일때 테스트 하기 바람.
 		String userJSON = JSON.makeJSON(user);
 		System.out.println(userJSON);
 		return "text:" + userJSON;
