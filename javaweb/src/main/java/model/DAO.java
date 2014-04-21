@@ -5,9 +5,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class DAO {
 	private String url = "jdbc:mysql://10.73.45.131/happypaw";
@@ -166,9 +168,55 @@ public class DAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		return null;
-
 	}
 
+	/**
+	 * 관리자 웹페이지의 전체 학생 식사기록을 확인하는 함수. id, name, 식사횟수로 이루어진 NyamList로 구성된 어레이리스트를
+	 * 반환.
+	 * 
+	 * @return ArrayList<NyamList>
+	 */
+	public ArrayList<NyamList> adminNyamHistory() {
+		String userQuery = "SELECT * FROM users";
+		ArrayList<NyamList> nyamList = new ArrayList<NyamList>();
+		try {
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(userQuery);
+			while (rs.next()) {
+				String users_id = rs.getString("id");
+				String users_name = rs.getString("name");
+				int sum = selectMonthHistory(users_id).size();
+				nyamList.add(new NyamList(users_id, users_name, sum));
+			}
+			rs.close();
+			st.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return nyamList;
+	}
+
+	public ArrayList<Restaurant> restaurantHistory() {
+		ArrayList<Restaurant> restaurant = new ArrayList<Restaurant>();
+		try {
+
+			String countQuery = "SELECT r.no, r.name, count(s.restaurant_no) FROM restaurant "
+					+ "r LEFT JOIN stamp_history s ON s.restaurant_no = r.no group by r.no;";
+			Statement rStatement = con.createStatement();
+			ResultSet rs = rStatement.executeQuery(countQuery);
+			while (rs.next()) {
+				int rId = rs.getInt("no");
+				String rName = rs.getString("name");
+				int num = rs.getInt("count(s.restaurant_no)");//칼럼이름 쿼리에서 재정의
+				restaurant.add(new Restaurant(rId, rName, num));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return restaurant;
+
+	}
 }

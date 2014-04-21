@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import model.DAO;
+import model.NyamList;
+import model.Restaurant;
 import model.StampHistory;
 import model.User;
 import annotation.Controller;
@@ -28,5 +30,20 @@ public class NyamController {
 
 		return "nyamHistory.jsp";
 	}
-
+	
+	@RequestMapping("/admin/nyamHistory")
+	public String showNyamList(HttpServletRequest request){
+		DAO dao = DAO.getInstance();
+		ArrayList<NyamList> nyamList = dao.adminNyamHistory();
+		request.setAttribute("nyamList", nyamList);
+		return "/admin/adminNyamHistory.jsp";//admin 폴더안에  있는데 이렇게 주소 쓰는거 맞나?
+	}
+	
+	@RequestMapping("/admin/restaurantHistory")
+	public String showRestaurantList(HttpServletRequest request){
+		DAO dao = DAO.getInstance();
+		ArrayList<Restaurant> restaurant = dao.restaurantHistory();
+		request.setAttribute("restList", restaurant);
+		return "/admin/restaurantHistory.jsp";
+	}
 }
