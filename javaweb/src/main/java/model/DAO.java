@@ -26,6 +26,7 @@ public class DAO {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 			System.err.println("driver load error:");
 			return null;
 		}
@@ -217,6 +218,5 @@ public class DAO {
 			e.printStackTrace();
 		}
 		return restaurant;
-
 	}
 }
