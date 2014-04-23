@@ -13,6 +13,7 @@ import annotation.RequestMapping;
 
 @Controller
 public class MobileController {
+	/*주석이 별건가? 이 class가 하는 일을 코드만으로 이해시키기 어렵다면. 이렇게 서술형으로 작성해서 코드에 대한 이해를 돕는 거 정말 좋음 */
 	/*
 	 * @Controller 스탬프를 추가하는 함수를 만든다. 큐알코드에서 보낸 주소를 리퀘스트 매핑을 시킨다. 리퀘스트.겟 파라미터를
 	 * 해서 data 를 가져온다. 리퀘스트 겟 파라미터 id도 한다. data가 "날짜날짤날짜&숫자"로 돼 있으니까 &를 기준으로

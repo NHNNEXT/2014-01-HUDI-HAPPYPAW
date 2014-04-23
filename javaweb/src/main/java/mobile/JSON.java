@@ -22,6 +22,7 @@ public class JSON {
 					Object value = method.invoke(obj, new Object[]{});
 					sValue = value.toString();
 					
+				/* 에러처리는 항상 습관들이기 ^^ */
 				} catch (IllegalAccessException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

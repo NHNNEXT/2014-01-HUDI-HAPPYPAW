@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class DAO {
+	//이런 static한 놈들은 java에서 어떤 컨벤션으로 이름을 짓나? 대문자?? 
+	//이런정보가 많아지면 properties나 어디 xml처럼 자료를 따로 보관해야 하지 않을까? pw가 코드에 있다는 건....... (OTZ)
 	private String url = "jdbc:mysql://10.73.45.131/happypaw";
 	private String user = "dayoungles";
 	private String pw = "ekdudrmf2";
@@ -46,6 +48,7 @@ public class DAO {
 		return nyam;
 	}
 
+	// 함수에서 하는일을 작은 함수로 더 쪼개도 되지 않을지 항상 고민하기 
 	public ArrayList<StampHistory> selectMonthHistory(String users_id) {
 		PreparedStatement selHistory;
 		Calendar cal = Calendar.getInstance();

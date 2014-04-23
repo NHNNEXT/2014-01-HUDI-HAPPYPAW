@@ -14,6 +14,7 @@ public class M_loginController {
 	@RequestMapping("/m_login")
 	public String m_login(HttpSession session ){
 		String id = (String) session.getAttribute("users_id");
+		/* null체크하는 게 반복적이라면 ?? */
 		if(id == null || id.equals("")){
 			return "text:true";
 		} else {
@@ -45,7 +46,7 @@ public class M_loginController {
 			User user = db.getUser(m_id);
 			
 			if(user == null) {
-				System.out.println("login error No User");
+				System.out.println("login error No User");  //개경프에서도 log 모듈로 사용하는 거 배웠는데,, log라이브러리를 사용도 해보고, 간단한 걸 만드는 거에 도전해도 멋질 듯.
 				return "text:false";
 			} else if(user.checkPs(m_ps)){
 				session.setAttribute("users_id", m_id);

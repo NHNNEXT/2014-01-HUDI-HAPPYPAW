@@ -1,7 +1,10 @@
+/* 아래는 전체 태그 모두~ 라는 css selector 이죠? 막강하면서도 조심해야 하는 거 일 듯 */
 *{
 	font-family: "Nanum Gothic", sans-serif;
 }
 
+/* 이런 것들은  재사용할 수 있는 css속성들임으로 다른 별도 파일로 분리하는 것도 좋죠.
+reset.css 라고 브라우저별로 기본 css속성들의 차이를 없애주고 디폴트 속성을 다 날려주는 녀석이 있는데 꼭 찾아보시길 */
 body{
 	padding:0;
 	margin:0;
@@ -21,7 +24,7 @@ body{
 
 .mainHeader .logo{
 	text-transform: uppercase;
-	font-size: 20px;
+	font-size: 20px;  /* font는 보통 em이라는 단위를 사용하는 데요 px 과 어떤 차이가 있는지 찾아보세요 */
 	font-weight: bold;
 	color:white;
 	float:left;
@@ -32,7 +35,9 @@ body{
 }
 
 .searchArea{
-	border-radius: 5px;
+/*	브라우저 호환성 코드 추가 한 거 좋고요. prefix들이 어떤 브라우저를 위한 것인지는 알고 있어야 하고요. 
+/* 좀저 가독성 있는 코드를 위해서는 속성들의 순서를 알파벳순으로 정렬하는 것도 방법.
+*/	border-radius: 5px;
 	-webkit-border-radius:5px;
 	-moz-border-radius:5px;
 	background: white;
@@ -101,7 +106,7 @@ body{
 .board {
 	width: 700%;
 	overflow: hidden;
-	position: relative;
+	position: relative; /*relative는 어떤 목적으로 사용한건지 알고 사용하기 ! */
 	left: 0%;
 	transition: left ease 0.5s;/*cubic-bezier(1,1.36,0,-0.99) 트랜지션은 써야할게 많다.*/
 	-webkit-transition:left ease 0.5s;
@@ -136,6 +141,7 @@ body{
 	padding: 10px;
 }
 
+/* 이런식의 css selector 잘 활용하는 거 좋고 ~ */
 .mainNews .news ul li:first-child{
 	font-weight: bold;
 }
