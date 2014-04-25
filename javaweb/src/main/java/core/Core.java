@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionContext;
 
 import annotation.Controller;
 import annotation.RequestMapping;
@@ -94,6 +95,8 @@ public class Core extends HttpServlet {
 				parameterArray.add(response);
 			} else if (pc == HttpSession.class) {
 				parameterArray.add(session);
+			} else if(pc == HttpServlet.class) {
+				parameterArray.add(this);
 			}
 			//System.out.println(pc.getName());
 		}

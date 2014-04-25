@@ -1,5 +1,8 @@
 package model;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,6 +13,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 public class DAO {
 	private String url = "jdbc:mysql://10.73.45.131/happypaw";
@@ -120,6 +125,13 @@ public class DAO {
 		return true;
 	}
 
+	/**
+	 * 레스토랑 큐알코드 갱신일자가 같은지 확인하는 함수.
+	 * 
+	 * @param qrDate
+	 * @param restaurant
+	 * @return boolean
+	 */
 	private boolean checkRestaurant(String qrDate, int restaurant) {
 		/*
 		 * 레스토랑 테이블에서 레스토랑 넘버를 가지고 업데이트 날짜를 받아온다. 업데이트 날짜랑 큐알데이트가 다르면 return
@@ -146,6 +158,12 @@ public class DAO {
 
 	}
 
+	/**
+	 * 유저를 가져옴.
+	 * 
+	 * @param id
+	 * @return
+	 */
 	public User getUser(String id) {
 		String query = "select * from users where id = ?";
 
@@ -199,6 +217,11 @@ public class DAO {
 		return nyamList;
 	}
 
+	/**
+	 * 식당 별 식사기록을 확인
+	 * 
+	 * @return
+	 */
 	public ArrayList<Restaurant> restaurantHistory() {
 		ArrayList<Restaurant> restaurant = new ArrayList<Restaurant>();
 		try {
@@ -210,13 +233,115 @@ public class DAO {
 			while (rs.next()) {
 				int rId = rs.getInt("no");
 				String rName = rs.getString("name");
-				int num = rs.getInt("count(s.restaurant_no)");//칼럼이름 쿼리에서 재정의
+				int num = rs.getInt("count(s.restaurant_no)");// 칼럼이름 쿼리에서 재정의
 				restaurant.add(new Restaurant(rId, rName, num));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println(restaurant);
 		return restaurant;
 	}
+
+	/**
+	 * 엑셀을 파일로 내보내는 함수.
+	 * 
+	 * @param path
+	 */
+	public void exportExcel(String path) {
+		System.out.println("exportExcel");
+		MakeExcel me = new MakeExcel();
+		HSSFWorkbook book = me.fillExcel(adminNyamHistory());
+		FileOutputStream fout = me.makeFile(path);
+		try {
+			book.write(fout);
+			fout.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public ArrayList<Restaurant> manageRest() {
+		String query = "SELECT * FROM restaurant";
+		ArrayList<Restaurant> restList = new ArrayList<Restaurant>();
+		try {
+			ResultSet rs;
+			Statement st = con.createStatement();
+			rs = st.executeQuery(query);
+			int no;
+			String name, desc, location, renew= "";
+			while (rs.next()) {
+				no = rs.getInt("no");
+				name = rs.getString("name");
+				desc = rs.getString("description");
+				location = rs.getString("location");
+				renew = rs.getString("renew");
+				renew.replace(" ", "%20");
+				Restaurant rest = new Restaurant(no, name, desc, location, renew);
+				restList.add(rest);
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return restList;
+	}
+
+	/**
+	 * qr코드 정보 업데이트 하는 함수. 
+	 * @return
+	 */
+	public void renewQrcode(String restaurantNo) {
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String ymd = date.format(cal.getTime());
+		String query = "update restaurant set renew = ? where no = ?";
+		try {
+			PreparedStatement pst = con.prepareStatement(query);
+			pst.setString(1, ymd);
+			pst.setInt(2, Integer.parseInt(restaurantNo));
+			pst.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return ;
+	}
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 }
