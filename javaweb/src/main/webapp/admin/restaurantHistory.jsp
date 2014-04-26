@@ -22,7 +22,11 @@
 			for(int i =0; i < restList.size(); i++){
 		%>
 			<tr>
-				<td><%=restList.get(i).getNo() %></td>
+				<td>
+					<a href="/nyam/admin/eachRestaurant?restaurantId=<%=restList.get(i).getNo()%>">
+						<%=restList.get(i).getNo() %>
+					</a>
+				</td>
 				<td><%=restList.get(i).getName() %></td>
 				<td><%=restList.get(i).getNyamNum() %></td>
 			</tr>

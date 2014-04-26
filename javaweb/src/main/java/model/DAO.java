@@ -312,9 +312,29 @@ public class DAO {
 		
 		return ;
 	}
+
+	public HashMap<String, Integer> checkEachRestaurant(String id) {
+		int restaurantNo = Integer.parseInt(id);
+		String query = "select count(*) as num, substring(regdate, 1, 10) as stamp_date  from stamp_history where restaurant_no = ? group by substring(regdate, 1, 10); ";
+		PreparedStatement pst;
+		HashMap<String, Integer> hash = new HashMap<String, Integer>();
+		try {
+			pst = con.prepareStatement(query);
+			pst.setInt(1, restaurantNo);
+			ResultSet rs = pst.executeQuery();
+			while(rs.next()){
+				String stamp_date = rs.getString("stamp_date");
+				int num = rs.getInt("num");
+				hash.put(stamp_date, num);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return hash;
+	}
 	
 
-	
 	
 	
 	

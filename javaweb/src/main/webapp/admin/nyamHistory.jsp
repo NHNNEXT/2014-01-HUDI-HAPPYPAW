@@ -32,8 +32,13 @@ td {
 			for (int i = 0; i < nyamList.size(); i++) {
 		%>
 		<tr>
-			<td><%=nyamList.get(i).getId()%></td>
-			<td><%=nyamList.get(i).getName()%></td>
+			
+				<td>
+					<a href = "/nyam/admin/individual?studentId=<%=nyamList.get(i).getId()%>">
+						<%=nyamList.get(i).getId()%>
+					</a>
+				</td>
+				<td><%=nyamList.get(i).getName()%></td>
 			<td><%=nyamList.get(i).getNyamNum()%></td>
 		</tr>
 

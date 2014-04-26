@@ -3,6 +3,7 @@ package controller;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -83,6 +84,24 @@ public class NyamController {
 		return "redirect:/nyam/admin/manageRest";
 	}
 	
+	@RequestMapping("/admin/individual")
+	public String checkIndividual(HttpServletRequest request){
+		DAO dao = DAO.getInstance();
+		String users_id = request.getParameter("studentId");
+		ArrayList<StampHistory> history =  dao.selectMonthHistory(users_id);
+		request.setAttribute("individualHistory", history);
+		return "/admin/individual.jsp";
+	}
+	
+	@RequestMapping("/admin/eachRestaurant")
+	public String checkRestaurant(HttpServletRequest request){
+		DAO dao = DAO.getInstance();
+		String id = request.getParameter("restaurantId");
+		HashMap<String, Integer> map = dao.checkEachRestaurant(id);
+		request.setAttribute("map", map);
+
+		return "/admin/eachRestaurant.jsp";
+	}
 	
 	
 	
