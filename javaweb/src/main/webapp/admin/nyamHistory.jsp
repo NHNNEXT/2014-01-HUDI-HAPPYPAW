@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>넥스트인의 정식</title>
 <style>
 table {
 	border: solid 1px black;
@@ -30,16 +30,19 @@ td {
 		</tr>
 		<%
 			for (int i = 0; i < nyamList.size(); i++) {
+				String id = nyamList.get(i).getId();
+				String name = nyamList.get(i).getName();
+				int count = nyamList.get(i).getNyamNum();
 		%>
 		<tr>
 			
 				<td>
 					<a href = "/nyam/admin/individual?studentId=<%=nyamList.get(i).getId()%>">
-						<%=nyamList.get(i).getId()%>
+						<%=id%>
 					</a>
 				</td>
-				<td><%=nyamList.get(i).getName()%></td>
-			<td><%=nyamList.get(i).getNyamNum()%></td>
+				<td><%=name%></td>
+				<td><%=count%></td>
 		</tr>
 
 		<%

@@ -19,15 +19,14 @@ import annotation.RequestMapping;
 
 @Controller
 public class NyamController {
+	
 	@RequestMapping("/nyamHistory")
 	public String showNyamHistory(HttpServletRequest request, HttpSession session) {
 		DAO db = DAO.getInstance();
-		//세션에서 아이디를 못찾으면 로그인 페이지로 퉁 
 		String id =(String) session.getAttribute("users_id");
 		if(id ==null || id==""){
 			return "redirect:/nyam/app/login";
 		}
-		//아이디가 있을 때는 월별 히스토리를 검색해서 결과를 보여준다. 
 		ArrayList<StampHistory> stampList = db.selectMonthHistory(id);
 		request.setAttribute("record", stampList);
 
@@ -38,12 +37,8 @@ public class NyamController {
 	public String showNyamList(HttpServletRequest request){
 		DAO dao = DAO.getInstance();
 		ArrayList<NyamList> nyamList = dao.adminNyamHistory();
-		
-		
-		//istream.
-		
 		request.setAttribute("nyamList", nyamList);
-		return "/admin/nyamHistory.jsp";//admin 폴더안에  있는데 이렇게 주소 쓰는거 맞나?
+		return "/admin/nyamHistory.jsp";
 	}
 	
 	@RequestMapping("/admin/restaurantHistory")
@@ -57,7 +52,6 @@ public class NyamController {
 	@RequestMapping("/admin/exportExcel")
 	public String exportFile(HttpServlet servlet){
 		DAO dao = DAO.getInstance();
-		System.out.println("requestmapping ok");
 		dao.exportExcel(servlet.getServletContext().getRealPath(""));
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
@@ -68,7 +62,7 @@ public class NyamController {
 	@RequestMapping("/admin/manageRest")
 	public String manageRest(HttpServletRequest request){
 		DAO dao = DAO.getInstance();
-		ArrayList<Restaurant> restList = dao.manageRest();
+		ArrayList<Restaurant> restList = dao.manageRestaurant();
 		request.setAttribute("restList", restList);
 		String address = "https://chart.googleapis.com/chart?cht=qr&chs=150x150&chl=";
 		request.setAttribute("address", address);
@@ -102,7 +96,6 @@ public class NyamController {
 
 		return "/admin/eachRestaurant.jsp";
 	}
-	
 	
 	
 	

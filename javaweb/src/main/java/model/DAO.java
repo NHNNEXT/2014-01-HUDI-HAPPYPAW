@@ -1,6 +1,5 @@
 package model;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -55,18 +54,17 @@ public class DAO {
 	}
 
 	public ArrayList<StampHistory> selectMonthHistory(String users_id) {
-		PreparedStatement selHistory;
 		Calendar cal = Calendar.getInstance();
-		ResultSet rs;
 		int month = cal.get(cal.MONTH) + 1;
-		int nextMonth = month + 1;
-		int nextYear;
 		int year = cal.get(cal.YEAR);
+		
 		ArrayList<StampHistory> stampList = new ArrayList<StampHistory>();
 		String firstDay = year + "-" + month + "-01 00:00:00";
 		String lastDay = year + "-" + month + "-31 23:59:59";
 		String query = "select * from stamp_history where users_id = ? and regdate > ? and regdate < ?";
 		try {
+			PreparedStatement selHistory;
+			ResultSet rs;
 			selHistory = con.prepareStatement(query);
 			selHistory.setString(1, users_id);
 			selHistory.setString(2, firstDay);
@@ -76,7 +74,6 @@ public class DAO {
 				String id = rs.getString("users_id");
 				String regdate = rs.getString("regDate");
 				int restaurant = rs.getInt("restaurant_no");
-				System.out.println(id + "   " + regdate + "   " + restaurant);
 				stampList.add(new StampHistory(id, regdate, restaurant));
 			}
 			rs.close();
@@ -103,19 +100,19 @@ public class DAO {
 			return false;
 		}
 
-		PreparedStatement insertHistory;
-		ResultSet rs;
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String nowDate = sdf.format(cal.getTime());
-
 		String insertQuery = "INSERT INTO stamp_history(users_id, regdate, restaurant_no) VALUES (?, ?, ?)";
+	
 		try {
+			PreparedStatement insertHistory;
 			insertHistory = con.prepareStatement(insertQuery);
 			insertHistory.setString(1, users_id);
 			insertHistory.setString(2, nowDate);
 			insertHistory.setInt(3, restaurant);
 			insertHistory.execute();
+			insertHistory.close();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -144,12 +141,14 @@ public class DAO {
 			statement.setString(2, qrDate);
 			ResultSet rs = statement.executeQuery();
 			int count = 0;
+			
 			while (rs.next()) {
 				count++;
 			}
 			if (count == 1)
 				return true;
-
+			rs.close();
+			statement.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -191,8 +190,7 @@ public class DAO {
 	}
 
 	/**
-	 * 관리자 웹페이지의 전체 학생 식사기록을 확인하는 함수. id, name, 식사횟수로 이루어진 NyamList로 구성된 어레이리스트를
-	 * 반환.
+	 * 관리자 웹페이지의 전체 학생 식사기록을 확인하는 함수. 
 	 * 
 	 * @return ArrayList<NyamList>
 	 */
@@ -225,7 +223,6 @@ public class DAO {
 	public ArrayList<Restaurant> restaurantHistory() {
 		ArrayList<Restaurant> restaurant = new ArrayList<Restaurant>();
 		try {
-
 			String countQuery = "SELECT r.no, r.name, count(s.restaurant_no) FROM restaurant "
 					+ "r LEFT JOIN stamp_history s ON s.restaurant_no = r.no group by r.no;";
 			Statement rStatement = con.createStatement();
@@ -233,9 +230,11 @@ public class DAO {
 			while (rs.next()) {
 				int rId = rs.getInt("no");
 				String rName = rs.getString("name");
-				int num = rs.getInt("count(s.restaurant_no)");// 칼럼이름 쿼리에서 재정의
+				int num = rs.getInt("count(s.restaurant_no)");
 				restaurant.add(new Restaurant(rId, rName, num));
 			}
+			rs.close();
+			rStatement.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -263,7 +262,11 @@ public class DAO {
 		}
 	}
 
-	public ArrayList<Restaurant> manageRest() {
+	/**
+	 * 관리자 식당 관리 페이지 
+	 * @return ArrayList<Restaurant> 
+	 */
+	public ArrayList<Restaurant> manageRestaurant() {
 		String query = "SELECT * FROM restaurant";
 		ArrayList<Restaurant> restList = new ArrayList<Restaurant>();
 		try {
@@ -278,11 +281,12 @@ public class DAO {
 				desc = rs.getString("description");
 				location = rs.getString("location");
 				renew = rs.getString("renew");
-				renew.replace(" ", "%20");
+				//renew.replace(" ", "%20");//요거 없어도 되는데? 왜 넣어놨지..
 				Restaurant rest = new Restaurant(no, name, desc, location, renew);
 				restList.add(rest);
 			}
-
+			rs.close();
+			st.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -291,7 +295,7 @@ public class DAO {
 	}
 
 	/**
-	 * qr코드 정보 업데이트 하는 함수. 
+	 * qr코드 등록일자 갱신 하는 함수. 
 	 * @return
 	 */
 	public void renewQrcode(String restaurantNo) {
@@ -304,7 +308,7 @@ public class DAO {
 			pst.setString(1, ymd);
 			pst.setInt(2, Integer.parseInt(restaurantNo));
 			pst.executeUpdate();
-
+			pst.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -313,22 +317,29 @@ public class DAO {
 		return ;
 	}
 
+	/**
+	 * 레스토랑 일자별로 식사횟수 확인 
+	 * @param id
+	 * @return
+	 */
 	public HashMap<String, Integer> checkEachRestaurant(String id) {
 		int restaurantNo = Integer.parseInt(id);
-		String query = "select count(*) as num, substring(regdate, 1, 10) as stamp_date  from stamp_history where restaurant_no = ? group by substring(regdate, 1, 10); ";
-		PreparedStatement pst;
 		HashMap<String, Integer> hash = new HashMap<String, Integer>();
+		String query = "select count(*) as num, substring(regdate, 1, 10) as stamp_date  "
+				+ "from stamp_history where restaurant_no = ? group by substring(regdate, 1, 10); ";
 		try {
+			PreparedStatement pst;
 			pst = con.prepareStatement(query);
-			pst.setInt(1, restaurantNo);
 			ResultSet rs = pst.executeQuery();
+			pst.setInt(1, restaurantNo);
 			while(rs.next()){
 				String stamp_date = rs.getString("stamp_date");
 				int num = rs.getInt("num");
 				hash.put(stamp_date, num);
 			}
+			rs.close();
+			pst.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return hash;

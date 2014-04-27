@@ -5,10 +5,20 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<style>
+table {
+	border: solid 1px black;
+}
+
+td {
+	border: solid 1px black;
+}
+</style>
 </head>
 <body>
 	<%
 		ArrayList<Restaurant> restList = (ArrayList<Restaurant>)request.getAttribute("restList");
+
 	%>
 	<table>
 	<tr>
@@ -20,15 +30,18 @@
 	</tr>
 		<%
 			for(int i =0; i < restList.size(); i++){
+				int no = restList.get(i).getNo();
+				String name = restList.get(i).getName() ;
+				int count = restList.get(i).getNyamNum() ;
 		%>
 			<tr>
 				<td>
-					<a href="/nyam/admin/eachRestaurant?restaurantId=<%=restList.get(i).getNo()%>">
-						<%=restList.get(i).getNo() %>
+					<a href="/nyam/admin/eachRestaurant?restaurantId=<%=no%>">
+						<%=no%>
 					</a>
 				</td>
-				<td><%=restList.get(i).getName() %></td>
-				<td><%=restList.get(i).getNyamNum() %></td>
+				<td><%=name%></td>
+				<td><%=count%></td>
 			</tr>
 			 
 		<%
