@@ -21,10 +21,7 @@ int week = (Integer)request.getAttribute("week");
 int day = 1;
 %>
 var yoil = <%=yoil%>;
-console.log(yoil);
 var day = 1;
-var dayOfMonth = <%=dayOfMonth%>
-var week = <%=week%>
 $(document).ready(function() {
 	var stamp = {"-1": 0
 	<%
@@ -32,36 +29,13 @@ $(document).ready(function() {
 			out.println(","+date+" : "+map.get(date));
 	}
 	%>};
-	
-	var trWeek = $(".week");
-	for(var i = 1; i < week ; i++){
-		trWeek.after(trWeek.html());
-	}
-	
 	$(".calendar td").each(function(td, index) {
-		if(index +1 < yoil){
+		if(index < yoil)
 			return;
-		}else if(day > dayOfMonth){
-			return;	
-		}else{
-			
-			$(this).find(".day").html(day);
-			
-			var stamp_print = $(".stamp");
-			if(day in stamp){
-				var stamp_num = stamp[day];
-				for(var i =0; i<stamp_num;i++){
-					$(this).find(".stamp_area").append('<div class="stamp"></div>');
-					console.log("test");
-				}
-			}
-			++day;
-		}
+		console.log(index+"   "+day);
+		$(this).find(".day").html(day);
+		++day;
 	});
-
-	
-	
-	
 });
 </script>
 
@@ -92,7 +66,7 @@ $(document).ready(function() {
 			</tr>
 		</thead>
 		<tbody>
-			<tr class="week">
+			<tr>
 				<td><div class="day"></div><div class="stamp_area"></div></td>
 				<td><div class="day"></div><div class="stamp_area"></div></td>
 				<td><div class="day"></div><div class="stamp_area"></div></td>
@@ -101,7 +75,51 @@ $(document).ready(function() {
 				<td><div class="day"></div><div class="stamp_area"></div></td>
 				<td><div class="day"></div><div class="stamp_area"></div></td>
 			</tr>
-
+			<tr>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+			</tr>
+			<tr>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+			</tr>
+			<tr>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+			</tr>
+			<tr>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+			</tr>
+			<tr>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+				<td><div class="day"></div><div class="stamp_area"></div></td>
+			</tr>
 			</tbody>
 
 		</table>
@@ -125,6 +143,6 @@ $(document).ready(function() {
 			</ul>
 		</div>
 	</aside>
-	
+
 </body>
 </html>

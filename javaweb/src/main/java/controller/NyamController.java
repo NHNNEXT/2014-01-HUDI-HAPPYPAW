@@ -11,11 +11,11 @@ import javax.servlet.http.HttpSession;
 
 import model.DAO;
 import model.DateInfo;
+import model.NyamList;
 import model.Restaurant;
 //import model.Restaurant;
 import model.StampHistory;
 import model.User;
-import admin.NyamList;
 import annotation.Controller;
 import annotation.RequestMapping;
 

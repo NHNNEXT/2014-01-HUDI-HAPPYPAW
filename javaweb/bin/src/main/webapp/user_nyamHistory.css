@@ -1,0 +1,156 @@
+@CHARSET "US-ASCII";
+
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+
+
+
+body{
+	background-color:#d3d3d3;
+}
+
+
+section{
+	
+	float: left;
+	width:80%;
+}
+
+header{
+	height: 100px;
+	
+}
+
+p.logo{
+	font-weight: bold;
+	font-family:"NanumGothic";/* 폰트는 적절히 바꿉시다. 어떻게 할지 정해야.  */
+	font-size: 2em;
+	margin: 20px;
+	
+}
+
+div.month {
+	font-size: 2em;
+	text-align: center;
+	margin: 20px auto;
+}
+table {
+	margin: 20px auto;
+}
+
+th{
+	font-weight: bold;
+	font-family:"Times New Roman";/* 폰트는 적절히 바꿉시다. 어떻게 할지 정해야.  */
+}
+
+td {
+	position: relative;
+	border: 1px solid black;
+	width: 80px;
+	height: 80px;
+	overflow: hidden;
+	vertical-align:top;
+}
+
+div.day {
+	text-align: center;
+	width: 100%;
+	height: 20%;
+	overflow:hidden;
+	font-family: "Times New Roman";
+	margin: 10px auto;
+}
+
+div.stamp_area{
+	width:100%;
+	height:40%;
+	position:absolute;
+	bottom:10px;
+	text-align:center;
+}
+tr #record{
+	height:20px;
+}
+
+p{
+	color:black;	
+
+}
+
+aside {
+	float: left;
+	width: 20%;
+	background-color: #e4be72;
+	height: 700px;
+	overflow: hidden;
+	
+}
+
+div.login_box{
+	margin: 10px;
+	border: 1px solid #bf8f30;
+	background-color: #ffbf40;
+	border-radius: 10px;
+	height: 80px;
+	padding: 10px;
+	
+}
+
+div.menu {
+	margin: 20px;
+}
+
+div.menu_text{
+	font-size:1em;
+	font-family:"NanumGothic";
+	margin:10px;
+	text-align:left;
+}
+
+ul.menu_ul li{
+	margin: 10px 15px;
+	text-align:left;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

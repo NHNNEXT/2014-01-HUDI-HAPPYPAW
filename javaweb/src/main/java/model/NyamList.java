@@ -1,4 +1,4 @@
-package admin;
+package model;
 
 public class NyamList {
 	String id;

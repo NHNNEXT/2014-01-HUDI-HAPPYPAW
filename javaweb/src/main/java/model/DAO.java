@@ -16,9 +16,6 @@ import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
-import admin.MakeExcel;
-import admin.NyamList;
-
 public class DAO {
 	private String url = "jdbc:mysql://10.73.45.131/happypaw";
 	private String user = "dayoungles";
