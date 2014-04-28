@@ -10,10 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import model.DAO;
-import model.NyamList;
+import model.DateInfo;
 import model.Restaurant;
 //import model.Restaurant;
 import model.StampHistory;
+import model.User;
+import admin.NyamList;
 import annotation.Controller;
 import annotation.RequestMapping;
 
@@ -27,8 +29,22 @@ public class NyamController {
 		if(id ==null || id==""){
 			return "redirect:/nyam/app/login";
 		}
+		
+		User user = db.getUser(id);
+		String name = user.getName();
+		request.setAttribute("session", id);
+		request.setAttribute("name", name);
+		
 		ArrayList<StampHistory> stampList = db.selectMonthHistory(id);
-		request.setAttribute("record", stampList);
+		HashMap<String, Integer> map = db.arrangeNyamHistory(stampList);
+		request.setAttribute("nyamPerDay", map);
+		
+		DateInfo info = db.setDate();
+		request.setAttribute("dayOfMonth", info.getDayOfMonth());
+		request.setAttribute("month",info.getMonth());
+		request.setAttribute("week",info.getWeek());
+		request.setAttribute("year",info.getYear());
+		request.setAttribute("yoil",info.getYoil());
 
 		return "nyamHistory.jsp";
 	}
@@ -96,6 +112,7 @@ public class NyamController {
 
 		return "/admin/eachRestaurant.jsp";
 	}
+	
 	
 	
 	

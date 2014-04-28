@@ -12,8 +12,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
+import admin.MakeExcel;
+import admin.NyamList;
 
 public class DAO {
 	private String url = "jdbc:mysql://10.73.45.131/happypaw";
@@ -346,7 +350,46 @@ public class DAO {
 	}
 	
 
+	public HashMap<String, Integer> arrangeNyamHistory(ArrayList<StampHistory> stampList){
+
+		HashMap<String, Integer> hash = new HashMap<String, Integer>();
+		for (int i = 0; i < stampList.size(); i++) {
+			String date = stampList.get(i).getRegdate();
+			String day= (String)date.subSequence(8, 10);
+			
+			if(hash.containsKey(day)){
+				int count= hash.get(day) + 1;
+				hash.put(day, count);
+			} else {
+				hash.put(day, 1);				
+			}
+		}
+		
+		for(Map.Entry<String, Integer> e : hash.entrySet()){
+			String key = e.getKey();
+			int val = e.getValue();
+			System.out.println(key + "일 : " + val+"회 ");
+		}
+		
+		return hash;
+	}
 	
+	public DateInfo setDate(){
+		Calendar cal = Calendar.getInstance();
+		int month = cal.get(Calendar.MONTH);//이번달 숫자-1을 찾아놓는다. 
+		int year = cal.get(Calendar.YEAR);
+		/* 		year = 2013;
+		 month= 11; */
+		cal.set(year, month, 1);
+
+		int dayOfMonth = cal.getActualMaximum(cal.DAY_OF_MONTH);//이번달 총 일자 찾기.
+		int yoil = cal.get(cal.DAY_OF_WEEK);//일요일부터 1.
+		int week = cal.getActualMaximum(cal.WEEK_OF_MONTH);//한달에 몇주 있는지 확인.
+		
+		DateInfo date = new DateInfo(year, month, dayOfMonth, week, yoil);
+
+		return date;
+	}
 	
 	
 	

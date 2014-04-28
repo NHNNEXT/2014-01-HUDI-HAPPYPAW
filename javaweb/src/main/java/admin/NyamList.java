@@ -1,11 +1,11 @@
-package model;
+package admin;
 
 public class NyamList {
 	String id;
 	String name;
 	int nyamNum;
 	
-	NyamList(String id, String name, int nyamNum){
+	public NyamList(String id, String name, int nyamNum){
 		this.id = id;
 		this.name = name;
 		this.nyamNum = nyamNum;
