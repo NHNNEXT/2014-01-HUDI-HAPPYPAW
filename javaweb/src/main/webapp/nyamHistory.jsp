@@ -77,7 +77,7 @@ $(document).ready(function() {
 			<p class="logo">넥스트인의 정식</p>
 		</header>
 		<article>
-			<div class="month"><%=month+1 %>월</div>
+			<div class="month"><%=year%>년  <%=month+1 %>월</div>
 		</article>
 		<table class="calendar">
 		<thead>

@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.DAO;
+import model.InfoMessage;
 import model.User;
 import annotation.Controller;
 import annotation.RequestMapping;
@@ -44,18 +45,21 @@ public class M_loginController {
 			String m_ps = request.getParameter("password");
 			User user = db.getUser(m_id);
 			
+			InfoMessage errMessage = InfoMessage.getMessage(300, "존재하지 않는 회원이거나 패스워드가 일치하지 않습니다..");
+			String errJSON = JSON.makeJSON(errMessage);
 			if(user == null) {
 				System.out.println("login error No User");
-				return "text:false";
+				return "text:" + errJSON;
 			} else if(user.checkPs(m_ps)){
 				session.setAttribute("users_id", m_id);
 				System.out.println("login complete :"+ m_id);
-				return "text:true";
+				
+				return "text:" + JSON.makeJSON(InfoMessage.getMessage(200, "로그인이 되었습니다."));
 			} else {
-				return "text:false";
+				return "text:" + errJSON;
 			}
 		} else {
-			return "text:true";
+			return "text:" + JSON.makeJSON(InfoMessage.getMessage(200, "로그인이 이미 되었습니다."));
 		}
 		
 	}
@@ -68,8 +72,13 @@ public class M_loginController {
 		
 		User user = dao.getUser(users_id);
 		//user가 널일때 테스트 하기 바람.
-		String userJSON = JSON.makeJSON(user);
-		System.out.println(userJSON);
-		return "text:" + userJSON;
+		if(user == null) {
+			String errJSON = JSON.makeJSON(InfoMessage.getMessage(500, "로그인을 해주세요."));
+			return "text:"+errJSON;
+		} else {
+			String userJSON = JSON.makeJSON(user);
+			System.out.println(userJSON);
+			return "text:" + userJSON;
+		}
 	}
 }

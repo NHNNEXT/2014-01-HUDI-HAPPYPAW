@@ -18,8 +18,9 @@ public class JSON {
 						continue;
 					name = name.substring(3, name.length());
 					name = name.toLowerCase();
-					
+					System.out.println(name);
 					Object value = method.invoke(obj, new Object[]{});
+					System.out.println(value.getClass().toString());
 					sValue = value.toString();
 					
 				} catch (IllegalAccessException e) {
