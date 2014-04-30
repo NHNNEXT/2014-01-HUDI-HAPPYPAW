@@ -5,12 +5,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="./reset.css"/>
+<link rel="stylesheet" type="text/css" href="./css/login.css"/>
 </head>
 <body>
-	<form action="./login_check" method="POST">
-		<input type ="text" name="id" placeholder="id"><br>
-		<input type="password" name="password" placeholder="password">
-		<button>submit</button>
-	</form>
+	<div class="login_form">
+		<p class="title">넥스트인의 정식</p>
+		<form action="./login_check" method="POST">
+			<input type ="text" name="id" class="id" placeholder="id"><br>
+			<input type="password" name="password" class="ps" placeholder="password">
+			<button>LOGIN</button>
+		</form>
+	</div>
 </body>
 </html>

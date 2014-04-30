@@ -331,8 +331,9 @@ public class DAO {
 		try {
 			PreparedStatement pst;
 			pst = con.prepareStatement(query);
-			ResultSet rs = pst.executeQuery();
 			pst.setInt(1, restaurantNo);
+			
+			ResultSet rs = pst.executeQuery();
 			while(rs.next()){
 				String stamp_date = rs.getString("stamp_date");
 				int num = rs.getInt("num");
@@ -386,6 +387,37 @@ public class DAO {
 		DateInfo date = new DateInfo(year, month, dayOfMonth, week, yoil);
 
 		return date;
+	}
+
+	public Restaurant getRestaurant(String id) {
+		String query = "SELECT * FROM restaurant where no = ?";
+		ArrayList<Restaurant> restList = new ArrayList<Restaurant>();
+		try {
+			ResultSet rs;
+			PreparedStatement st = con.prepareStatement(query);
+			st.setString(1, id);
+			rs = st.executeQuery();
+			int no;
+			String name, desc, location, renew= "";
+			while (rs.next()) {
+				no = rs.getInt("no");
+				name = rs.getString("name");
+				desc = rs.getString("description");
+				location = rs.getString("location");
+				renew = rs.getString("renew");
+				//renew.replace(" ", "%20");//요거 없어도 되는데? 왜 넣어놨지..
+				Restaurant rest = new Restaurant(no, name, desc, location, renew);
+				rs.close();
+				st.close();
+				return rest;
+			}
+			rs.close();
+			st.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	

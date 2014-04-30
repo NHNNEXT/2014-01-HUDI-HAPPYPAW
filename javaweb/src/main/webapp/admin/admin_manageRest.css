@@ -1,58 +1,5 @@
 @CHARSET "US-ASCII";
-body {
-	background-color: #f5f5f5;
-}
 
-section {
-	float: left;
-	width: 80%;
-}
-
-header {
-	height: 100px;
-}
-
-aside {
-	float: left;
-	width: 20%;
-	background-color: #E97248;
-	height: 700px;
-	overflow: hidden;
-	color: white;
-}
-
-div.login_box {
-	margin: 10px;
-	background-color: #ffbf40;
-	border-radius: 10px;
-	height: 80px;
-	padding: 10px;
-}
-
-div.menu {
-	margin: 20px;
-}
-
-div.menu_text {
-	font-size: 1em;
-	font-family: "NanumGothic";
-	margin: 10px;
-	text-align: left;
-}
-
-ul.menu_ul li {
-	margin: 10px 15px;
-	text-align: left;
-}
-p.logo {
-	font-weight: bold;
-	font-family: "NanumGothic"; /* 폰트는 적절히 바꿉시다. 어떻게 할지 정해야.  */
-	font-size: 2em;
-	margin: 20px;
-}
-
-
-/* 이 위까지 고정  */
 
 table {
 	margin: 20px auto;

@@ -6,6 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="../reset.css">
+<link rel="stylesheet" type="text/css" href="../layout.css">
 <link rel="stylesheet" type="text/css" href="admin_manageRest.css">
 <style>
 
@@ -59,25 +60,22 @@
 				} 
 			 %>
 	</table>
-	</section>
-		<aside>
-		<div class="login_box">
-			이름: 관리자 <br/>
 			
-			<a href="./logout">logout</a>
+</section>
+	<aside>
+		<div class="login_box">
+			<p>이름: 관리자</p>
+			<p><a href="./logout">logout</a></p>
 		</div>
 		<div class="menu">
-			<div class="menu_text">		
-				Menu
-			</div>	
 			<ul class="menu_ul">
-				<li><a href = "/nyam/admin/"></a>메인</li>
-				<li><a href = "">지정식당 관리</a></li>
-				<li><a href = "">전체 학생 이용 기록</a></li>
-				<li><a href = "">식당별 이용 횟수</a></li>
+				<li><a href = "/nyam/admin/nyamHistory">메인</a></li>
+				<li><a href = "/nyam/admin/manageRest">지정식당 관리</a></li>
+				<li><a href = "/nyam/admin/nyamHistory">전체 학생 이용 기록</a></li>
+				<li><a href = "/nyam/admin/restaurantHistory">식당별 이용 횟수</a></li>
 				<li><a href = "">지정식당 신청 게시판</a></li>
 			</ul>
 		</div>
 	</aside>
 </body>
-</html> 
+</html>

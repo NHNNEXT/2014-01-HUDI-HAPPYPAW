@@ -1,0 +1,35 @@
+p.title {
+	display:block;
+	margin:30px auto;
+	width:600px;
+	font-size: 2em;
+}
+table {
+	margin:0px auto;
+	width:600px;
+}
+td, th {
+	text-align: center;
+	height: 30px;
+	vertical-align: middle;
+}
+th {
+	border-bottom: 1px solid #aaa;
+	font-weight: 700;
+}
+th.id {
+	width:15%;
+}
+th.date {
+	width:30%;
+}
+td {
+	height:40px;
+	border-bottom: 1px solid #ccc;
+}
+.export {
+	display:block;
+	width:120px;
+	height:35px;
+	margin:30px auto;
+}

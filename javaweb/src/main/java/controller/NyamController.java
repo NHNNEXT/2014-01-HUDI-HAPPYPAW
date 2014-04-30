@@ -98,8 +98,23 @@ public class NyamController {
 	public String checkIndividual(HttpServletRequest request){
 		DAO dao = DAO.getInstance();
 		String users_id = request.getParameter("studentId");
-		ArrayList<StampHistory> history =  dao.selectMonthHistory(users_id);
-		request.setAttribute("individualHistory", history);
+		
+		User user = dao.getUser(users_id);
+		String name = user.getName();
+		request.setAttribute("id", users_id);
+		request.setAttribute("name", name);
+		
+		ArrayList<StampHistory> stampList =  dao.selectMonthHistory(users_id);
+		HashMap<String, Integer> map = dao.arrangeNyamHistory(stampList);
+		request.setAttribute("nyamPerDay", map);
+		
+		DateInfo info = dao.setDate();
+		request.setAttribute("dayOfMonth", info.getDayOfMonth());
+		request.setAttribute("month",info.getMonth());
+		request.setAttribute("week",info.getWeek());
+		request.setAttribute("year",info.getYear());
+		request.setAttribute("yoil",info.getYoil());
+		
 		return "/admin/individual.jsp";
 	}
 	
@@ -107,9 +122,12 @@ public class NyamController {
 	public String checkRestaurant(HttpServletRequest request){
 		DAO dao = DAO.getInstance();
 		String id = request.getParameter("restaurantId");
+		Restaurant rest = dao.getRestaurant(id);
+		if(rest == null)
+			return "redirect:/nyam/admin/restaurantHistory";
 		HashMap<String, Integer> map = dao.checkEachRestaurant(id);
 		request.setAttribute("map", map);
-
+		request.setAttribute("restaurant", rest.getName());
 		return "/admin/eachRestaurant.jsp";
 	}
 	

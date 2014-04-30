@@ -7,6 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="reset.css">
+<link rel="stylesheet" type="text/css" href="layout.css">
 <link rel="stylesheet" type="text/css" href="user_nyamHistory.css">
 <script src="./js/daylight.js"></script>
 <script>
@@ -108,15 +109,11 @@ $(document).ready(function() {
 	</section>
 	<aside>
 		<div class="login_box">
-			학번: <%=	request.getAttribute("session")%><!-- id --><br>
-			이름: <%= request.getAttribute("name") %><br/>
-			
-			<a href="./logout">logout</a>
+			<p>학번: <%=	request.getAttribute("session")%><!-- id --></p>
+			<p>이름: <%= request.getAttribute("name") %></p>
+			<p><a href="./logout">logout</a></p>
 		</div>
 		<div class="menu">
-			<div class="menu_text">		
-				Menu
-			</div>	
 			<ul class="menu_ul">
 				<li><a href = "/nyam/nyamHistory">나의 식사기록</a></li>
 				<li><a href = "">나의 식사순위</a></li>
