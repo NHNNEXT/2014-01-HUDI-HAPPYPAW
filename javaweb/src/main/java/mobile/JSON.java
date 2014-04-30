@@ -16,9 +16,12 @@ public class JSON {
 				try {
 					if(name.equals("getClass"))
 						continue;
+					if(method.getParameterTypes().length > 0)
+						continue;
 					name = name.substring(3, name.length());
 					name = name.toLowerCase();
 					System.out.println(name);
+					
 					Object value = method.invoke(obj, new Object[]{});
 					System.out.println(value.getClass().toString());
 					sValue = value.toString();

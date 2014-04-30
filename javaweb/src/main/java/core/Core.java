@@ -110,7 +110,9 @@ public class Core extends HttpServlet {
 			if(str == null || str == "")
 				str = "text:";
 			if(str.startsWith("text:")) {
-				response.setContentType("text/html"); 			
+				response.setContentType("text/html");
+				//request.setCharacterEncoding("UTF-8"); 
+				response.setCharacterEncoding("utf-8");
 				PrintWriter pw = response.getWriter();
 				pw.write(str.substring(5)); 
 				pw.close();
