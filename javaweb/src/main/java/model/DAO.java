@@ -54,15 +54,41 @@ public class DAO {
 		return nyam;
 	}
 
-	public ArrayList<StampHistory> selectMonthHistory(String users_id) {
+	/**
+	 * selectMonthHistory에서 시작, 끝 날짜 설정하는 함수 
+	 * @param day
+	 * @return
+	 */
+	private String makePeriod(String day){
 		Calendar cal = Calendar.getInstance();
-		int month = cal.get(cal.MONTH) + 1;
+		int month = cal.get(cal.MONTH);
 		int year = cal.get(cal.YEAR);
+		int dayOfMonth = cal.getActualMaximum(cal.DAY_OF_MONTH);
+		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+		String datee;
+
+		if(day.equals("first")){
+			cal.set(year, month, 1);
+			datee = date.format(cal.getTime());
+			datee += " 00:00:00";
+
+		} else {
+			cal.set(year, month, dayOfMonth);
+			datee = date.format(cal.getTime());
+			datee += " 23:59:59";
+					
+		}
+		
+		return datee;
+	}
+	
+	public ArrayList<StampHistory> selectMonthHistory(String users_id) {
 		
 		ArrayList<StampHistory> stampList = new ArrayList<StampHistory>();
-		String firstDay = year + "-" + month + "-01 00:00:00";
-		String lastDay = year + "-" + month + "-31 23:59:59";
+		String firstDay = makePeriod("first");
+		String lastDay = makePeriod("last");
 		String query = "select * from stamp_history where users_id = ? and regdate > ? and regdate < ?";
+		
 		try {
 			PreparedStatement selHistory;
 			ResultSet rs;

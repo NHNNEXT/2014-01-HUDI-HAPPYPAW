@@ -6,14 +6,15 @@ window.onload=function(){
 			console.log(e);
 			console.log(this);
 */	
+			var MOVE_WIDTH = -100;
 			var target = e.target || e.srcElement;
-			var data = target.getAttribute("data");
-			var selected = document.querySelectorAll("li.selected");
-			for(var a =0; a <selected.length; a++){
-				var el = selected[a];
-				el.className="";
+			var liData = target.getAttribute("data");
+			var liColoured = document.querySelectorAll("li.coloured");
+			for(var a =0; a <liColoured.length; a++){
+				var coloured = liColoured[a];
+				coloured.className="";
 			}
-			target.className = "selected";
+			target.className = "coloured";
 			
 /*
 			var blind=document.querySelectorAll("section.mainNews");
@@ -24,13 +25,13 @@ window.onload=function(){
 			var section = document.querySelector('section.mainNews[data="' + data + '"]');
 			section.style.display="block";
 */
-			var board = document.querySelector(".board");
+			var elBoard = document.querySelector(".board");
 			var liList=this.children;
 			console.log(liList);
 			console.log(target);
-			for(var i = 0; i<liList.length; i++){
-				if(liList[i]==target){
-					board.style.left= i*(-100) + "%";
+			for(a = 0; a<liList.length; a++){
+				if(liList[a]==target){
+					elBoard.style.left= i*(MOVE_WIDTH) + "%";
 					break;
 				} 
 			}

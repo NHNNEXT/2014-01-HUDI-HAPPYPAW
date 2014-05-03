@@ -12,18 +12,6 @@ import annotation.RequestMapping;
 @Controller
 public class M_loginController {
 	
-	@RequestMapping("/m_login")
-	public String m_login(HttpSession session ){
-		String id = (String) session.getAttribute("users_id");
-		if(id == null || id.equals("")){
-			return "text:true";
-		} else {
-			//http://localhost/nyam/app/nyamHistory
-			return "text:false";
-		}
-		
-	}
-	
 	@RequestMapping("/m_logout")
 	public String m_logoutPage(HttpSession session){
 		if(session != null){
@@ -38,7 +26,6 @@ public class M_loginController {
 		DAO db = DAO.getInstance();
 		String users_id = (String) session.getAttribute("users_id");
 		
-		//입력없이  로그인해도 메인으로 들어간다는 에러가 있음; >>해결 @main.html 연규 체크
 		if(users_id == null || users_id.equals("")){
 			//로그인 과정 
 			String m_id = request.getParameter("id");//phonegap에서 보낸 id
@@ -60,7 +47,7 @@ public class M_loginController {
 				return "text:" + errJSON;
 			}
 		} else {
-			return "text:" + JSON.makeJSON(InfoMessage.getMessage(200, "로그인이 이미 되었습니다."));
+			return "text:" + JSON.makeJSON(InfoMessage.getMessage(200, "이미 로그인 되었습니다."));
 		}
 		
 	}

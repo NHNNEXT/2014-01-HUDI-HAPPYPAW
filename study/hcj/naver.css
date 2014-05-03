@@ -88,7 +88,7 @@ body{
 	
 }
 
-.menu ul li.selected, .menu ul li:hover{
+.menu ul li.coloured, .menu ul li:hover{
 	border-bottom: 2px solid green;
 	color:green;
 }

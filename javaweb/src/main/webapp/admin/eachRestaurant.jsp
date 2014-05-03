@@ -4,8 +4,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" type="text/css" href="../reset.css"/>
-<link rel="stylesheet" type="text/css" href="../layout.css"/>
+<link rel="stylesheet" type="text/css" href="../css/reset.css"/>
+<link rel="stylesheet" type="text/css" href="../css/layout.css"/>
 <link rel="stylesheet" type="text/css" href="./css/history.css"/>
 <title>넥스트인의 정식</title>
 </head>

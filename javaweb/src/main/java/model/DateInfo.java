@@ -7,7 +7,6 @@ public class DateInfo {
 	int year;
 	int month;
 	
-
 	
 	public DateInfo(int year, int month, int dayOfMonth, int week, int yoil) {
 		this.dayOfMonth = dayOfMonth;
