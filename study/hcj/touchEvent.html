@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width,initial-scale=1"/>
+
+</head>
+<body>
+	<header class="mainHeader">
+		<div class="logo">naver</div>
+		<div class="searchArea">
+			<form class="inputSearch" method="get">
+				<input type="text" class="query" name ="query" />
+				<button name="button" class="button"></button>
+			</form>
+		</div>
+	</header>
+	<nav class="menu" style="width: 10%">
+		<ul>
+			<li>lilili</li>
+			<li>dkdkdk</li>
+		</ul>
+	</nav>
+
+
+	<section class="mainNews" data="news">
+		<img src = "images.jpeg" id="imgtest" style = "width: 50%"/>
+		<div id="message" style="height:300px; width:100%; border: 1px red solid;">
+		</div>
+	</section>
+
+
+</body>
+<script>
+/*
+//daylight
+	$("body").on("touchstart", function(e){
+		console.log(e);
+	} ).on("touchmove", function(e){
+		console.log("choi day mungchungii");
+	}).on("touchend", function(e){
+		console.log("end");
+	});
+*/
+	//console.log($("nav [src=aa]").html());
+/*
+	console.log($("[data]"));
+	console.log($(".pic img").attr("src", "valurd"));
+	console.log($(".pic img").attr("src"));
+*/
+	//console.log($(".menu").css("width", "200px"));
+/*
+	$(".pic img").on("click", function(e){
+		alert($(this).attr("alt"));//어떤 엘레먼트든지 프레임워크의 함수를 쓰려면 $()안에 넣어야된다. 
+	});
+	console.log($(".pic").find("p").get(2));
+*/
+
+	window.onload = function(){
+/*
+
+		document.body.addEventListener("touchstart", function(e){
+			console.log("start");
+		});
+		
+		document.body.addEventListener("touchmove", function(e){
+			//alert("move");
+			console.log("move");
+		})
+		
+		document.body.addEventListener("touchend", function(e){
+			console.log("end");
+		})
+*/
+		var img = document.getElementById("imgtest");
+		var box = document.getElementById("message");
+		console.log(box);
+		document.addEventListener("gesturestart", function (e){
+			box.innerHTML="gesture start";
+			console.log("str");
+		});
+	
+		document.addEventListener("gesturechange", function (e){
+			box.innerHTML="gesture change";
+			//img.style.webkitTransform="scale("+ e.scale+ + ")";
+			img.style.webkitTransform = "rotate(" + e.rotation + ")";
+		});
+		
+		document.addEventListener("gestureend", function(e){
+			box.innerHTML="gesture end"
+			console.log("gestureend");
+		})
+		
+
+	}
+
+
+</script>
+</html>

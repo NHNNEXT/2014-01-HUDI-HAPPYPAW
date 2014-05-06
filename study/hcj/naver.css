@@ -103,12 +103,13 @@ body{
 	overflow: hidden;
 	position: relative;
 	left: 0%;
+
 	transition: left ease 0.5s;/*cubic-bezier(1,1.36,0,-0.99) 트랜지션은 써야할게 많다.*/
 	-webkit-transition:left ease 0.5s;
 	-moz-transition:left ease 0.5s;
 	-o-transition:left ease 0.5s;
 	-ms-transition:left ease 0.5s;
-	
+
 }
 
 .mainNews{

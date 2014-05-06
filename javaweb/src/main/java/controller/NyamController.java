@@ -29,16 +29,16 @@ public class NyamController {
 		if(id ==null || id==""){
 			return "redirect:/nyam/app/login";
 		}
-		
+
 		User user = db.getUser(id);
 		String name = user.getName();
 		request.setAttribute("session", id);
 		request.setAttribute("name", name);
-		
+
 		ArrayList<StampHistory> stampList = db.selectMonthHistory(id);
 		HashMap<String, Integer> map = db.arrangeNyamHistory(stampList);
 		request.setAttribute("nyamPerDay", map);
-		
+
 		DateInfo info = db.setDate();
 		request.setAttribute("dayOfMonth", info.getDayOfMonth());
 		request.setAttribute("month",info.getMonth());

@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.poi.hssf.record.formula.functions.Days360;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 public class DAO {
@@ -65,30 +66,30 @@ public class DAO {
 		int year = cal.get(cal.YEAR);
 		int dayOfMonth = cal.getActualMaximum(cal.DAY_OF_MONTH);
 		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
-		String datee;
+		String datee = null;
 
 		if(day.equals("first")){
 			cal.set(year, month, 1);
 			datee = date.format(cal.getTime());
 			datee += " 00:00:00";
 
-		} else {
+		} else if(day.equals("last")){
 			cal.set(year, month, dayOfMonth);
 			datee = date.format(cal.getTime());
 			datee += " 23:59:59";
-					
+
 		}
-		
+
 		return datee;
 	}
 	
 	public ArrayList<StampHistory> selectMonthHistory(String users_id) {
-		
+
 		ArrayList<StampHistory> stampList = new ArrayList<StampHistory>();
 		String firstDay = makePeriod("first");
 		String lastDay = makePeriod("last");
 		String query = "select * from stamp_history where users_id = ? and regdate > ? and regdate < ?";
-		
+
 		try {
 			PreparedStatement selHistory;
 			ResultSet rs;
@@ -228,6 +229,7 @@ public class DAO {
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(userQuery);
 			while (rs.next()) {
+
 				String users_id = rs.getString("id");
 				String users_name = rs.getString("name");
 				int sum = selectMonthHistory(users_id).size();

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		
+		<meta name="viewport" content="width=device-width,initial-scale=1"/>
+		<style>
+		/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+			#banner{
+			-webkit-transition: all 2s ease;
+				width: 100%;
+				height: 30px;/*왜 여기 %안 먹히지.*/
+				text-align: center;
+				background-color: orange;
+				color: white;
+				font-size: 1.5em;
+				padding: 2px;
+			}
+			
+			#menu{
+			-webkit-transition: all 2s ease;
+				position: relative;
+				width: 25px;
+				height: 25px;
+				border: 1px solid red;
+				float: left;
+				
+				margin: 2px
+			}
+			
+			#qr{
+			-webkit-transition: all 2s ease;
+				position: relative;
+				width: 25px;
+				height: 25px;
+				border: 1px solid red;
+				float: right;
+				margin: 2px;
+			}
+			
+			.content{
+			-webkit-transition: all 2s ease;
+				background-color: green;
+				height: 400px;
+				width: 100%;
+			}
+			
+			.hidden {
+				-webkit-transition: all 2s ease;
+				left: -250px;
+				width: 250px;
+				height: 500px;
+				float:left;
+				position: absolute;
+			}
+			
+			.view {
+			-webkit-transition: all 2s ease;
+				position: relative;
+				left: 0px;
+			}
+		</style>
+		
+	</head>
+	<body>
+		<aside class="hidden">
+			
+		</aside>
+		<div class="view">
+			<div id="banner">
+				<div id = "menu">
+		
+				</div>
+				test
+				<div id = "qr">
+	
+				</div>
+			</div>
+			<section class="content">
+				content;
+			</section>
+		</div>
+	<script>
+		var menu = document.querySelector("#menu");
+		var elView = document.querySelector(".view");
+		var elSliding = document.querySelector(".hidden");
+		console.log(elView);
+		
+		console.log(elView.style.left);
+		 
+		menu.addEventListener("click", function(e){
+
+			elView.style.left = 250 + "px";
+			elSliding.style.left = 0 + "px";
+			console.log(elView.style.left +"  " +elSliding.style.left);
+			
+		},false );
+	
+
+
+
+
+		elView.addEventListener("click", function(e){
+			elView.style.left = 0 + "px";
+			elSliding.style.left = -250 + "px";
+		}, true);
+
+
+		
+
+
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	</script>
+	
+	
+	</body>
+</html>
