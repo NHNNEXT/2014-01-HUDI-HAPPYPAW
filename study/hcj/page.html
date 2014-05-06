@@ -70,7 +70,7 @@ table {
 				height: 25px;
 				border: 1px solid red;
 				float: left;
-				
+				background-color: red;
 				margin: 2px
 			}
 			
@@ -105,6 +105,55 @@ table {
 				position: relative;
 				left: 0px;
 			}
+			
+			.mq, .test {
+				-webkit-transition: all 2s ease	;				
+				width: 100px;
+				height: 200px;
+				border: black 1px solid;
+				display: inline-block;
+			}
+			
+			img.image{
+				width: 150px;
+				height:100px;
+				border:1px solid black;
+			}
+			
+			img.image:nth-child(3){
+				display:none;
+			}
+
+			
+/* 크롬에서는 650픽셀에서 바뀌지 않고 710 정도..왜? 			 */
+			@media screen and (min-width:400px){
+				.test {
+					-webkit-transition: all 2s ease	;				
+					width: 100px;
+					height: 200px;
+					border: black 1px solid;
+					float: right;
+				}
+				
+				img.image:nth-child(3){
+					display:none;
+				}
+
+			}
+			
+			@media screen and (min-width:400px) and (max-width:600px){
+				img.image {
+					width: 170px;
+					height:100px;
+					border:1px solid black;
+				}
+				img.image:nth-child(3){
+					display:inline-block;
+				}
+
+				
+
+			}
 		</style>
 		
 	</head>
@@ -123,7 +172,17 @@ table {
 				</div>
 			</div>
 			<section class="content">
-				content;
+				<div class="mq">
+					mediaquery
+				</div>
+				<div class="test">
+					test
+				</div>
+				<div class="imagetest">
+					<img src = "images.jpeg" class="image">
+					<img src = "images.jpeg" class="image">
+					<img src = "images.jpeg" class="image">
+				</div>
 			</section>
 		</div>
 	<script>
@@ -135,7 +194,7 @@ table {
 		console.log(elView.style.left);
 		 
 		menu.addEventListener("click", function(e){
-
+			if(elView.style.left ==
 			elView.style.left = 250 + "px";
 			elSliding.style.left = 0 + "px";
 			console.log(elView.style.left +"  " +elSliding.style.left);
