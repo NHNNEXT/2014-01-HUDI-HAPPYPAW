@@ -2,7 +2,7 @@
 <html>
 	<head>
 		
-		<meta name="viewport" content="width=device-width,initial-scale=1"/>
+		<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=no; target-densityDpi=device-dpi" />
 		<style>
 		/* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
@@ -115,17 +115,16 @@ table {
 			}
 			
 			img.image{
-				width: 150px;
+				-webkit-transition: all 2s ease	;
+				width: 170px;
 				height:100px;
 				border:1px solid black;
 			}
 			
-			img.image:nth-child(3){
-				display:none;
-			}
 
 			
-/* 크롬에서는 650픽셀에서 바뀌지 않고 710 정도..왜? 			 */
+/*
+//크롬에서는 650픽셀에서 바뀌지 않고 710 정도..왜? 			 
 			@media screen and (min-width:400px){
 				.test {
 					-webkit-transition: all 2s ease	;				
@@ -134,14 +133,23 @@ table {
 					border: black 1px solid;
 					float: right;
 				}
-				
-				img.image:nth-child(3){
-					display:none;
-				}
 
 			}
+*/
 			
-			@media screen and (min-width:400px) and (max-width:600px){
+			@media screen and (max-width:500px){
+				img.image:nth-child(3){
+					display: none;
+				}
+			}
+			@media screen and (min-width:500px){
+				.test {
+					-webkit-transition: all 2s ease	;				
+					width: 100px;
+					height: 200px;
+					border: black 1px solid;
+					float: right;
+				}
 				img.image {
 					width: 170px;
 					height:100px;
@@ -183,6 +191,9 @@ table {
 					<img src = "images.jpeg" class="image">
 					<img src = "images.jpeg" class="image">
 				</div>
+				<div id="message" style="height:300px; width:100%; border: 1px red solid;">
+		</div>
+				
 			</section>
 		</div>
 	<script>
@@ -194,56 +205,73 @@ table {
 		console.log(elView.style.left);
 		 
 		menu.addEventListener("click", function(e){
-			if(elView.style.left ==
-			elView.style.left = 250 + "px";
-			elSliding.style.left = 0 + "px";
+/* 버블링캡쳐링 때문에 메뉴를 누르면 슬라이드 원상복귀되지 않는다.레프트값 확인해서 복원할 수 있게 해줘야 할 듯. 			
+if(elView.style.left == */
+			var test = document.defaultView.getComputedStyle(elView);
+			console.log("===================" + test.left);
+			
+			if(test.left === "0px"){
+				elView.style.left = 250 + "px";
+				elSliding.style.left = 0 + "px";
+				console.log("move left");
+			} 
+			
+			else if(test.left === "250px"){
+
+				elView.style.left = 0 + "px";
+				elSliding.style.left = -250 + "px";
+				console.log("move right");
+			}
 			console.log(elView.style.left +"  " +elSliding.style.left);
 			
-		},false );
-	
-
-
+		}  );
 
 
 		elView.addEventListener("click", function(e){
 			elView.style.left = 0 + "px";
 			elSliding.style.left = -250 + "px";
-		}, true);
+		}, true);//캡쳐링으로 되는데..
 
-
-		
 
 
 		
+		var box = document.getElementById("message");
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+/*
+		document.body.addEventListener("touchstart", function(e){
+			box.innerHTML = "touch Start";
+		});
+		
+		document.body.addEventListener("touchmove", function(e){
+			box.innerHTML = "touch move";
+		});
+		
+		document.body.addEventListener("touchend", function(e){
+			box.innerHTML = "touch end";
+		});
+*/
+
+
+		document.addEventListener("gesturestart", function (e){
+			box.innerHTML="gesture start";
+			console.log("str");
+		});
+	//이미지 회전 
+		var img = document.getElementsByClassName("image");
+
+		document.addEventListener("gesturechange", function (e){
+			box.innerHTML="gesture change";
+			//img.style.webkitTransform="scale("+ e.scale+ + ")";
+
+			img[0].style.webkitTransform ="scale(" + e.scale + ")rotate(" + e.rotation + "deg)";
+		});
+		
+		document.addEventListener("gestureend", function(e){
+			box.innerHTML="gesture end"
+			console.log("gestureend");
+		});
+		
+
 	
 	</script>
 	
