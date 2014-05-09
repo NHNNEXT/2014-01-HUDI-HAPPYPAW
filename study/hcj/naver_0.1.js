@@ -1,10 +1,17 @@
 window.onload=function(){
 	var elNav = document.querySelector(".menu ul");
 	var attrData;
+	var xPosition;
+	var boolCheck;
+	var standard;
+	var width = window.innerWidth;
 	var MOVE_RIGHT = 100;
 	var MOVE_LEFT = -100;
+	
 	var elBoard = document.querySelector(".board");
 	elBoard.style.left = 0+"%";	
+	
+	//네비게이션 탭 클릭하면 색깔 변하고 밑에 있는 컨텐츠도 움직여서 변경. 
 	elNav.addEventListener("click", function(e){
 		e.preventDefault();
 		var elClick= e.target;
@@ -17,36 +24,22 @@ window.onload=function(){
 			if(liList[i] === elClick){
 				elBoard.style.left = i * MOVE_LEFT + "%";
 			}
-			
 		}
-
 	});
 	
-	var xPosition;
-	var boolCheck;
-	var standard;
+	//보드를 터치해서 옮기면 움직이도록 하는 이벤트 리스너 세개. 
 	elBoard.addEventListener("touchstart", function(e){
 		e.preventDefault();
 		
 		style = elBoard.style.left;
 		console.log("test" + style);
-		standard = parseFloat(style);
-
-		
-		
-/*
-		standard = elBoard.style.left;
-		standard = parseFloat(standard) || 0;
-		console.log(standard);
-*/
-		
-		
+		standard = parseFloat(style);			
 		xPosition = e.touches[0].pageX;
-
+		console.log(e.touches[0]);
 		boolCheck = true;
 	});
 	
-	var width = window.innerWidth;	
+	
 	
 	elBoard.addEventListener("touchmove", function(e){
 
@@ -54,9 +47,7 @@ window.onload=function(){
 			return;
 
 		var move = e.touches[0].pageX;
-
 		var a = (standard + (move-xPosition)/width* MOVE_RIGHT) + "%";
-
 		elBoard.style.left = a;
 		
 	});
@@ -64,6 +55,8 @@ window.onload=function(){
 	elBoard.addEventListener("touchend", function(e){
 		boolCheck = false;
 		var leavePosition = e.changedTouches[0].pageX;
+		
+
 /*
 		if((leavePosition - xPosition) / width * MOVE_RIGHT >15){
 			elBoard.style.left = standard + 100 +"%";
@@ -89,7 +82,8 @@ window.onload=function(){
 		liList[a].className ="";
 
 	}
-	//console.log("tab  " + (tab+1));
+
+	//컨텐츠가 바뀔 때마다 위에 있는 탭의 색깔도 움직이게 
 	if(tab< 7 && tab>=0 ){
 			liList[tab].className="coloured";
 		
