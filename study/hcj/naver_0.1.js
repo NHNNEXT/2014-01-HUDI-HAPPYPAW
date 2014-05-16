@@ -1,3 +1,7 @@
+var DATA = {
+	TabCount : 7;
+}
+
 window.onload=function(){
 	var elNav = document.querySelector(".menu ul");
 	var attrData;
@@ -83,13 +87,13 @@ window.onload=function(){
 
 	}
 
-	//컨텐츠가 바뀔 때마다 위에 있는 탭의 색깔도 움직이게 
-	if(tab< 7 && tab>=0 ){
+		//컨텐츠가 바뀔 때마다 위에 있는 탭의 색깔도 움직이게 
+		if(tab< DATA.TabCount && tab>=0 ){
 			liList[tab].className="coloured";
-		
-	} else {
-		liList[6].className="coloured";
-	}
+			
+		} else {
+			liList[6].className="coloured";
+		}
 	
 	});
 

@@ -2,6 +2,7 @@ package model;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -21,6 +22,9 @@ public class DAO {
 	private String url = "jdbc:mysql://10.73.45.131/happypaw";
 	private String user = "dayoungles";
 	private String pw = "ekdudrmf2";
+//	private String url = "jdbc:mysql://127.0.0.1/mydb";
+//	private String user = "root";
+//	private String pw = "";
 	private Connection con;
 	static DAO nyam;
 
@@ -38,7 +42,7 @@ public class DAO {
 		}
 		System.out.println("driver loading success");
 		try {
-			con = DriverManager.getConnection(url, user, pw);
+			con = DriverManager.getConnection(url, user,pw);
 
 		} catch (SQLException e) {
 			System.err.println("connect fail:" + e.getMessage());
@@ -60,44 +64,42 @@ public class DAO {
 	 * @param day
 	 * @return
 	 */
-	private String makePeriod(String day){
+	private String makePeriod(String day, int year, int month){
 		Calendar cal = Calendar.getInstance();
-		int month = cal.get(cal.MONTH);
-		int year = cal.get(cal.YEAR);
-		int dayOfMonth = cal.getActualMaximum(cal.DAY_OF_MONTH);
+		
 		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
 		String datee = null;
-
+		
 		if(day.equals("first")){
 			cal.set(year, month, 1);
 			datee = date.format(cal.getTime());
 			datee += " 00:00:00";
-
-		} else if(day.equals("last")){
+			
+		}else {
+			cal.set(year, month, 1);
+			int dayOfMonth = cal.getActualMaximum(cal.DAY_OF_MONTH);
 			cal.set(year, month, dayOfMonth);
 			datee = date.format(cal.getTime());
 			datee += " 23:59:59";
-
 		}
 
 		return datee;
 	}
 	
-	public ArrayList<StampHistory> selectMonthHistory(String users_id) {
+	public ArrayList<StampHistory> selectMonthHistory(String users_id, int year, int month) {
 
 		ArrayList<StampHistory> stampList = new ArrayList<StampHistory>();
-		String firstDay = makePeriod("first");
-		String lastDay = makePeriod("last");
+		String firstDay = makePeriod("first", year, month);
+		String lastDay = makePeriod("last", year, month);
 		String query = "select * from stamp_history where users_id = ? and regdate > ? and regdate < ?";
 
 		try {
-			PreparedStatement selHistory;
-			ResultSet rs;
-			selHistory = con.prepareStatement(query);
+			PreparedStatement selHistory= con.prepareStatement(query);;
 			selHistory.setString(1, users_id);
 			selHistory.setString(2, firstDay);
 			selHistory.setString(3, lastDay);
-			rs = selHistory.executeQuery();
+			
+			ResultSet rs = selHistory.executeQuery();
 			while (rs.next()) {
 				String id = rs.getString("users_id");
 				String regdate = rs.getString("regDate");
@@ -219,12 +221,19 @@ public class DAO {
 
 	/**
 	 * 관리자 웹페이지의 전체 학생 식사기록을 확인하는 함수. 
+	 * @param month 
+	 * @param year 
 	 * 
 	 * @return ArrayList<NyamList>
 	 */
-	public ArrayList<NyamList> adminNyamHistory() {
+	public ArrayList<NyamList> adminNyamHistory(int year, int month) {
 		String userQuery = "SELECT * FROM users";
 		ArrayList<NyamList> nyamList = new ArrayList<NyamList>();
+		
+		//일단 올해, 이번달 숫자로 정해놓음. 바꿔야된다.
+//		Calendar cal = Calendar.getInstance();
+//		int year = cal.YEAR;
+//		int month = cal.MONTH;
 		try {
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(userQuery);
@@ -232,7 +241,7 @@ public class DAO {
 
 				String users_id = rs.getString("id");
 				String users_name = rs.getString("name");
-				int sum = selectMonthHistory(users_id).size();
+				int sum = selectMonthHistory(users_id, year, month).size(); 
 				nyamList.add(new NyamList(users_id, users_name, sum));
 			}
 			rs.close();
@@ -280,7 +289,9 @@ public class DAO {
 	public void exportExcel(String path) {
 		System.out.println("exportExcel");
 		MakeExcel me = new MakeExcel();
-		HSSFWorkbook book = me.fillExcel(adminNyamHistory());
+		int year = 2013;//임의 지정 수정해야합니다. 
+		int month = 11;
+		HSSFWorkbook book = me.fillExcel(adminNyamHistory(year, month));
 		FileOutputStream fout = me.makeFile(path);
 		try {
 			book.write(fout);
@@ -400,10 +411,10 @@ public class DAO {
 		return hash;
 	}
 	
-	public DateInfo setDate(){
+	public DateInfo setDate(int year, int month){
 		Calendar cal = Calendar.getInstance();
-		int month = cal.get(Calendar.MONTH);//이번달 숫자-1을 찾아놓는다. 
-		int year = cal.get(Calendar.YEAR);
+		//int month = cal.get(Calendar.MONTH);//이번달 숫자-1을 찾아놓는다. 
+		//int year = cal.get(Calendar.YEAR); 
 		/* 		year = 2013;
 		 month= 11; */
 		cal.set(year, month, 1);
@@ -446,6 +457,36 @@ public class DAO {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public HashMap<String, ArrayList<String>> getHistory() {
+		Calendar cal = Calendar.getInstance();
+		
+		int presentMonth = cal.get(Calendar.MONTH);
+		int presentYear = cal.get(Calendar.YEAR);
+		
+		int initYear = 2013;
+		int initMonth = 2;//3월;
+		
+		HashMap<String, ArrayList<String>> history = new HashMap<String, ArrayList<String>> ();
+
+		for(int i = initYear; i <= presentYear; i++){
+			ArrayList<String> months = new ArrayList<String>();
+			if(i != presentYear){
+				for(int j = 0; j< 12; j++){
+					months.add(Integer.toString(j));
+				}
+			} else {
+				for(int j = 0; j<=presentMonth; j++){
+					months.add(Integer.toString(j));
+				}
+			}
+			
+			history.put(Integer.toString(i), months);
+		}
+		
+		return history;
+		
 	}
 	
 	

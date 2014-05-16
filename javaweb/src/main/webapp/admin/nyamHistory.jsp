@@ -54,6 +54,12 @@
 		</form>
 		
 </section>
+
+<section class="past">
+	<%
+		//여기에 지난달 목록도 볼 수 있도록 제공해야된당. 그런데 어떻게 해야할지 모르겠음.//연규어아리ㅓ아ㅣㄴ
+	%>
+</section>
 	<aside>
 		<div class="login_box">
 			<p>이름: 관리자</p>

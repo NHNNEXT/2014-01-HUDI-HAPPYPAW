@@ -18,6 +18,7 @@ import model.StampHistory;
 import model.User;
 import annotation.Controller;
 import annotation.RequestMapping;
+import annotation.RequestMapping.Method;
 
 @Controller
 public class NyamController {
@@ -29,30 +30,52 @@ public class NyamController {
 		if(id ==null || id==""){
 			return "redirect:/nyam/app/login";
 		}
-
+		
 		User user = db.getUser(id);
 		String name = user.getName();
 		request.setAttribute("session", id);
 		request.setAttribute("name", name);
 
-		ArrayList<StampHistory> stampList = db.selectMonthHistory(id);
-		HashMap<String, Integer> map = db.arrangeNyamHistory(stampList);
-		request.setAttribute("nyamPerDay", map);
+		
+		DateInfo info;
+		int month;
+		int year;
+		
+		if(request.getParameter("lastMonth") != null){
+			month =Integer.parseInt( request.getParameter("lastMonth"));
+			year = Integer.parseInt(request.getParameter("year"));
+			
+			if(month ==11)
+				year -= 1;
 
-		DateInfo info = db.setDate();
+		} else {
+			Calendar cal = Calendar.getInstance();
+			month = cal.get(Calendar.MONTH);//이번달 숫자-1을 찾아놓는다. 
+			year = cal.get(Calendar.YEAR);
+		}
+		
+		info = db.setDate(year, month);
+		
+		ArrayList<StampHistory> stampList = db.selectMonthHistory(id, year, month);
+		HashMap<String, Integer> map = db.arrangeNyamHistory(stampList);
+		
+		request.setAttribute("nyamPerDay", map);
 		request.setAttribute("dayOfMonth", info.getDayOfMonth());
 		request.setAttribute("month",info.getMonth());
 		request.setAttribute("week",info.getWeek());
 		request.setAttribute("year",info.getYear());
 		request.setAttribute("yoil",info.getYoil());
-
+		
 		return "nyamHistory.jsp";
 	}
 	
-	@RequestMapping("/admin/nyamHistory")
+	@RequestMapping(value = "/admin/nyamHistory", method= Method.GET)
 	public String showNyamList(HttpServletRequest request){
 		DAO dao = DAO.getInstance();
-		ArrayList<NyamList> nyamList = dao.adminNyamHistory();
+		int year = Integer.parseInt(request.getParameter("year"));
+		int month = Integer.parseInt(request.getParameter("month"));
+		
+		ArrayList<NyamList> nyamList = dao.adminNyamHistory(year, month-1);
 		request.setAttribute("nyamList", nyamList);
 		return "/admin/nyamHistory.jsp";
 	}
@@ -104,11 +127,14 @@ public class NyamController {
 		request.setAttribute("id", users_id);
 		request.setAttribute("name", name);
 		
-		ArrayList<StampHistory> stampList =  dao.selectMonthHistory(users_id);
+		ArrayList<StampHistory> stampList =  dao.selectMonthHistory(users_id,2014, 11);//임의의 숫자를 넣었습니다. 고쳐야됨. 
 		HashMap<String, Integer> map = dao.arrangeNyamHistory(stampList);
 		request.setAttribute("nyamPerDay", map);
 		
-		DateInfo info = dao.setDate();
+		Calendar cal = Calendar.getInstance();
+		int month = cal.get(Calendar.MONTH);
+		int year = cal.YEAR;
+		DateInfo info = dao.setDate(year, month);
 		request.setAttribute("dayOfMonth", info.getDayOfMonth());
 		request.setAttribute("month",info.getMonth());
 		request.setAttribute("week",info.getWeek());
@@ -131,7 +157,13 @@ public class NyamController {
 		return "/admin/eachRestaurant.jsp";
 	}
 	
-	
+	@RequestMapping("/admin/historyList")
+	public String showHistoryList(HttpServletRequest request){
+		DAO dao = DAO.getInstance();
+		HashMap<String, ArrayList<String>> history = dao.getHistory();
+		request.setAttribute("history", history);
+		return "/admin/historyList.jsp";
+	}
 	
 	
 	

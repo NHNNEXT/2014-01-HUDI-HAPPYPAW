@@ -1,0 +1,87 @@
+<html>
+<style>
+	.box{
+		border: 1px solid black;
+		
+	}
+	
+	ul.hidden{
+		display: none;
+	}
+	
+	ul.show {
+		display: block;
+	}
+	
+</style>
+
+<body>
+	<div class="box">
+		<div class = "year">
+			2013 
+			<ul class = "months hidden">
+				
+				<li class="month">1</li>
+				<li class="month">2</li>
+				<li class="month">3</li>
+				<li class="month">4</li>
+				<li class="month">5</li>
+				<li class="month">6</li>
+				<li class="month">7</li>
+				<li class="month">8</li>
+				<li class="month">9</li>
+				<li class="month">10</li>
+				<li class="month">11</li>
+				<li class="month">12</li>
+
+			</ul>
+		</div>
+		<div class="year">
+			2014 
+			<ul class = "months hidden">
+				
+				<li class="month">1</li>
+				<li class="month">2</li>
+				<li class="month">3</li>
+				<li class="month">4</li>
+				<li class="month">5</li>
+				<li class="month">6</li>
+				<li class="month">7</li>
+				<li class="month">8</li>
+				<li class="month">9</li>
+				<li class="month">10</li>
+				<li class="month">11</li>
+				<li class="month">12</li>
+
+			</ul>
+		</div>
+	</div>
+<script>
+	var elList = document.querySelector(".box");
+	var year = document.querySelectorAll(".year");
+
+	
+	elList.addEventListener("click", function(e){
+		var elTarget = e.target;
+		console.log("target:"+e.target);
+		for(var a = 0; a < year.length; a++){
+			console.log("year" + year[a]);
+			console.log(elTarget);
+			if(year[a] === elTarget){
+
+				var ulHidden = elTarget.firstElementChild;
+				console.log("className:" + ulHidden.className);
+				ulHidden.className = ulHidden.className == "months show" ? "months hidden" : "months show";
+			}
+
+				
+		}
+	});
+	
+
+	
+
+	
+</script>
+</body>
+</html>

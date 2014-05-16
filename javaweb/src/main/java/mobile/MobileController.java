@@ -41,7 +41,7 @@ public class MobileController {
 			String date = data[0];
 			int restaurant_no = Integer.parseInt(data[1]);
 			boolean is_insert = dao.insertHistory(users_id, date, restaurant_no);
-			System.out.println(dao.selectMonthHistory(users_id));
+			System.out.println(dao.selectMonthHistory(users_id, 2014, 11));//날짜 설정하는거;;;
 			return "text:" + is_insert;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -60,7 +60,7 @@ public class MobileController {
 			return "text:false";
 		}
 		//아이디가 있을 때는 월별 히스토리를 검색해서 결과를 보여준다. 
-		ArrayList<StampHistory> stampList = db.selectMonthHistory(id);
+		ArrayList<StampHistory> stampList = db.selectMonthHistory(id, 2014, 11);
 		request.setAttribute("record", stampList);
 		
 		//json으로 만든걸 쉼표로 모두 연결?

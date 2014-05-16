@@ -73,9 +73,10 @@ $(document).ready(function() {
 	<p class="logo">넥스트인의 정식</p>
 	</header> <article>
 	<div class="lastMonth">
-		<form action="/nyamHistory">
-			<a href="/nyam/nyamHistory">이전 달</a> <input type="hidden"
-				name="lastMonth" value="<%=month - 1%>" />
+		<form action="/nyam/nyamHistory" method="post">
+			<button>이전 달</button>
+			<input type="hidden" name="lastMonth" value="<%=month - 1%>" />
+			<input type="hidden" name="year" value="<%=year %>"/>
 		</form>
 	</div>
 	<div class="month"><%=year%>년
