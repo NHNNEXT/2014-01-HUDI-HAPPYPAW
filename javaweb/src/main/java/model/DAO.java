@@ -515,11 +515,12 @@ public class DAO {
 		return history;
 	}
 
-	public HashMap<String, Integer> rankingHistory(int year, int month) {
+	public ArrayList<HashMap<String, String>> rankingHistory(int year, int month) {
 		
-		String rankingQuery = "select users_id, count(*) as c from stamp_history where regdate > ? and regdate < ? group by users_id order by c desc";
-		HashMap<String, Integer> nyamRanking = new HashMap<String, Integer>();
+		String rankingQuery = "select s.users_id, users.name,  count(*) as c from stamp_history s "
+				+ "inner join users on s.users_id = users.id  where regdate > ? and regdate < ? group by users_id order by c desc";
 		
+		ArrayList<HashMap<String, String>> rankingList = new ArrayList<HashMap<String, String>>();
 		try {
 			PreparedStatement statement = con.prepareStatement(rankingQuery);
 			
@@ -531,10 +532,15 @@ public class DAO {
 			ResultSet rs = statement.executeQuery();
 			
 			while(rs.next()){
+				HashMap<String, String> nyamRanking = new HashMap<String, String>();
 				String id = rs.getString("users_id");
-				int nyamNum = rs.getInt("c");
-				logger.info(id + "  " + nyamNum);
-				nyamRanking.put(id, nyamNum);
+				String nyamNum = Integer.toString(rs.getInt("c"));
+				String name = rs.getString("name");
+				
+				nyamRanking.put("id", id );
+				nyamRanking.put("name", name);
+				nyamRanking.put("nyamNum", nyamNum);
+				rankingList.add(nyamRanking);
 			}
 			
 		} catch (SQLException e) {
@@ -542,7 +548,7 @@ public class DAO {
 			e.printStackTrace();
 		}
 		
-		return nyamRanking;
+		return rankingList;
 	}
 
 }

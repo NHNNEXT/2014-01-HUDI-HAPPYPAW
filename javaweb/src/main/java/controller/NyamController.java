@@ -198,7 +198,7 @@ public class NyamController {
 		int year = Integer.parseInt(request.getParameter("year"));
 		int month = Integer.parseInt(request.getParameter("month"));
 		
-		HashMap<String, Integer> nyamRanking= dao.rankingHistory(year, month-1);
+		ArrayList<HashMap<String, String>> nyamRanking= dao.rankingHistory(year, month-1);
 		
 		request.setAttribute("nyamRanking", nyamRanking);
 		logger.info(""+nyamRanking);
