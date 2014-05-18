@@ -14,6 +14,7 @@
 	.background_rank {
 		position: relative;
 		width: 100%;
+		z-index:-1;
 		1background: RGBA(180, 206, 85, 0.8);
 	}
 	.signs {
@@ -41,6 +42,38 @@
 		background: #2AAB67;
 		box-shadow: 0px 6px 0px #239459;
 		box-sizing: border-box;
+		
+	}
+	@-webkit-keyframes mineAnimation {
+		50% {
+			background:rgba(96, 239, 73, 1);
+		}
+	}
+	@keyframes mineAnimation {
+		50% {
+			background:rgba(96, 239, 73, 1);
+		}
+	}
+	@-ms-keyframes mineAnimation {
+		50% {
+			background:rgba(96, 239, 73, 1);
+		}
+	}
+	.sign.mine:before {
+		position:absolute;
+		content:"";
+		width: inherit;
+		height: inherit;
+		padding:15%;
+		background: rgba(246, 246, 163, 1);
+		border-radius:50%;
+		z-index: -1;
+		margin-left:-50%;
+		margin-top:-10%;
+		animation:mineAnimation 1s infinite;
+		-ms-animation:mineAnimation 1s infinite;
+		-webkit-animation:mineAnimation 1s infinite;
+				
 	}
 	.sign.group0.top1 {
 		background:#EFCC1F;
@@ -135,7 +168,7 @@
 		height: 100%;
 		top:0;
 /* 		z-index: 10; */
-	z-index: -1;
+		z-index: -2;
 	}
 	.circle {
 		border-radius: 50%;
@@ -157,18 +190,20 @@
 	.circle.vanila {
 		background: #E0DAC8;
 	}
+	.others {
+	}
 	.other {
 		position: absolute;
-		width: 200px;
+		width: 20%;
 	}
 	.other.group3 {
-		top:520px;
-		left:867px;
+		top:20%;
+		left:70%;
 	}
 	.other.group1 {
-		width: 80px;
-		top:107px;
-		left:506px;
+		width: 7%;
+		top:3%;
+		left:40%;
 	}
 	.other img {
 		width: 100%;

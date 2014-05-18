@@ -26,15 +26,22 @@ var user_data = {};
 
 <%
 ArrayList<HashMap<String, String>> nyamRanking = (ArrayList<HashMap<String, String>>)request.getAttribute("nyamRanking");
+String myId = (String)request.getAttribute("id");
+int myNum = 0;
 for(int i = 0; i < nyamRanking.size(); ++i) {
 	HashMap<String, String> user_info = nyamRanking.get(i);
 	String id = user_info.get("id");
 	String name = user_info.get("name");
 	String nyamNum = user_info.get("nyamNum");
+	
+	if(myId == id)
+		myNum = Integer.parseInt(nyamNum);
 %>
 user_data[<%=nyamNum%>] = user_data[<%=nyamNum%>] || [];
 user_data[<%=nyamNum%>].push({id:"<%=id%>", name:"<%=name%>", num:user_data[<%=nyamNum%>].length});
 <%}%>
+var myId = "${id}";
+var myNum = <%=myNum%>;
 </script>
 <script src="./js/ranking.js" type="text/javascript"></script>
 <%@include file="./foot.jsp"%>

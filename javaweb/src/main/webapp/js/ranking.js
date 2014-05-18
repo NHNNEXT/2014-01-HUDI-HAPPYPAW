@@ -1,11 +1,12 @@
 function initRankingData() {
-	var people ='<div class="people" data-num="{num}"><img src="./img/profile1.jpg" alt=""/><div class="desc">{name}</div></div>';
-	
+	var people ='<div class="people" data-num="{num}" data-id="{id}"><img src="./img/profile1.jpg" alt=""/><div class="desc">{name}</div></div>';
+
 	daylight.each(user_data, function(user, num) {
-		console.log(user);
 		var peoples = $('[data-count="'+num+'"] .peoples');
 		peoples.template(user, people);
 	});
+	$("body").scrollTop($('[data-id="'+myId+'"]').offset().top - 100);
+	$('[data-count="'+myNum+'"]').addClass("mine");
 }
 function initRankingSign() {
 	var data = [
@@ -15,6 +16,7 @@ function initRankingSign() {
 	,[855, 935] ,[1042, 958],[1213, 1113],[1229, 1310],[1136, 1479],[895, 1434],[747, 1226],[454, 1191],[178, 1222],[65, 1377]//20 ~ 29
 	,[263, 1465],[444, 1339],[678, 1372],[611, 1613],[770, 1761],[994, 1825],[1225, 1991],[1134, 2188],[869, 2206],[545, 2122]//10 ~ 19
 	,[498, 1860],[263, 1665],[74, 1900],[79, 2121],[120, 2349],[353, 2303],[509, 2250],[677, 2362],[366, 2470], [110, 2550]];//9 ~ 0
+	
 	var imgHeight = 1265 / 1757 * 4000;
 	for(var i = 0, length = data.length; i < length; i++) {
 		var num = 60- i;

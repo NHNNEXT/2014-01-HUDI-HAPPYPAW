@@ -31,6 +31,7 @@ public class NyamController {
 	public String showNyamHistory(HttpServletRequest request, HttpSession session) {
 		DAO db = DAO.getInstance();
 		String id =(String) session.getAttribute("users_id");
+		
 		if(id ==null || id==""){
 			return "redirect:/nyam/app/login";
 		}
@@ -226,7 +227,7 @@ public class NyamController {
 	}
 	
 	@RequestMapping(value = "/ranking", method= Method.GET)
-	public String showRanking(HttpServletRequest request){
+	public String showRanking(HttpServletRequest request, HttpSession session){
 		DAO dao = DAO.getInstance();
 		int year, month;
 		//original source
@@ -242,8 +243,10 @@ public class NyamController {
 		}
 		
 		ArrayList<HashMap<String, String>> nyamRanking= dao.rankingHistory(year, month-1);
+		String id =(String) session.getAttribute("users_id");
 		
 		request.setAttribute("nyamRanking", nyamRanking);
+		request.setAttribute("id", id);
 		
 		return "ranking.jsp";
 	}
