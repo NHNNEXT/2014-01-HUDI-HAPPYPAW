@@ -41,17 +41,30 @@ public class NyamController {
 		int month;
 		int year;
 		
-		if(request.getParameter("lastMonth") != null){
-			month =Integer.parseInt( request.getParameter("lastMonth"));
+		Calendar cal = Calendar.getInstance();
+		int currentMonth = cal.get(Calendar.MONTH);//이번달 숫자-1을 찾아놓는다. 
+		int currentYear = cal.get(Calendar.YEAR);
+		//이전 달 & 다음달 
+		if(request.getParameter("month") != null ){
+			month =Integer.parseInt( request.getParameter("month"));
 			year = Integer.parseInt(request.getParameter("year"));
 			
-			if(month ==11)
+			if(month < 0){
 				year -= 1;
+				month = 11;
+			} else if(month >11){
+				year +=1;
+				month = 0;
+			}
+			//다음달을 눌러도 현재 달 다음달로 가려고 하면 안되게 막아버림. 더 좋은 코드가 있을 듯. 연규느님.
+			if(month > currentMonth){
+				year = currentYear;
+				month = currentMonth;
+			}
+		}else {
 
-		} else {
-			Calendar cal = Calendar.getInstance();
-			month = cal.get(Calendar.MONTH);//이번달 숫자-1을 찾아놓는다. 
-			year = cal.get(Calendar.YEAR);
+			month = currentMonth; 
+			year = currentYear;
 		}
 		
 		info = db.setDate(year, month);

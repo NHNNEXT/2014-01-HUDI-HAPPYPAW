@@ -69,53 +69,65 @@ $(document).ready(function() {
 
 
 
-	<section> <header>
-	<p class="logo">넥스트인의 정식</p>
-	</header> <article>
-	<div class="lastMonth">
-		<form action="/nyam/nyamHistory" method="post">
-			<button>이전 달</button>
-			<input type="hidden" name="lastMonth" value="<%=month - 1%>" />
-			<input type="hidden" name="year" value="<%=year %>"/>
-		</form>
-	</div>
-	<div class="month"><%=year%>년
-		<%=month%>월
-	</div>
-	</article>
-	<table class="calendar">
-		<thead>
-			<tr id="record">
-				<th>SUN</th>
-				<th>MON</th>
-				<th>TUE</th>
-				<th>WED</th>
-				<th>THR</th>
-				<th>FRI</th>
-				<th>SAT</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr class="week">
-				<td><div class="day"></div>
-					<div class="stamp_area"></div></td>
-				<td><div class="day"></div>
-					<div class="stamp_area"></div></td>
-				<td><div class="day"></div>
-					<div class="stamp_area"></div></td>
-				<td><div class="day"></div>
-					<div class="stamp_area"></div></td>
-				<td><div class="day"></div>
-					<div class="stamp_area"></div></td>
-				<td><div class="day"></div>
-					<div class="stamp_area"></div></td>
-				<td><div class="day"></div>
-					<div class="stamp_area"></div></td>
-			</tr>
+	<section>
+		 <header>
+			<p class="logo">넥스트인의 정식</p>
+		</header> 
+		<article>
+	
+			<div class="month">
+				<%=year%>년
+				<%=month%>월
+			</div>
+			
 
-		</tbody>
-
-	</table>
+		</article>
+		<div class="calendarBox">
+				<div class="lastMonth arrow">
+					<a href="/nyam/nyamHistory?month=<%=month - 2%>&year=<%=year %>">
+						<img src = "./img/arrow.png" id = "leftArrow" class="arrow"/>
+					</a>
+				</div>
+			<table class="calendar">
+				<thead>
+					<tr id="record">
+						<th>SUN</th>
+						<th>MON</th>
+						<th>TUE</th>
+						<th>WED</th>
+						<th>THR</th>
+						<th>FRI</th>
+						<th>SAT</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="week">
+						<td><div class="day"></div>
+							<div class="stamp_area"></div></td>
+						<td><div class="day"></div>
+							<div class="stamp_area"></div></td>
+						<td><div class="day"></div>
+							<div class="stamp_area"></div></td>
+						<td><div class="day"></div>
+							<div class="stamp_area"></div></td>
+						<td><div class="day"></div>
+							<div class="stamp_area"></div></td>
+						<td><div class="day"></div>
+							<div class="stamp_area"></div></td>
+						<td><div class="day"></div>
+							<div class="stamp_area"></div></td>
+					</tr>
+		
+				</tbody>
+		
+			</table>
+			<div class="nextMonth arrow">
+				<a href="/nyam/nyamHistory?month=<%=month%>&year=<%=year %>">
+					<img src = "./img/arrow.png" id = "rightArrow" class="arrow"/>
+				</a>
+					
+			</div>
+		</div>
 	</section>
 	<aside>
 	<div class="login_box">

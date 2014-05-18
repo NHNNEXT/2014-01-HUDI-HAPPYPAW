@@ -80,12 +80,12 @@ public class MakeExcel {
 				HSSFCell cell = row.createCell(j);
 				cell.setCellValue(nyamArray.get(j));
 			}
-
 		}
 		
 		return excel;
 	}
-	
+
+	/*
 	public static void main(String[] args) {
 		DAO dao = DAO.getInstance();
 		System.out.println("exportExcel");
@@ -101,5 +101,6 @@ public class MakeExcel {
 			e.printStackTrace();
 		}
 	}
+	*/
 	
 }

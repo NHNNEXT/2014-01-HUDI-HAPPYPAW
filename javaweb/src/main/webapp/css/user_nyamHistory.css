@@ -16,6 +16,7 @@ table {
 	background-color: white;
 	border: 1px gray solid;
 	padding: 10px;
+	display: inline-block;
 }
 
 th {
@@ -59,7 +60,11 @@ p {
 	color: black;
 }
 
-
+div.calendarBox{
+	position:relative;
+	width: 800px;
+	margin: 0px auto;
+}
 
 div.stamp {
 	border-radius: 20px;
@@ -68,4 +73,23 @@ div.stamp {
 	margin: 1px;
 	background-color: #E97248;
 	display: inline-block;
+}
+
+img.arrow {
+	width: 50px;
+	
+}
+
+img#leftArrow{
+	/* filter:fliph(); */
+	-webkit-transform: scale(-1, 1);
+}
+
+div.arrow {
+	display:inline-block;
+	height:500px;
+	overflow:hidden;
+	top:225px;/*높이 자동으로 50%가 안되는 이유가 뭐징?*/
+	position:relative;
+	margin: 20px;
 }
