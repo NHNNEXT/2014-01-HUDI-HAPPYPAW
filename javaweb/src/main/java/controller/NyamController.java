@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import model.DAO;
 import model.DateInfo;
 import model.NyamList;
@@ -22,6 +25,7 @@ import annotation.RequestMapping.Method;
 
 @Controller
 public class NyamController {
+	private static Logger logger = LoggerFactory.getLogger(NyamController.class);
 	
 	@RequestMapping("/nyamHistory")
 	public String showNyamHistory(HttpServletRequest request, HttpSession session) {
@@ -171,13 +175,35 @@ public class NyamController {
 	}
 	
 	@RequestMapping("/admin/historyList")
-	public String showHistoryList(HttpServletRequest request){
+	public String showHistoryList(HttpServletRequest request, HttpSession session){
 		DAO dao = DAO.getInstance();
-		HashMap<String, ArrayList<String>> history = dao.getHistory();
+		
+		HashMap<String, ArrayList<String>> history = dao.getHistory("121001");
+		
 		request.setAttribute("history", history);
 		return "/admin/historyList.jsp";
 	}
 	
+	@RequestMapping("/historyPeriod")
+	public String rankingHistoryPeriod(HttpServletRequest request){
+		DAO dao = DAO.getInstance();
+		HashMap<String, ArrayList<String>> history = dao.getHistory("121001");
+		request.setAttribute("history", history);
+		return "historyPeriod.jsp";
+	}
+	
+	@RequestMapping(value = "/rankingHistory", method= Method.GET)
+	public String showRankingHistory(HttpServletRequest request){
+		DAO dao = DAO.getInstance();
+		int year = Integer.parseInt(request.getParameter("year"));
+		int month = Integer.parseInt(request.getParameter("month"));
+		
+		HashMap<String, Integer> nyamRanking= dao.rankingHistory(year, month-1);
+		
+		request.setAttribute("nyamRanking", nyamRanking);
+		logger.info(""+nyamRanking);
+		return "rankingHistory.jsp";
+	}
 	
 	
 	

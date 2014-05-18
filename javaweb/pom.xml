@@ -34,6 +34,14 @@
 			<version>3.7</version>
 		</dependency>
 
-	</dependencies>
+
+
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>1.0.7</version>
+			</dependency>
+		</dependencies>
+
 
 </project>

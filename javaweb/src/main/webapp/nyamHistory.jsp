@@ -11,55 +11,57 @@
 <link rel="stylesheet" type="text/css" href="./css/user_nyamHistory.css">
 <script src="./js/daylight.js"></script>
 <script>
-<%HashMap<String, Integer> map = (HashMap<String, Integer>) request
-		.getAttribute("nyamPerDay");
-int year = (Integer)request.getAttribute("year");
-int month = (Integer)request.getAttribute("month") + 1;
-int dayOfMonth = (Integer)request.getAttribute("dayOfMonth");
-int yoil = (Integer)request.getAttribute("yoil");
-int week = (Integer)request.getAttribute("week");
-int day = 1;%>
-var yoil = <%=yoil%>;
-console.log(yoil);
-var day = 1;
-var dayOfMonth = <%=dayOfMonth%>
-var week = <%=week%>
-$(document).ready(function() {
-	var stamp = {"-1": 0
-	<%for(String date : map.keySet()) {
-			out.println(","+date+" : "+map.get(date));
-	}%>};
+	<%
 	
-	var trWeek = $(".week");
-	for(var i = 1; i < week ; i++){
-		trWeek.after(trWeek.html());
-	}
-	
-	$(".calendar td").each(function(td, index) {
-		if(index +1 < yoil){
-			return;
-		}else if(day > dayOfMonth){
-			return;	
-		}else{
-			
-			$(this).find(".day").html(day);
-			
-			var stamp_print = $(".stamp");
-			if(day in stamp){
-				var stamp_num = stamp[day];
-				for(var i =0; i<stamp_num;i++){
-					$(this).find(".stamp_area").append('<div class="stamp"></div>');
-					console.log("test");
-				}
-			}
-			++day;
+	HashMap<String, Integer> map = (HashMap<String, Integer>) request
+			.getAttribute("nyamPerDay");
+	int year = (Integer)request.getAttribute("year");
+	int month = (Integer)request.getAttribute("month") + 1;
+	int dayOfMonth = (Integer)request.getAttribute("dayOfMonth");
+	int yoil = (Integer)request.getAttribute("yoil");
+	int week = (Integer)request.getAttribute("week");
+	int day = 1;%>
+	var yoil = <%=yoil%>;
+	console.log(yoil);
+	var day = 1;
+	var dayOfMonth = <%=dayOfMonth%>
+	var week = <%=week%>
+	$(document).ready(function() {
+		var stamp = {"-1": 0
+		<%for(String date : map.keySet()) {
+				out.println(","+date+" : "+map.get(date));
+		}%>};
+		
+		var trWeek = $(".week");
+		for(var i = 1; i < week ; i++){
+			trWeek.after(trWeek.html());
 		}
+		
+		$(".calendar td").each(function(td, index) {
+			if(index +1 < yoil){
+				return;
+			}else if(day > dayOfMonth){
+				return;	
+			}else{
+				
+				$(this).find(".day").html(day);
+				
+				var stamp_print = $(".stamp");
+				if(day in stamp){
+					var stamp_num = stamp[day];
+					for(var i =0; i<stamp_num;i++){
+						$(this).find(".stamp_area").append('<div class="stamp"></div>');
+						console.log("test");
+					}
+				}
+				++day;
+			}
+		});
+	
+		
+		
+		
 	});
-
-	
-	
-	
-});
 </script>
 
 </head>
