@@ -60,7 +60,7 @@ public class MobileController {
 			return "text:false";
 		}
 		//아이디가 있을 때는 월별 히스토리를 검색해서 결과를 보여준다. 
-		ArrayList<StampHistory> stampList = db.selectMonthHistory(id, 2014, 11);
+		ArrayList<StampHistory> stampList = db.selectMonthHistory(id);
 		request.setAttribute("record", stampList);
 		
 		//json으로 만든걸 쉼표로 모두 연결?

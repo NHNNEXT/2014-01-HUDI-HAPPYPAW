@@ -88,7 +88,12 @@ public class DAO {
 
 		return datee;
 	}
-
+	public ArrayList<StampHistory> selectMonthHistory(String users_id) {
+		Calendar calendar = Calendar.getInstance();
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH);
+		return this.selectMonthHistory(users_id, year, month);
+	}
 	public ArrayList<StampHistory> selectMonthHistory(String users_id,
 			int year, int month) {
 
