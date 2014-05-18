@@ -5,7 +5,7 @@ function initRankingData() {
 		var peoples = $('[data-count="'+num+'"] .peoples');
 		peoples.template(user, people);
 	});
-	$("body").scrollTop($('[data-id="'+myId+'"]').offset().top - 100);
+	$("body").scrollTop($('[data-count="'+myNum+'"]').offset().top - 100);
 	$('[data-count="'+myNum+'"]').addClass("mine");
 }
 function initRankingSign() {
