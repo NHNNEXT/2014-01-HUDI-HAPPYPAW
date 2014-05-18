@@ -356,6 +356,8 @@ public class DAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			// 고치기 바람
 		}
 
 		return;
@@ -387,6 +389,8 @@ public class DAO {
 			pst.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			// 고치기 바람
 		}
 		return hash;
 	}
@@ -462,6 +466,8 @@ public class DAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			// 고치기 바람
 		}
 		return null;
 	}
@@ -476,10 +482,10 @@ public class DAO {
 
 		int presentMonth = cal.get(Calendar.MONTH);
 		int presentYear = cal.get(Calendar.YEAR);
-		
-		int initYear = Integer.parseInt(("20"+ id.substring(0, 2)));
+
+		int initYear = Integer.parseInt(("20" + id.substring(0, 2)));
 		int initMonth = 2;
-		
+
 		if (id.startsWith("11")) {// 아이디가 관리자라면 줄 조건. 관리자 아이디를 따로 만들어야 할 듯.
 			initYear = 2013;
 		}
@@ -488,20 +494,21 @@ public class DAO {
 
 		for (int i = initYear; i <= presentYear; i++) {
 			ArrayList<String> months = new ArrayList<String>();
-			//여기 코드 리뷰 해줘야 할 듯. 연규느님 . 
-			
-			if (i == initYear){//첫 해일 경우 시작을 3월부터 하도록 
-				if(i == presentYear){// 첫 해인데, 그 해가 올해일 경우. 올해의 이번달까지만 보여줘야 해서. 
-					for (int j = initMonth; j <= presentMonth; j++){
+			// 여기 코드 리뷰 해줘야 할 듯. 연규느님 .
+
+			if (i == initYear) {// 첫 해일 경우 시작을 3월부터 하도록
+				if (i == presentYear) {// 첫 해인데, 그 해가 올해일 경우. 올해의 이번달까지만 보여줘야
+										// 해서.
+					for (int j = initMonth; j <= presentMonth; j++) {
 						months.add(Integer.toString(j));
-					}		
+					}
 				} else {
-					for (int j = initMonth; j < 12; j++){
+					for (int j = initMonth; j < 12; j++) {
 						months.add(Integer.toString(j));
-					}	
+					}
 				}
-			} else if(i == presentYear){
-				for (int j = initMonth; j <= presentMonth; j++){
+			} else if (i == presentYear) {
+				for (int j = initMonth; j <= presentMonth; j++) {
 					months.add(Integer.toString(j));
 				}
 			} else {
@@ -516,39 +523,55 @@ public class DAO {
 	}
 
 	public ArrayList<HashMap<String, String>> rankingHistory(int year, int month) {
-		
-		String rankingQuery = "select s.users_id, users.name,  count(*) as c from stamp_history s "
-				+ "inner join users on s.users_id = users.id  where regdate > ? and regdate < ? group by users_id order by c desc";
-		
+		// original source
+		// String rankingQuery =
+		// "select s.users_id, users.name,  count(*) as c from stamp_history s "
+		// +
+		// "inner join users on s.users_id = users.id  where regdate > ? and regdate < ? group by users_id order by c desc";
+
+		String rankingQuery = "SELECT user.id, user.name, count(history.regdate) as c FROM users user left join stamp_history history"
+				+ " on history.regdate > ? and history.regdate <? and user.id = history.users_id group by user.id order by c desc";
 		ArrayList<HashMap<String, String>> rankingList = new ArrayList<HashMap<String, String>>();
 		try {
 			PreparedStatement statement = con.prepareStatement(rankingQuery);
-			
+
 			String firstDay = makePeriod("first", year, month);
 			String lastDay = makePeriod("last", year, month);
 			statement.setString(1, firstDay);
 			statement.setString(2, lastDay);
-			
+
 			ResultSet rs = statement.executeQuery();
-			
-			while(rs.next()){
+
+			while (rs.next()) {
 				HashMap<String, String> nyamRanking = new HashMap<String, String>();
-				String id = rs.getString("users_id");
+				String id = rs.getString("id");
 				String nyamNum = Integer.toString(rs.getInt("c"));
 				String name = rs.getString("name");
-				
-				nyamRanking.put("id", id );
+
+				nyamRanking.put("id", id);
 				nyamRanking.put("name", name);
 				nyamRanking.put("nyamNum", nyamNum);
 				rankingList.add(nyamRanking);
 			}
+			// 연규 수정
+			rs.close();
+			statement.close();
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return rankingList;
+	}
+
+	public void close() {
+		try {
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

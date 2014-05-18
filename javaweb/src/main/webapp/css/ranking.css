@@ -7,10 +7,9 @@
 	.background {
 		display: inline-block;
 		position: relative;
-		margin:0;
+		margin:10px;
 		padding:0;
 /* 		top:100px; */
-		width: 100%;
 	}
 	.background_rank {
 		position: relative;

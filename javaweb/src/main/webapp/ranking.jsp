@@ -5,7 +5,7 @@
 
 <link href="./css/ranking.css" rel="stylesheet"/>
 <div class="background">
-	<img src="rank.png" class="background_rank"/>
+	<img src="./img/rank.png" class="background_rank"/>
 	<div class="signs">
 		<div class="sign hide {class}" style="left:{x}%; top:{y}%;" data-count="{num}">{num}<div class="peoples"></div></div>
 	</div>
@@ -21,6 +21,20 @@
 <div class="circles">
 	<div class="circle {class}" style="left:{x}%; top:{y}px;" data-style="left:{x}%; top:{y}px;" data-speed="{speed}"></div>
 </div>
+<script>
+var user_data = {};
 
+<%
+ArrayList<HashMap<String, String>> nyamRanking = (ArrayList<HashMap<String, String>>)request.getAttribute("nyamRanking");
+for(int i = 0; i < nyamRanking.size(); ++i) {
+	HashMap<String, String> user_info = nyamRanking.get(i);
+	String id = user_info.get("id");
+	String name = user_info.get("name");
+	String nyamNum = user_info.get("nyamNum");
+%>
+user_data[<%=nyamNum%>] = user_data[<%=nyamNum%>] || [];
+user_data[<%=nyamNum%>].push({id:"<%=id%>", name:"<%=name%>", num:user_data[<%=nyamNum%>].length});
+<%}%>
+</script>
 <script src="./js/ranking.js" type="text/javascript"></script>
 <%@include file="./foot.jsp"%>

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionContext;
 
+import model.DAO;
 import annotation.Controller;
 import annotation.RequestMapping;
 
@@ -131,4 +132,10 @@ public class Core extends HttpServlet {
 
 	}
 
+	
+	@Override	
+	public void destroy(){
+		System.out.println("DESTROY");
+		DAO.getInstance().close();
+	 }
 }

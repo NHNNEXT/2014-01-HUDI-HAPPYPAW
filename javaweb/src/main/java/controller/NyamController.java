@@ -89,9 +89,19 @@ public class NyamController {
 	@RequestMapping(value = "/admin/nyamHistory", method= Method.GET)
 	public String showNyamList(HttpServletRequest request){
 		DAO dao = DAO.getInstance();
-		int year = Integer.parseInt(request.getParameter("year"));
-		int month = Integer.parseInt(request.getParameter("month"));
+		int year, month;
 		
+		//original source
+		//year = Integer.parseInt(request.getParameter("year"));
+		//month = Integer.parseInt(request.getParameter("month"));
+		try {
+			year = Integer.parseInt(request.getParameter("year"));
+			month = Integer.parseInt(request.getParameter("month"));
+		} catch (Exception e) {
+			Calendar calendar = Calendar.getInstance();
+			year = calendar.get(Calendar.YEAR);
+			month = calendar.get(Calendar.MONTH) + 1;
+		}
 		ArrayList<NyamList> nyamList = dao.adminNyamHistory(year, month-1);
 		request.setAttribute("nyamList", nyamList);
 		return "/admin/nyamHistory.jsp";
@@ -195,8 +205,18 @@ public class NyamController {
 	@RequestMapping(value = "/rankingHistory", method= Method.GET)
 	public String showRankingHistory(HttpServletRequest request){
 		DAO dao = DAO.getInstance();
-		int year = Integer.parseInt(request.getParameter("year"));
-		int month = Integer.parseInt(request.getParameter("month"));
+		int year, month;
+		//original source
+		//year = Integer.parseInt(request.getParameter("year"));
+		//month = Integer.parseInt(request.getParameter("month"));
+		try {
+			year = Integer.parseInt(request.getParameter("year"));
+			month = Integer.parseInt(request.getParameter("month"));
+		} catch (Exception e) {
+			Calendar calendar = Calendar.getInstance();
+			year = calendar.get(Calendar.YEAR);
+			month = calendar.get(Calendar.MONTH) + 1;
+		}
 		
 		ArrayList<HashMap<String, String>> nyamRanking= dao.rankingHistory(year, month-1);
 		
@@ -205,10 +225,28 @@ public class NyamController {
 		return "rankingHistory.jsp";
 	}
 	
-	
-	
-	
-	
+	@RequestMapping(value = "/ranking", method= Method.GET)
+	public String showRanking(HttpServletRequest request){
+		DAO dao = DAO.getInstance();
+		int year, month;
+		//original source
+		//year = Integer.parseInt(request.getParameter("year"));
+		//month = Integer.parseInt(request.getParameter("month"));
+		try {
+			year = Integer.parseInt(request.getParameter("year"));
+			month = Integer.parseInt(request.getParameter("month"));
+		} catch (Exception e) {
+			Calendar calendar = Calendar.getInstance();
+			year = calendar.get(Calendar.YEAR);
+			month = calendar.get(Calendar.MONTH) + 1;
+		}
+		
+		ArrayList<HashMap<String, String>> nyamRanking= dao.rankingHistory(year, month-1);
+		
+		request.setAttribute("nyamRanking", nyamRanking);
+		
+		return "ranking.jsp";
+	}
 	
 	
 	
