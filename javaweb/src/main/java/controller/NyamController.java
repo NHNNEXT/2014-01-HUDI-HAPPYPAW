@@ -31,6 +31,8 @@ public class NyamController {
 	@RequestMapping("/nyamHistory")
 	public String showNyamHistory(HttpServletRequest request, HttpSession session) {
 		DAO db = DAO.getInstance();
+		
+		//로그인 유무 확인
 		String id =(String) session.getAttribute("users_id");
 		
 		if(id ==null || id==""){
@@ -233,9 +235,13 @@ public class NyamController {
 	public String showRanking(HttpServletRequest request, HttpSession session) throws SQLException{
 		DAO dao = DAO.getInstance();
 		int year, month;
-		//original source
-		//year = Integer.parseInt(request.getParameter("year"));
-		//month = Integer.parseInt(request.getParameter("month"));
+		//로그인 유무 확인
+		String id =(String) session.getAttribute("users_id");
+		
+		if(id ==null || id==""){
+			return "redirect:/nyam/app/login";
+		}
+		
 		try {
 			year = Integer.parseInt(request.getParameter("year"));
 			month = Integer.parseInt(request.getParameter("month"));
@@ -246,7 +252,6 @@ public class NyamController {
 		}
 		
 		ArrayList<HashMap<String, String>> nyamRanking= dao.rankingHistory(year, month-1);
-		String id =(String) session.getAttribute("users_id");
 		
 		request.setAttribute("nyamRanking", nyamRanking);
 		request.setAttribute("id", id);

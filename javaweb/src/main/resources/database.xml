@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<properties>
+   	<property key="url" value="jdbc:mysql://10.73.45.131/happypaw"/>
+   	<property key="id" value="abc"/>
+   	<property key="pwd" value="password"/>
+</properties>
