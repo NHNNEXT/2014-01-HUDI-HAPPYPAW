@@ -1,5 +1,6 @@
 package controller;
 
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -127,7 +128,7 @@ public class NyamController {
 	}
 	
 	@RequestMapping("/admin/manageRest")
-	public String manageRest(HttpServletRequest request){
+	public String manageRest(HttpServletRequest request) throws SQLException{
 		DAO dao = DAO.getInstance();
 		ArrayList<Restaurant> restList = dao.manageRestaurant();
 		request.setAttribute("restList", restList);
@@ -138,7 +139,7 @@ public class NyamController {
 	}
 	
 	@RequestMapping("/admin/renewQr")
-	public String renewQr(HttpServletRequest request){
+	public String renewQr(HttpServletRequest request) throws SQLException{
 		DAO dao = DAO.getInstance();
 		String no = request.getParameter("restaurantNo");
  		dao.renewQrcode(no);
@@ -173,7 +174,7 @@ public class NyamController {
 	}
 	
 	@RequestMapping("/admin/eachRestaurant")
-	public String checkRestaurant(HttpServletRequest request){
+	public String checkRestaurant(HttpServletRequest request) throws SQLException{
 		DAO dao = DAO.getInstance();
 		String id = request.getParameter("restaurantId");
 		Restaurant rest = dao.getRestaurant(id);
@@ -185,26 +186,26 @@ public class NyamController {
 		return "/admin/eachRestaurant.jsp";
 	}
 	
-	@RequestMapping("/admin/historyList")
+	@RequestMapping("/admin/historyList")//으악........
 	public String showHistoryList(HttpServletRequest request, HttpSession session){
 		DAO dao = DAO.getInstance();
-		
-		HashMap<String, ArrayList<String>> history = dao.getHistory("121001");
-		
+		String id = (String) session.getAttribute("users_id");
+		ArrayList<HashMap<String, Object>> history = dao.getHistory(id); 
 		request.setAttribute("history", history);
 		return "/admin/historyList.jsp";
 	}
 	
 	@RequestMapping("/historyPeriod")
-	public String rankingHistoryPeriod(HttpServletRequest request){
+	public String rankingHistoryPeriod(HttpServletRequest request, HttpSession session){
 		DAO dao = DAO.getInstance();
-		HashMap<String, ArrayList<String>> history = dao.getHistory("121001");
+		String id = (String) session.getAttribute("users_id");
+		ArrayList<HashMap<String, Object>> history = dao.getHistory(id);
 		request.setAttribute("history", history);
 		return "historyPeriod.jsp";
 	}
 	
 	@RequestMapping(value = "/rankingHistory", method= Method.GET)
-	public String showRankingHistory(HttpServletRequest request){
+	public String showRankingHistory(HttpServletRequest request) throws SQLException{
 		DAO dao = DAO.getInstance();
 		int year, month;
 		//original source
@@ -216,18 +217,20 @@ public class NyamController {
 		} catch (Exception e) {
 			Calendar calendar = Calendar.getInstance();
 			year = calendar.get(Calendar.YEAR);
-			month = calendar.get(Calendar.MONTH) + 1;
+			month = calendar.get(Calendar.MONTH);
 		}
 		
-		ArrayList<HashMap<String, String>> nyamRanking= dao.rankingHistory(year, month-1);
+		ArrayList<HashMap<String, String>> nyamRanking= dao.rankingHistory(year, month);//서버단에서는 month -1안하고 전부다 처리함. 최연규 때문에 에러남. ㅋㅋ
 		
 		request.setAttribute("nyamRanking", nyamRanking);
+		request.setAttribute("year", year);
+		request.setAttribute("month", month);
 		logger.info(""+nyamRanking);
 		return "rankingHistory.jsp";
 	}
 	
 	@RequestMapping(value = "/ranking", method= Method.GET)
-	public String showRanking(HttpServletRequest request, HttpSession session){
+	public String showRanking(HttpServletRequest request, HttpSession session) throws SQLException{
 		DAO dao = DAO.getInstance();
 		int year, month;
 		//original source
@@ -251,9 +254,39 @@ public class NyamController {
 		return "ranking.jsp";
 	}
 	
+	@RequestMapping("/restaurantList")
+	public String restaurantList(HttpServletRequest request) throws SQLException{
+		DAO dao = DAO.getInstance();
+		ArrayList<Restaurant> restList = dao.manageRestaurant();
+		request.setAttribute("restList", restList);
+		return "restaurantList.jsp";
+	}
 	
-	
-	
+	@RequestMapping("/individual")
+	public String checkUserIndividual(HttpServletRequest request){
+		DAO dao = DAO.getInstance();
+		String users_id = request.getParameter("studentId");
+		
+		User user = dao.getUser(users_id);
+		String name = user.getName();
+		request.setAttribute("id", users_id);
+		request.setAttribute("name", name);
+		
+		int year= Integer.parseInt(request.getParameter("year"));
+		int month= Integer.parseInt(request.getParameter("month"));
+		ArrayList<StampHistory> stampList =  dao.selectMonthHistory(users_id,year, month);
+		HashMap<String, Integer> map = dao.arrangeNyamHistory(stampList);
+		request.setAttribute("nyamPerDay", map);
+		
+		DateInfo info = dao.setDate(year, month);
+		request.setAttribute("dayOfMonth", info.getDayOfMonth());
+		request.setAttribute("month",info.getMonth());
+		request.setAttribute("week",info.getWeek());
+		request.setAttribute("year",info.getYear());
+		request.setAttribute("yoil",info.getYoil());
+		logger.info(map.toString());
+		return "individual.jsp";
+	}
 	
 	
 	

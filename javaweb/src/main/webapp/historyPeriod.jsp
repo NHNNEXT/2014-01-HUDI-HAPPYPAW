@@ -19,46 +19,35 @@
 	</header>
 
 	<div class="list">
-		<%
-			HashMap<String, ArrayList<String>> map = (HashMap<String, ArrayList<String>>) request.getAttribute("history");
+<% 
+		ArrayList<HashMap<String, Object>> historyPeriod = (ArrayList<HashMap<String, Object>>) request.getAttribute("history");
 			 	
-				for(String key : map.keySet()){
+				
+			for(int i = 0; i < historyPeriod.size(); i++){
+				int year = (Integer)historyPeriod.get(i).get("year");
+				ArrayList<String> arrayMonth = (ArrayList<String>)historyPeriod.get(i).get("month");
+				
 		%>
-		<p class="year"><%=key%></p>
+		<p class="year"><%=year%></p>
 		<ul class="months hidden">
 			<%
-				for(int i =0; i<map.get(key).size(); i++){
-								int month = Integer.parseInt(map.get(key).get(i)) + 1;
+					for(int j = 0; j < arrayMonth.size(); j++){
+						int month = Integer.parseInt(arrayMonth.get(j));
 			%>
-			<li class="month"><a href="/nyam/rankingHistory?year=<%=key%>&month=<%=month%>"><%=month%> 월</a></li>
-			<%
-				}%>
-		</ul>
-				<% 
-							}
-			%>
+			<li class="month"><a href="/nyam/rankingHistory?year=<%=year%>&month=<%=month%>"><%=month+1%> 월</a></li>
+				<%
+					}
+				%>
+		</ul> 
+			<% 
+				}
+			%> 
 		
-	</div>
+	
 	</div>
 	</section>
 
-	<aside>
-	<div class="login_box">
-		<p>이름: 관리자</p>
-		<p>
-			<a href="./logout">logout</a>
-		</p>
-	</div>
-	<div class="menu">
-		<ul class="menu_ul">
-			<li><a href="/nyam/admin/nyamHistory">메인</a></li>
-			<li><a href="/nyam/admin/manageRest">지정식당 관리</a></li>
-			<li><a href="/nyam/admin/nyamHistory">전체 학생 이용 기록</a></li>
-			<li><a href="/nyam/admin/restaurantHistory">식당별 이용 횟수</a></li>
-			<li><a href="">지정식당 신청 게시판</a></li>
-		</ul>
-	</div>
-	</aside>
+
 	<script>
 		var elList = document.querySelector(".list");
 		var year = document.querySelectorAll(".year");
@@ -83,5 +72,4 @@
 
 		});
 	</script>
-</body>
-</html>
+<%@include file="./foot.jsp"%>

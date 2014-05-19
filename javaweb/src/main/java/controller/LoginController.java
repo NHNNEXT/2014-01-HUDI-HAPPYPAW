@@ -20,7 +20,7 @@ public class LoginController {
 			return "login.jsp";
 		} else {
 			//http://localhost/nyam/app/nyamHistory
-			return "redirect:./nyamHistory";
+			return "redirect:./ranking";
 		}
 		
 	}
@@ -49,12 +49,12 @@ public class LoginController {
 				session.setAttribute("users_id", jspId);
 				
 				System.out.println("login complete :"+ jspId);
-				return "redirect:/nyam/app/nyamHistory";
+				return "redirect:/nyam/ranking";
 			} else {
-				return "redirect:/nyam/app/login";
+				return "redirect:/nyam/ranking";
 			}
 		} else {
-			return "redirect:/nyam/app/nyamhistory";
+			return "redirect:/nyam/ranking";
 		}
 	}
 

@@ -42,6 +42,9 @@ public class DateInfo {
 	public int getMonth() {
 		return month;
 	}
+	public int getCorrectMonth() {
+		return getMonth() + 1;
+	}
 	public void setMonth(int month) {
 		this.month = month;
 	}

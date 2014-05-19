@@ -14,11 +14,14 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.poi.hssf.record.ObjRecord;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class DAO {
+	// xml을 키밸류로 만들고. xml을 읽어서 자바 오브젝트로 만들어서 띄워놓으면 얘를 사용할 수 있는 라이브러리를 써야된다.
+
 	private String url = "jdbc:mysql://10.73.45.131/happypaw";
 	private String user = "dayoungles";
 	private String pw = "ekdudrmf2";
@@ -88,12 +91,14 @@ public class DAO {
 
 		return datee;
 	}
+
 	public ArrayList<StampHistory> selectMonthHistory(String users_id) {
 		Calendar calendar = Calendar.getInstance();
 		int year = calendar.get(Calendar.YEAR);
 		int month = calendar.get(Calendar.MONTH);
 		return this.selectMonthHistory(users_id, year, month);
 	}
+
 	public ArrayList<StampHistory> selectMonthHistory(String users_id,
 			int year, int month) {
 
@@ -101,10 +106,10 @@ public class DAO {
 		String firstDay = makePeriod("first", year, month);
 		String lastDay = makePeriod("last", year, month);
 		String query = "select * from stamp_history where users_id = ? and regdate > ? and regdate < ?";
-
+		PreparedStatement selHistory;
 		try {
-			PreparedStatement selHistory = con.prepareStatement(query);
-			;
+			selHistory = con.prepareStatement(query);
+
 			selHistory.setString(1, users_id);
 			selHistory.setString(2, firstDay);
 			selHistory.setString(3, lastDay);
@@ -116,12 +121,13 @@ public class DAO {
 				int restaurant = rs.getInt("restaurant_no");
 				stampList.add(new StampHistory(id, regdate, restaurant));
 			}
-			rs.close();
-			selHistory.close();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			// rs.close();
+			// selHistory.close();
 		}
 		return stampList;
 	}
@@ -312,13 +318,15 @@ public class DAO {
 	 * 관리자 식당 관리 페이지
 	 * 
 	 * @return ArrayList<Restaurant>
+	 * @throws SQLException 
 	 */
-	public ArrayList<Restaurant> manageRestaurant() {
+	public ArrayList<Restaurant> manageRestaurant() throws SQLException {
 		String query = "SELECT * FROM restaurant";
 		ArrayList<Restaurant> restList = new ArrayList<Restaurant>();
+		ResultSet rs = null;
+		Statement st = null;
 		try {
-			ResultSet rs;
-			Statement st = con.createStatement();
+			st = con.createStatement();
 			rs = st.executeQuery(query);
 			int no;
 			String name, desc, location, renew = "";
@@ -333,12 +341,14 @@ public class DAO {
 						renew);
 				restList.add(rest);
 			}
-			rs.close();
-			st.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			rs.close();
+			st.close();
 		}
+		logger.debug(restList.toString());
 		return restList;
 	}
 
@@ -346,23 +356,24 @@ public class DAO {
 	 * qr코드 등록일자 갱신 하는 함수.
 	 * 
 	 * @return
+	 * @throws SQLException 
 	 */
-	public void renewQrcode(String restaurantNo) {
+	public void renewQrcode(String restaurantNo) throws SQLException {
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String ymd = date.format(cal.getTime());
 		String query = "update restaurant set renew = ? where no = ?";
+		PreparedStatement pst = null;
 		try {
-			PreparedStatement pst = con.prepareStatement(query);
+			pst = con.prepareStatement(query);
 			pst.setString(1, ymd);
 			pst.setInt(2, Integer.parseInt(restaurantNo));
 			pst.executeUpdate();
-			pst.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			// 고치기 바람
+			pst.close();
 		}
 
 		return;
@@ -373,29 +384,30 @@ public class DAO {
 	 * 
 	 * @return
 	 * @param id
+	 * @throws SQLException 
 	 */
-	public HashMap<String, Integer> checkEachRestaurant(String id) {
+	public HashMap<String, Integer> checkEachRestaurant(String id) throws SQLException {
 		int restaurantNo = Integer.parseInt(id);
 		HashMap<String, Integer> hash = new HashMap<String, Integer>();
 		String query = "select count(*) as num, substring(regdate, 1, 10) as stamp_date  "
 				+ "from stamp_history where restaurant_no = ? group by substring(regdate, 1, 10); ";
+		PreparedStatement pst = null;
+		ResultSet rs = null;
 		try {
-			PreparedStatement pst;
 			pst = con.prepareStatement(query);
 			pst.setInt(1, restaurantNo);
 
-			ResultSet rs = pst.executeQuery();
+			rs = pst.executeQuery();
 			while (rs.next()) {
 				String stamp_date = rs.getString("stamp_date");
 				int num = rs.getInt("num");
 				hash.put(stamp_date, num);
 			}
-			rs.close();
-			pst.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			// 고치기 바람
+			rs.close();
+			pst.close();
 		}
 		return hash;
 	}
@@ -443,12 +455,13 @@ public class DAO {
 		return date;
 	}
 
-	public Restaurant getRestaurant(String id) {
+	public Restaurant getRestaurant(String id) throws SQLException {
 		String query = "SELECT * FROM restaurant where no = ?";
 		ArrayList<Restaurant> restList = new ArrayList<Restaurant>();
+		ResultSet rs = null;
+		PreparedStatement st = null;
 		try {
-			ResultSet rs;
-			PreparedStatement st = con.prepareStatement(query);
+			st = con.prepareStatement(query);
 			st.setString(1, id);
 			rs = st.executeQuery();
 			int no;
@@ -466,13 +479,13 @@ public class DAO {
 				st.close();
 				return rest;
 			}
-			rs.close();
-			st.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			// 고치기 바람
+			rs.close();
+			st.close();
+
 		}
 		return null;
 	}
@@ -482,7 +495,7 @@ public class DAO {
 	 * 
 	 * @return
 	 */
-	public HashMap<String, ArrayList<String>> getHistory(String id) {
+	public ArrayList<HashMap<String, Object>> getHistory(String id) {
 		Calendar cal = Calendar.getInstance();
 
 		int presentMonth = cal.get(Calendar.MONTH);
@@ -490,20 +503,20 @@ public class DAO {
 
 		int initYear = Integer.parseInt(("20" + id.substring(0, 2)));
 		int initMonth = 2;
+		ArrayList<HashMap<String, Object>> historyList = new ArrayList<HashMap<String, Object>>();
 
 		if (id.startsWith("11")) {// 아이디가 관리자라면 줄 조건. 관리자 아이디를 따로 만들어야 할 듯.
 			initYear = 2013;
 		}
 
-		HashMap<String, ArrayList<String>> history = new HashMap<String, ArrayList<String>>();
-
 		for (int i = initYear; i <= presentYear; i++) {
+			HashMap<String, Object> history = new HashMap<String, Object>();
+			// HashMap<String, Object> year = new HashMap<String, Object>();
 			ArrayList<String> months = new ArrayList<String>();
 			// 여기 코드 리뷰 해줘야 할 듯. 연규느님 .
 
-			if (i == initYear) {// 첫 해일 경우 시작을 3월부터 하도록
+			if (i == initYear) {
 				if (i == presentYear) {// 첫 해인데, 그 해가 올해일 경우. 올해의 이번달까지만 보여줘야
-										// 해서.
 					for (int j = initMonth; j <= presentMonth; j++) {
 						months.add(Integer.toString(j));
 					}
@@ -521,13 +534,14 @@ public class DAO {
 					months.add(Integer.toString(j));
 				}
 			}
-			history.put(Integer.toString(i), months);
+			history.put("year", i);
+			history.put("month", months);
+			historyList.add(history);
 		}
-
-		return history;
+		return historyList;
 	}
 
-	public ArrayList<HashMap<String, String>> rankingHistory(int year, int month) {
+	public ArrayList<HashMap<String, String>> rankingHistory(int year, int month) throws SQLException {
 		// original source
 		// String rankingQuery =
 		// "select s.users_id, users.name,  count(*) as c from stamp_history s "
@@ -537,15 +551,16 @@ public class DAO {
 		String rankingQuery = "SELECT user.id, user.name, count(history.regdate) as c FROM users user left join stamp_history history"
 				+ " on history.regdate > ? and history.regdate <? and user.id = history.users_id group by user.id order by c desc";
 		ArrayList<HashMap<String, String>> rankingList = new ArrayList<HashMap<String, String>>();
+		PreparedStatement statement = null;
+		ResultSet rs = null;
 		try {
-			PreparedStatement statement = con.prepareStatement(rankingQuery);
-
+			statement = con.prepareStatement(rankingQuery);
 			String firstDay = makePeriod("first", year, month);
 			String lastDay = makePeriod("last", year, month);
 			statement.setString(1, firstDay);
 			statement.setString(2, lastDay);
 
-			ResultSet rs = statement.executeQuery();
+			rs = statement.executeQuery();
 
 			while (rs.next()) {
 				HashMap<String, String> nyamRanking = new HashMap<String, String>();
@@ -558,15 +573,13 @@ public class DAO {
 				nyamRanking.put("nyamNum", nyamNum);
 				rankingList.add(nyamRanking);
 			}
-			// 연규 수정
-			rs.close();
-			statement.close();
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			 rs.close();
+			 statement.close();
+		}
 		return rankingList;
 	}
 
