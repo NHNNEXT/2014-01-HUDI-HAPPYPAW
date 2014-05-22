@@ -44,7 +44,7 @@
 				if(index +1 < yoil){
 					return;
 				}else if(day > dayOfMonth){
-					return;	
+					return;  //위에것이랑 합치기.	
 				}else{
 					
 					$(this).find(".day").html(day);

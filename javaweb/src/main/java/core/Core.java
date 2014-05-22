@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionContext;
 
-import model.DAO;
+import database.DAO;
 import annotation.Controller;
 import annotation.RequestMapping;
 

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import model.DAO;
+import database.DAO;
 import model.StampHistory;
 import annotation.Controller;
 import annotation.RequestMapping;

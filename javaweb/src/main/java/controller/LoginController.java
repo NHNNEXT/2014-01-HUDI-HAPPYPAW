@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import model.DAO;
+import database.DAO;
 import model.User;
 import annotation.Controller;
 import annotation.RequestMapping;
@@ -42,8 +42,8 @@ public class LoginController {
 			String jspId = request.getParameter("id");//jsp에서 보낸 id
 			String jspPs = request.getParameter("password");
 			User user = db.getUser(jspId);
+			
 			if(user == null) {
-				System.out.println("login error No User");
 				return "redirect:/nyam/app/login";
 			} else if(user.checkPs(jspPs)){
 				session.setAttribute("users_id", jspId);

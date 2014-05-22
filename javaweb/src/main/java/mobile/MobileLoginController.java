@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import model.DAO;
+import database.DAO;
 import model.InfoMessage;
 import model.User;
 import annotation.Controller;

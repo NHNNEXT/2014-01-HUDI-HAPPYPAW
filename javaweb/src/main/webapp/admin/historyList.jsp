@@ -61,13 +61,20 @@
 	</div>
 	</aside>
 	<script>
+	    //load 된 이후에 동작되도록 하기. 
+	        // window.addEventListener('load', function() {
+	    	// //main...
+	    	// //필요한 함수를 만들어서 여기서는 그 함수를 호출만한다.
+	    	// })
+	    	
+	    
 		var elList = document.querySelector(".list");
 		var year = document.querySelectorAll(".year");
 
 		elList.addEventListener("click",function(e) {
 			var elTarget = e.target;
 			console.log("target:" + e.target);
-			for (var a = 0; a < year.length; a++) {
+			for (var a = 0,yearLen = year.length; a < yearLen ; a++) {
 				console.log("year" + year[a]);
 				console.log(elTarget);
 				if (year[a] === elTarget) {
