@@ -1,19 +1,19 @@
 package controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Enumeration;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import database.DAO;
 import model.Board;
 import model.DateInfo;
 import model.NyamList;
@@ -21,9 +21,18 @@ import model.Restaurant;
 //import model.Restaurant;
 import model.StampHistory;
 import model.User;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import annotation.Controller;
 import annotation.RequestMapping;
 import annotation.RequestMapping.Method;
+
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+
+import database.DAO;
 
 @Controller
 public class NyamController {
@@ -321,22 +330,46 @@ public class NyamController {
 	@RequestMapping("/board/sendContent")
 	public String storeContent(HttpServletRequest request, HttpSession session) {
 		DAO dao = DAO.getInstance();
-		String title = request.getParameter("title");
-		String content = request.getParameter("content");
-		String usersId = (String) session.getAttribute("users_id");
-		String file; 
-		Board board;
-		if (request.getParameter("file") != null) {
-			file = request.getParameter("file");
-			 board = new Board(title, content, file, usersId);
-			 
-		} else {
-			// 일단 파일 없이 하는
-			 board = new Board(title, content, usersId);
+		String originalFileName, uploadPath;
+		int size = 10 * 1024 * 1024;
+		MultipartRequest multipart = null;
+		uploadPath = "/Users/dayoungle/Documents/fileUpload";
+		try {
+			multipart = new MultipartRequest(request, uploadPath, size,
+					"UTF-8", new DefaultFileRenamePolicy());
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
+		String title = multipart.getParameter("title");
+		String content = multipart.getParameter("content");
+		String usersId = (String) session.getAttribute("users_id");
+		Board board;
+		logger.debug("title " + title + "  content: " + content + "users_id"
+				+ usersId);
+
+		if (multipart.getOriginalFileName("file") == null) {
+			board = new Board(title, content, usersId);
+			logger.debug(board.toString());
+			
+		} else {
+			originalFileName = multipart.getOriginalFileName("file");
+			String filesystemNAme = multipart.getFilesystemName("file");
+			logger.debug("original_: "+ originalFileName);
+			Enumeration files = multipart.getFileNames();
+
+			String name1 = (String) files.nextElement(); 
+			String filename = multipart.getFilesystemName(name1);
+			String original = multipart.getOriginalFileName(name1);
+			String type = multipart.getContentType(name1);
+			File uf = multipart.getFile(name1); 
+			File f = new File(uploadPath + filename); 
+			board = new Board(title, content, originalFileName, usersId);
+		}
+
+		
 		dao.insertBoard(board);
 
 		return "redirect:/nyam/ranking";
 	}
-
 }
