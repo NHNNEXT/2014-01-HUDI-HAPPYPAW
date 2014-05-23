@@ -334,6 +334,7 @@ public class NyamController {
 		int size = 10 * 1024 * 1024;
 		MultipartRequest multipart = null;
 		uploadPath = "/Users/dayoungle/Documents/fileUpload";
+		Board board;
 		try {
 			multipart = new MultipartRequest(request, uploadPath, size,
 					"UTF-8", new DefaultFileRenamePolicy());
@@ -344,13 +345,11 @@ public class NyamController {
 		String title = multipart.getParameter("title");
 		String content = multipart.getParameter("content");
 		String usersId = (String) session.getAttribute("users_id");
-		Board board;
-		logger.debug("title " + title + "  content: " + content + "users_id"
-				+ usersId);
+		
+
 
 		if (multipart.getOriginalFileName("file") == null) {
 			board = new Board(title, content, usersId);
-			logger.debug(board.toString());
 			
 		} else {
 			originalFileName = multipart.getOriginalFileName("file");
@@ -367,7 +366,6 @@ public class NyamController {
 			board = new Board(title, content, originalFileName, usersId);
 		}
 
-		
 		dao.insertBoard(board);
 
 		return "redirect:/nyam/ranking";
