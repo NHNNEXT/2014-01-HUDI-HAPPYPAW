@@ -335,13 +335,22 @@ public class NyamController {
 		MultipartRequest multipart = null;
 		uploadPath = "/Users/dayoungle/Documents/fileUpload";
 		Board board;
+		
+		String realPath = request.getSession().getServletContext().getRealPath("/");
+		realPath += "/uploadFiles";
+		logger.debug("realPath: " + realPath);
+		
 		try {
-			multipart = new MultipartRequest(request, uploadPath, size,
-					"UTF-8", new DefaultFileRenamePolicy());
+			multipart = new MultipartRequest(request, realPath, size,
+					"UTF-8", new controller.MyFileRenamePolicy());
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+
+
+		
 		String title = multipart.getParameter("title");
 		String content = multipart.getParameter("content");
 		String usersId = (String) session.getAttribute("users_id");
@@ -352,21 +361,20 @@ public class NyamController {
 			board = new Board(title, content, usersId);
 			
 		} else {
-			originalFileName = multipart.getOriginalFileName("file");
-			String filesystemNAme = multipart.getFilesystemName("file");
-			logger.debug("original_: "+ originalFileName);
 			Enumeration files = multipart.getFileNames();
-
 			String name1 = (String) files.nextElement(); 
-			String filename = multipart.getFilesystemName(name1);
-			String original = multipart.getOriginalFileName(name1);
-			String type = multipart.getContentType(name1);
-			File uf = multipart.getFile(name1); 
-			File f = new File(uploadPath + filename); 
-			board = new Board(title, content, originalFileName, usersId);
+		
+			originalFileName = multipart.getOriginalFileName("file");
+			String filesystemName = multipart.getFilesystemName("file");
+			
+			
+			File uf = multipart.getFile(name1);			
+			File f = new File(uploadPath + filesystemName); 
+			board = new Board(title, content, filesystemName, usersId);
 		}
 
-		dao.insertBoard(board);
+		dao.insertBoard(board);//보드에 정보입력.
+		//파일 업로드는 어디에서 시키나?
 
 		return "redirect:/nyam/ranking";
 	}
