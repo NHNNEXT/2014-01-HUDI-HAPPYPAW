@@ -23,7 +23,7 @@
 				<td>${writing.userId}</td>
 				<td name="title">${writing.title}</td>
 				
-				<td>14-05-06 11:11</td>
+				<td>날짜 입력</td>
 				<td>1</td>
 				<td>1</td>
 				<td>234</td>

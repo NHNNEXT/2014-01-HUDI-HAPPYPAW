@@ -2,7 +2,9 @@ package controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.Iterator;
 
@@ -57,7 +59,6 @@ public class BoardController {
 		String title = multipart.getParameter("title");
 		String content = multipart.getParameter("content");
 		String usersId = (String) session.getAttribute("users_id");
-		
 
 
 		if (multipart.getOriginalFileName("file") == null) {
@@ -79,12 +80,11 @@ public class BoardController {
 		dao.insertBoard(board);//보드에 정보입력.
 		//파일 업로드는 어디에서 시키나?
 
-		return "redirect:/nyam/ranking";
+		return "redirect:/nyam/board/boardList";
 	}
 	
 	@RequestMapping("/board/boardList")
 	public String showBoardList(HttpServletRequest request){
-		logger.debug("board 진");
 		DAO dao = DAO.getInstance();
 		ArrayList<Board> boardList = dao.getWritingList();
 
@@ -93,7 +93,7 @@ public class BoardController {
 		return "/board/boardList.jsp";
 	}
 	
-	
+
 	
 	
 	

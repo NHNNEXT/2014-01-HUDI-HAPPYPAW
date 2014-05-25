@@ -33,12 +33,12 @@ import org.slf4j.LoggerFactory;
 public class DAO {
 	// xml을 키밸류로 만들고. xml을 읽어서 자바 오브젝트로 만들어서 띄워놓으면 얘를 사용할 수 있는 라이브러리를 써야된다.
 
-	// private String url = "jdbc:mysql://10.73.45.131/happypaw";
-	// private String user = "dayoungles";
-	// private String pw = "ekdudrmf2";
-	private String url = "jdbc:mysql://127.0.0.1/happypaw";
-	private String user = "dayg";
-	private String pw = "ekdudrmf2";
+	 private String url = "jdbc:mysql://10.73.45.131/happypaw";
+	 private String user = "dayoungles";
+	 private String pw = "ekdudrmf2";
+//	private String url = "jdbc:mysql://127.0.0.1/happypaw";
+//	private String user = "dayg";
+//	private String pw = "ekdudrmf2";
 
 	private Connection con;
 	static DAO nyam;
@@ -632,12 +632,13 @@ public class DAO {
 	public void insertBoard(Board board) {
 		// 일단 파일이 없는걸로 테스트해보자.
 		PreparedStatement ps;
-		String insertQuery;
+		String insertRequestBoard;
+		String insertRecommend;
 		if (board.getFileName() == null) {
-			 insertQuery = "INSERT INTO request_board (title, contents, users_id) values (?,?,?)";
-
+			 insertRequestBoard = "INSERT INTO request_board (title, contents, users_id) values (?,?,?)";
+			 
 			try {
-				ps = con.prepareStatement(insertQuery);
+				ps = con.prepareStatement(insertRequestBoard);
 				ps.setString(1, board.getTitle());
 				ps.setString(2, board.getContent());
 				ps.setString(3, board.getUserId());
@@ -646,9 +647,9 @@ public class DAO {
 				e.printStackTrace();
 			}
 		} else {
-			 insertQuery = "INSERT INTO request_board (title, contents, users_id, file_name) values (?,?,?,?)";
+			 insertRequestBoard = "INSERT INTO request_board (title, contents, users_id, file_name) values (?,?,?,?)";
 			try {
-				ps = con.prepareStatement(insertQuery);
+				ps = con.prepareStatement(insertRequestBoard);
 				ps.setString(1, board.getTitle());
 				ps.setString(2, board.getContent());
 				ps.setString(3, board.getUserId());
@@ -658,14 +659,44 @@ public class DAO {
 				e.printStackTrace();
 			}
 		}
+		insertRecommendNo();//foreign key ㅋㅋ연동!
 
 	}
+	
+	/**
+	 * 글 하나를 생성하면 글 no가 생기는데, 그 no를 찾아서 추천 테이블에 입력해주는 것.
+	 * 그런데 이 상태로라면 문제가 생길 수 있다.title이랑 전부다 매치하는게 효율적으로는 떨어지지만 정확한데, 
+	 * 어떤게 더 좋은 잘 모르겠음. 
+	 */
+	public void insertRecommendNo(){
+		
+		String insertRecommend = "INSERT INTO recommend(no) values (?)";
+		String selectNo = "SELECT (no) FROM request_board ORDER BY no DESC LIMIT 1";
+		try {
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(selectNo);
+			int no = 0;
+			while(rs.next()){
+				no = rs.getInt("no");
+			}
+			PreparedStatement ps = con.prepareStatement(insertRecommend);
+			ps.setInt(1, no);
+			ps.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
+	/**
+	 * boardList페이지 함수. 글을 15개 찾아서되돌려준다.  
+	 * @return 어레이 리스트<보드>ㅋ
+	 */
 	public ArrayList<Board> getWritingList() {
 		Statement state;
 		ResultSet rs;
 		ArrayList<Board> arrBoard = new ArrayList<Board>();
-		String query= "SELECT * FROM request_board ORDER BY no DESC LIMIT 20";
+		String query= "SELECT * FROM request_board ORDER BY no DESC LIMIT 15";
 		try {
 			state = con.createStatement();
 			rs= state.executeQuery(query);
@@ -675,9 +706,12 @@ public class DAO {
 				String contents = rs.getString("contents");
 				String fileName = rs.getString("file_name");
 				String title = rs.getString("title");
+				String date = (String)rs.getString("date");
+				logger.debug(date);
 				
-				Board board = new Board(title, contents, fileName, writer, no);
-				logger.debug(board.toString());
+				User user = getUser(writer);
+				
+				Board board = new Board(title, contents, fileName, user.getName(), no, date);
 				arrBoard.add(board);
 						
 			}
@@ -692,6 +726,7 @@ public class DAO {
 	
 	
 	
+
 	
 	
 	

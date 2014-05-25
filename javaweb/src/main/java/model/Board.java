@@ -6,19 +6,27 @@ public class Board {
 	String fileName;
 	String userId;
 	String writingNo;
+	String date;
 	
 	
 	public Board(String title, String content, String fileName, String userId,
-			String no) {
+			String writingNo, String date) {
 		this.title = title;
 		this.content = content;
 		this.fileName = fileName;
 		this.userId = userId;
-		this.writingNo = no;
+		this.writingNo = writingNo;
+		this.date = date;
 	}
 
-
-
+	public Board(String title, String content, String fileName, String userId,
+			String writingNo) {
+		this.title = title;
+		this.content = content;
+		this.fileName = fileName;
+		this.userId = userId;
+		this.writingNo = writingNo;
+	}
 
 	public Board(String title, String content, String userId) {
 		this.title = title;
@@ -80,14 +88,11 @@ public class Board {
 		this.writingNo = writingNo;
 	}
 
-
-
-
 	@Override
 	public String toString() {
 		return "Board [title=" + title + ", content=" + content + ", fileName="
 				+ fileName + ", userId=" + userId + ", writingNo=" + writingNo
-				+ "]";
+				+ ", date=" + date + "]";
 	}
 
 
