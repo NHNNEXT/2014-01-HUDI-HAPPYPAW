@@ -17,7 +17,7 @@ public class LoginController {
 	public String loginPage(HttpSession session){
 		String id = (String) session.getAttribute("users_id");
 		if(id == null || id.equals("")){
-			return "login.jsp";
+			return "/user/login.jsp";
 		} else {
 			//http://localhost/nyam/app/nyamHistory
 			return "redirect:./ranking";
@@ -44,7 +44,7 @@ public class LoginController {
 			User user = db.getUser(jspId);
 			
 			if(user == null) {
-				return "redirect:/nyam/app/login";
+				return "redirect:/nyam/login";
 			} else if(user.checkPs(jspPs)){
 				session.setAttribute("users_id", jspId);
 				

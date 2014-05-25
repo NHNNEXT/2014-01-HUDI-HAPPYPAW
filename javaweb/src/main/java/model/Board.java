@@ -5,7 +5,21 @@ public class Board {
 	String content;
 	String fileName;
 	String userId;
+	String writingNo;
 	
+	
+	public Board(String title, String content, String fileName, String userId,
+			String no) {
+		this.title = title;
+		this.content = content;
+		this.fileName = fileName;
+		this.userId = userId;
+		this.writingNo = no;
+	}
+
+
+
+
 	public Board(String title, String content, String userId) {
 		this.title = title;
 		this.content = content;
@@ -54,10 +68,27 @@ public class Board {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	
+
+
+	public String getWritingNo() {
+		return writingNo;
+	}
+
+
+
+	public void setWritingNo(String writingNo) {
+		this.writingNo = writingNo;
+	}
+
+
+
+
 	@Override
 	public String toString() {
 		return "Board [title=" + title + ", content=" + content + ", fileName="
-				+ fileName + ", userId=" + userId + "]";
+				+ fileName + ", userId=" + userId + ", writingNo=" + writingNo
+				+ "]";
 	}
+
+
 }

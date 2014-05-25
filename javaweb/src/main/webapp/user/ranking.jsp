@@ -3,7 +3,7 @@
 <script src="./js/daylight.animation.js" type="text/javascript"></script>
 <script src="./js/daylight.Event.js" type="text/javascript"></script>
 
-<link href="./css/ranking.css" rel="stylesheet"/>
+<link href="./user/css/ranking.css" rel="stylesheet"/>
 <div class="background">
 	<img src="./img/rank.png" class="background_rank"/>
 	<div class="signs">

@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="./css/reset.css"/>
-<link rel="stylesheet" type="text/css" href="./css/login.css"/>
+<title>넥스트인의 정식</title>
+<link rel="stylesheet" type="text/css" href="../css/reset.css"/>
+<link rel="stylesheet" type="text/css" href="./user/css/login.css"/>
 </head>
 <body>
 	<div class="login_form">
