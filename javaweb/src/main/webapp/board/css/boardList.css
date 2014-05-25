@@ -1,0 +1,61 @@
+@CHARSET "US-ASCII";
+
+table {
+	margin: 50px auto;
+	width: 700px;
+	background-color:white;
+}
+
+th[name="no"]{
+	width: 20px;
+	border:1px solid gray;
+	text-align:center;
+}
+
+th[name="writer"]{
+	width: 100px;
+	border:1px solid gray;
+	text-align:center;
+}
+
+th[name="title"]{
+	width: 500px;
+	border:1px solid gray;
+	text-align:left;
+}
+
+th[name="date"]{
+	width: 130px;
+	border:1px solid gray;
+	text-align:center;
+}
+
+th[name="recommend"]{
+	width: 50px;
+	border:1px solid gray;
+	text-align:center;
+}
+
+th[name="notRecommend"]{
+	width: 50px;
+	border:1px solid gray;
+	text-align:center;
+}
+
+th[name="read"]{
+	width: 50px;
+	border:1px solid gray;
+	text-align:center;
+	
+}
+
+td{
+	border:1px solid gray;
+	text-align:center;
+	overflow:hidden;
+}
+td[name="title"]{
+	border:1px solid gray;
+	text-align:left;
+	overflow:hidden;
+}
