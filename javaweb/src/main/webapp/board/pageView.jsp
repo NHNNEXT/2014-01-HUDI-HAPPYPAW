@@ -12,10 +12,14 @@
 	writer: ${board.userId}<br/>
 	title: ${board.title }<br/>
 	content: ${board.content }<br/>
-	date: ${board.date }<br/>
-	fileName: ${board.fileName }</br>
+
+	fileName: ${board.fileName }<br/>
 	
-	<a href = "/nyam/board/recommend?no=${board.writingNo}"><button class="recommend">추천</button></a>
+	recommend: ${recommendInfo.recommend}<br/>
+	not recommend: ${recommendInfo.notRecommend }<br/>
+	
+	<a href = "/nyam/board/recommend?no=${board.writingNo}"><button class="recommend">LIKE</button></a>
+	<a href = "/nyam/board/notRecommend?no=${board.writingNo}"><button class="recommend">DISLIKE</button></a>
 
 </body>
 </html>

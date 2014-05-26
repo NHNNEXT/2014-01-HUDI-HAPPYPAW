@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -93,17 +94,25 @@ public class BoardController {
 		DAO dao = DAO.getInstance();
 		String no = (String)request.getParameter("no");
 		dao.plusRecommend(no);
-		return "redirect:/nyam/board/boardList";
+		return "redirect:/nyam/board/view?no="+no;
+	}
+	
+	@RequestMapping(value="/board/notRecommend", method=Method.GET)
+	public String notRecommend(HttpServletRequest request){
+		DAO dao = DAO.getInstance();
+		String no = (String)request.getParameter("no");
+		dao.minusRecommend(no);
+		return "redirect:/nyam/board/view?no="+no;
 	}
 	
 	@RequestMapping(value = "/board/view", method= Method.GET)
 	public String showView(HttpServletRequest request){
 		DAO dao = DAO.getInstance();
 		String no = (String)request.getParameter("no");
-		logger.debug("no:  " + no);
 		Board board = dao.getBoard(Integer.parseInt(no));
-		logger.debug(board.toString());
+		HashMap<String, Integer> map = dao.getRecommend(Integer.parseInt(no));
 		request.setAttribute("board", board);
+		request.setAttribute("recommendInfo", map);
 		return "./pageView.jsp";
 	}
 	

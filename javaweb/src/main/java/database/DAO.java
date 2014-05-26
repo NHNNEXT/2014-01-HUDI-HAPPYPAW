@@ -33,12 +33,12 @@ import org.slf4j.LoggerFactory;
 public class DAO {
 	// xml을 키밸류로 만들고. xml을 읽어서 자바 오브젝트로 만들어서 띄워놓으면 얘를 사용할 수 있는 라이브러리를 써야된다.
 
-	 private String url = "jdbc:mysql://10.73.45.131/happypaw";
-	 private String user = "dayoungles";
-	 private String pw = "ekdudrmf2";
-//	private String url = "jdbc:mysql://127.0.0.1/happypaw";
-//	private String user = "dayg";
-//	private String pw = "ekdudrmf2";
+//	 private String url = "jdbc:mysql://10.73.45.131/happypaw";
+//	 private String user = "dayoungles";
+//	 private String pw = "ekdudrmf2";
+	private String url = "jdbc:mysql://127.0.0.1/happypaw";
+	private String user = "dayg";
+	private String pw = "ekdudrmf2";
 
 	private Connection con;
 	static DAO nyam;
@@ -707,7 +707,6 @@ public class DAO {
 				String fileName = rs.getString("file_name");
 				String title = rs.getString("title");
 				String date = (String)rs.getString("date");
-				logger.debug(date);
 				
 				User user = getUser(writer);
 				
@@ -760,6 +759,44 @@ public class DAO {
 		}
 	
 		return board;
+	}
+
+	public void minusRecommend(String id) {
+		String minusRecommend = "UPDATE recommend SET not_recommend = not_recommend + 1 where no=?";
+		int no = Integer.parseInt(id);
+		try {
+			PreparedStatement ps = con.prepareStatement(minusRecommend);
+			ps.setInt(1, no);
+			ps.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
+
+	public HashMap<String, Integer> getRecommend(int id) {
+		HashMap<String, Integer> recommendTable = new HashMap<String, Integer>();
+		String query = "SELECT * FROM recommend where no = ?";
+		try {
+			PreparedStatement ps = con.prepareStatement(query);
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				
+				int recommend = rs.getInt("recommend");
+				int notRecommend = rs.getInt("not_recommend");
+				
+				recommendTable.put("recommend", recommend);
+				recommendTable.put("notRecommend", notRecommend);
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return recommendTable;
+		
 	}
 	
 	
