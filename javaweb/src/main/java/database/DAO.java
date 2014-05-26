@@ -654,7 +654,7 @@ public class DAO {
 				ps.setString(2, board.getContent());
 				ps.setString(3, board.getUserId());
 				ps.setString(4, board.getFileName());
-				ps.execute();
+				ps.execute();//왜 에러가 여기서 나지. 되던게?;;;
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -721,6 +721,45 @@ public class DAO {
 		}
 
 		return arrBoard;
+	}
+
+	public void plusRecommend(String id) {
+		String plusRecommend = "UPDATE recommend SET recommend = recommend+1 where no=?";
+		int no = Integer.parseInt(id);
+		try {
+			PreparedStatement ps = con.prepareStatement(plusRecommend);
+			ps.setInt(1, no);
+			ps.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	public Board getBoard(int no) {
+		String selectBoard = "SELECT * from request_board where no = ?";
+		Board board = null ;
+		try {
+			PreparedStatement ps = con.prepareStatement(selectBoard);
+			ps.setInt(1, no);
+			ResultSet rs  = ps.executeQuery();
+			while(rs.next()){
+				String title = rs.getString("title");
+				String contents = rs.getString("contents");
+				String usersId = Integer.toString(rs.getInt("users_id"));
+				String fileName = rs.getString("file_name");
+				String date = rs.getString("date");
+
+				board = new Board(title, contents, fileName,usersId, Integer.toString(no), date );
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		return board;
 	}
 	
 	

@@ -21,7 +21,7 @@
 			<tr>
 				<td>${writing.writingNo}</td>
 				<td>${writing.userId}</td>
-				<td name="title">${writing.title}</td>
+				<td name="title"><a href = "/nyam/board/view?no=${writing.writingNo}">${writing.title}</a></td>
 				
 				<td>날짜 입력</td>
 				<td>1</td>
@@ -30,6 +30,7 @@
 			</tr>
 		</c:forEach>
 	</table>
+	<a href = "/nyam/board/writing"><button>글쓰기</button></a>
 </div>
 
 

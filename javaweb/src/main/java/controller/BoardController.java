@@ -2,25 +2,24 @@ package controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Enumeration;
-import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import model.Board;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import model.Board;
+import annotation.Controller;
+import annotation.RequestMapping;
+import annotation.RequestMapping.Method;
 
 import com.oreilly.servlet.MultipartRequest;
 
 import database.DAO;
-import annotation.Controller;
-import annotation.RequestMapping;
 
 @Controller
 public class BoardController {
@@ -43,7 +42,7 @@ public class BoardController {
 		
 		String realPath = request.getSession().getServletContext().getRealPath("/");
 		realPath += "/uploadFiles";
-		logger.debug("realPath: " + realPath);
+		
 		
 		try {
 			multipart = new MultipartRequest(request, realPath, size,
@@ -52,10 +51,7 @@ public class BoardController {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
 
-
-		
 		String title = multipart.getParameter("title");
 		String content = multipart.getParameter("content");
 		String usersId = (String) session.getAttribute("users_id");
@@ -76,9 +72,8 @@ public class BoardController {
 			File f = new File(uploadPath + filesystemName); 
 			board = new Board(title, content, filesystemName, usersId);
 		}
-
+		logger.debug(board.toString());
 		dao.insertBoard(board);//보드에 정보입력.
-		//파일 업로드는 어디에서 시키나?
 
 		return "redirect:/nyam/board/boardList";
 	}
@@ -93,7 +88,25 @@ public class BoardController {
 		return "/board/boardList.jsp";
 	}
 	
-
+	@RequestMapping(value="/board/recommend", method=Method.GET)
+	public String recommend(HttpServletRequest request){
+		DAO dao = DAO.getInstance();
+		String no = (String)request.getParameter("no");
+		dao.plusRecommend(no);
+		return "redirect:/nyam/board/boardList";
+	}
+	
+	@RequestMapping(value = "/board/view", method= Method.GET)
+	public String showView(HttpServletRequest request){
+		DAO dao = DAO.getInstance();
+		String no = (String)request.getParameter("no");
+		logger.debug("no:  " + no);
+		Board board = dao.getBoard(Integer.parseInt(no));
+		logger.debug(board.toString());
+		request.setAttribute("board", board);
+		return "./pageView.jsp";
+	}
+	
 	
 	
 	
