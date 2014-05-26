@@ -106,16 +106,34 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value = "/board/view", method= Method.GET)
-	public String showView(HttpServletRequest request){
+	public String showView(HttpServletRequest request, HttpSession session){
 		DAO dao = DAO.getInstance();
 		String no = (String)request.getParameter("no");
 		Board board = dao.getBoard(Integer.parseInt(no));
 		HashMap<String, Integer> map = dao.getRecommend(Integer.parseInt(no));
 		request.setAttribute("board", board);
 		request.setAttribute("recommendInfo", map);
+		
+		String userId = (String)session.getAttribute("users_id");
+		request.setAttribute("userId", userId);
 		return "./pageView.jsp";
 	}
 	
+	@RequestMapping(value="/board/delete", method=Method.GET)
+	public String deleteWriting(HttpServletRequest request, HttpSession session){
+		//함수 추출 가능할 듯. 교수님 조언대로. 
+		DAO dao = DAO.getInstance();
+		String currentUserId = (String)session.getAttribute("users_id");
+		String no = (String) request.getParameter("no");
+		Board board = dao.getBoard(Integer.parseInt(no));
+		String writer = board.getUserId();
+		
+		if(currentUserId.equals(writer)){
+			dao.deleteWriting(no);
+		} 
+		
+		return "redirect:/nyam/board/boardList";
+	}
 	
 	
 	

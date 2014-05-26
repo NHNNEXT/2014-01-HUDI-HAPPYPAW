@@ -19,7 +19,18 @@
 	not recommend: ${recommendInfo.notRecommend }<br/>
 	
 	<a href = "/nyam/board/recommend?no=${board.writingNo}"><button class="recommend">LIKE</button></a>
-	<a href = "/nyam/board/notRecommend?no=${board.writingNo}"><button class="recommend">DISLIKE</button></a>
-
+	<a href = "/nyam/board/notRecommend?no=${board.writingNo}"><button class="notRecommend">DISLIKE</button></a>
+	<a href = "/nyam/board/delete?no=${board.writingNo}"><button class="delete">Delete</button></a>
+	
+	
+	<script>
+		var writer_id = ${board.userId};
+		var session = ${userId};
+		var elDelete =document.querySelector(".delete");
+		if(writer_id !== session){
+			elDelete.style.display = "none";
+		}
+		
+	</script>
 </body>
 </html>

@@ -798,6 +798,24 @@ public class DAO {
 		return recommendTable;
 		
 	}
+
+	public void deleteWriting(String no) {
+		String requestBoardQuery = "delete from request_board where no=?";
+		String recommendQuery = "delete from recommend where no = ?";
+		int num = Integer.parseInt(no);
+		try {
+			PreparedStatement ps = con.prepareStatement(recommendQuery);
+			ps.setInt(1, num );
+			ps.execute();
+			ps = con.prepareStatement(requestBoardQuery);
+			ps.setInt(1, num);
+			ps.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	
 	
 	
