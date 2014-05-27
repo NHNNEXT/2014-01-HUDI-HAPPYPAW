@@ -33,12 +33,12 @@ import org.slf4j.LoggerFactory;
 public class DAO {
 	// xml을 키밸류로 만들고. xml을 읽어서 자바 오브젝트로 만들어서 띄워놓으면 얘를 사용할 수 있는 라이브러리를 써야된다.
 
-//	 private String url = "jdbc:mysql://10.73.45.131/happypaw";
-//	 private String user = "dayoungles";
-//	 private String pw = "ekdudrmf2";
-	private String url = "jdbc:mysql://127.0.0.1/happypaw";
-	private String user = "dayg";
-	private String pw = "ekdudrmf2";
+	 private String url = "jdbc:mysql://10.73.45.131/happypaw";
+	 private String user = "dayoungles";
+	 private String pw = "ekdudrmf2";
+//	private String url = "jdbc:mysql://127.0.0.1/happypaw";
+//	private String user = "dayg";
+//	private String pw = "ekdudrmf2";
 
 	private Connection con;
 	static DAO nyam;
@@ -659,7 +659,7 @@ public class DAO {
 				e.printStackTrace();
 			}
 		}
-		insertRecommendNo();//foreign key ㅋㅋ연동!
+		insertRecommendNo();//foreign keyㅋㅋ연동!
 
 	}
 	
