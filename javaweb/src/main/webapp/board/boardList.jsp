@@ -18,32 +18,20 @@
 			</thead>
 		</tr>
 		<c:forEach items = "${boardList}" var = "writing" >
-			<tr>
-				<td>${writing.writingNo}</td>
+			<tr class="info">
+				<td>${writing.no}</td>
 				<td>${writing.userId}</td>
-				<td name="title"><a href = "/nyam/board/view?no=${writing.writingNo}">${writing.title}</a></td>
+				<td name="title"><a href = "/nyam/board/view?no=${writing.no}">${writing.title}</a></td>
 				
-				<td>날짜 입력</td>
-				<td>1</td>
-				<td>1</td>
+				<td>${writing.date} </td>
+				<td name="recommend">${writing.recommend }</td>
+				<td name="not_recommend">${writing.notRecommend }</td>
 				<td>234</td>
-			</tr>
 		</c:forEach>
+			</tr>
 	</table>
 	<a href = "/nyam/board/writing"><button>글쓰기</button></a>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

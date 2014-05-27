@@ -16,7 +16,7 @@ div.writing{
 	-webkit-box-sizing: border-box;
 }
 
-input[type="textbox"]{
+input[type="text"]{
 	width:500px;
 	margin:0px auto;
 	border:none;

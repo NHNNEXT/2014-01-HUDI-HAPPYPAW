@@ -6,7 +6,7 @@ public class Board {
 	String fileName;
 	String userId;
 	String writingNo;
-	String date;
+	private String date;
 	
 	
 	public Board(String title, String content, String fileName, String userId,
@@ -86,6 +86,14 @@ public class Board {
 
 	public void setWritingNo(String writingNo) {
 		this.writingNo = writingNo;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 	@Override

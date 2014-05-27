@@ -82,8 +82,7 @@ public class BoardController {
 	@RequestMapping("/board/boardList")
 	public String showBoardList(HttpServletRequest request){
 		DAO dao = DAO.getInstance();
-		ArrayList<Board> boardList = dao.getWritingList();
-
+		ArrayList<HashMap<String, String>> boardList = dao.getBoardList();
 		request.setAttribute("boardList", boardList);
 		
 		return "/board/boardList.jsp";
@@ -135,7 +134,15 @@ public class BoardController {
 		return "redirect:/nyam/board/boardList";
 	}
 	
-	
+	@RequestMapping(value="/board/modify", method = Method.GET)
+	public String modifyWriting(HttpServletRequest request){
+		DAO dao = DAO.getInstance();
+		int no = Integer.parseInt(request.getParameter("no"));
+		Board board = dao.getBoard(no);
+		request.setAttribute("board", board);
+		
+		return "redirect:/nyam/board/writing.jsp";
+	}
 	
 	
 	

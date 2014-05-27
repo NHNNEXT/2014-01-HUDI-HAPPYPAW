@@ -21,14 +21,17 @@
 	<a href = "/nyam/board/recommend?no=${board.writingNo}"><button class="recommend">LIKE</button></a>
 	<a href = "/nyam/board/notRecommend?no=${board.writingNo}"><button class="notRecommend">DISLIKE</button></a>
 	<a href = "/nyam/board/delete?no=${board.writingNo}"><button class="delete">Delete</button></a>
+	<a href = "/nyam/board/modify?no=${board.writingNo}"><button class="modify">Modify</button></a>
 	
 	
 	<script>
 		var writer_id = ${board.userId};
 		var session = ${userId};
-		var elDelete =document.querySelector(".delete");
+		var btnDelete =document.querySelector(".delete");
+		var btnModify = document.querySelector(".modify");
 		if(writer_id !== session){
-			elDelete.style.display = "none";
+			btnDelete.style.display = "none";
+			btnModify.style.display = "none";
 		}
 		
 	</script>

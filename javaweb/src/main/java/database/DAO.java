@@ -690,28 +690,31 @@ public class DAO {
 
 	/**
 	 * boardList페이지 함수. 글을 15개 찾아서되돌려준다.  
-	 * @return 어레이 리스트<보드>ㅋ
+	 * @return 어레이 리스트<hashmap>ㅋ
 	 */
-	public ArrayList<Board> getWritingList() {
+	public ArrayList<HashMap<String, String>> getBoardList() {
 		Statement state;
 		ResultSet rs;
-		ArrayList<Board> arrBoard = new ArrayList<Board>();
-		String query= "SELECT * FROM request_board ORDER BY no DESC LIMIT 15";
+		ArrayList<HashMap<String, String>> arrBoard = new ArrayList<HashMap<String, String>>();
+		String query= "select * from request_board b inner join recommend r on b.no = r.no order by r.no desc limit 15;";
 		try {
 			state = con.createStatement();
 			rs= state.executeQuery(query);
 			while(rs.next()){
-				String no = rs.getString("no");
+				HashMap<String, String> map = new HashMap<String, String>();
 				String writer = rs.getString("users_id");
-				String contents = rs.getString("contents");
-				String fileName = rs.getString("file_name");
-				String title = rs.getString("title");
-				String date = (String)rs.getString("date");
-				
 				User user = getUser(writer);
 				
-				Board board = new Board(title, contents, fileName, user.getName(), no, date);
-				arrBoard.add(board);
+				map.put("no", rs.getString("r.no"));
+				map.put("userId", rs.getString("users_id"));
+				map.put("contents", rs.getString("contents"));
+				map.put("fileName", rs.getString("file_name"));
+				map.put("title", rs.getString("title"));
+				map.put("date", rs.getString("date"));
+				map.put("recommend", rs.getString("recommend"));
+				map.put("notRecommend", rs.getString("not_recommend"));
+
+				arrBoard.add(map);
 						
 			}
 		} catch (SQLException e) {
@@ -773,7 +776,11 @@ public class DAO {
 			e.printStackTrace();
 		}		
 	}
-
+	/**
+	 * pageview에서 추천 비추천 확인하도록. 
+	 * @param id
+	 * @return
+	 */
 	public HashMap<String, Integer> getRecommend(int id) {
 		HashMap<String, Integer> recommendTable = new HashMap<String, Integer>();
 		String query = "SELECT * FROM recommend where no = ?";
@@ -815,6 +822,31 @@ public class DAO {
 			e.printStackTrace();
 		}
 		
+	}
+
+	public ArrayList<HashMap<String, Integer>> getRecommendList() {
+		String query= "SELECT * FROM recommend ORDER BY no DESC LIMIT 15";
+		ArrayList<HashMap<String, Integer>> arrRecommend = new ArrayList<HashMap<String,Integer>>();
+		try {
+			Statement state = con.createStatement();
+			ResultSet rs= state.executeQuery(query);
+			while(rs.next()){
+				String no = rs.getString("no");
+				String recommend = rs.getString("recommend");
+				String notRecommend = rs.getString("not_recommend");
+				HashMap<String, Integer> map = new HashMap<String, Integer>();
+				map.put("no", Integer.parseInt(no));
+				map.put("recommend", Integer.parseInt(recommend));
+				map.put("notRecommend", Integer.parseInt(notRecommend));
+				
+				arrRecommend.add(map);
+						
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return arrRecommend;
 	}
 	
 	
