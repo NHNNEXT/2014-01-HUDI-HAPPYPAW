@@ -38,11 +38,11 @@ public class BoardController {
 		String originalFileName, uploadPath;
 		int size = 10 * 1024 * 1024;
 		MultipartRequest multipart = null;
-		uploadPath = "/Users/dayoungle/Documents/fileUpload";
+		//uploadPath = "/Users/dayoungle/Documents/fileUpload";
 		Board board;
 		
 		String realPath = request.getSession().getServletContext().getRealPath("/");
-		realPath += "uploadFiles";
+		realPath += "../images/";
 		
 		
 		try {
@@ -70,7 +70,7 @@ public class BoardController {
 			
 			
 			File uf = multipart.getFile(name1);			
-			File f = new File(uploadPath + filesystemName); 
+			File f = new File(realPath + filesystemName); 
 			board = new Board(title, content, filesystemName, usersId);
 		}
 		logger.debug(board.toString());
