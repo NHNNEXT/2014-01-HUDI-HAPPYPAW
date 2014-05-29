@@ -42,7 +42,7 @@ public class BoardController {
 		Board board;
 		
 		String realPath = request.getSession().getServletContext().getRealPath("/");
-		realPath += "/uploadFiles";
+		realPath += "uploadFiles";
 		
 		
 		try {
@@ -77,6 +77,11 @@ public class BoardController {
 		dao.insertBoard(board);//보드에 정보입력.
 
 		return "redirect:/nyam/board/boardList";
+	}
+	@RequestMapping("/address")
+	public String showAddress(HttpServletRequest request) {
+		String realPath = request.getSession().getServletContext().getRealPath("/");
+		return "text:"+realPath;
 	}
 	
 	@RequestMapping("/board/boardList")
