@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import model.Board;
+import model.User;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,7 @@ import com.oreilly.servlet.MultipartRequest;
 import database.DAO;
 
 @Controller
-public class BoardController {
+public class BoardController extends DefaultController{
 	private static Logger logger = LoggerFactory
 			.getLogger(UserController.class);
 	
@@ -34,6 +35,10 @@ public class BoardController {
 
 	@RequestMapping("/board/sendContent")
 	public String storeContent(HttpServletRequest request, HttpSession session) {
+		User user = getLoginuser(session);
+		if(user == null)
+			return goLoginPage();
+		
 		DAO dao = DAO.getInstance();
 		String originalFileName, uploadPath;
 		int size = 10 * 1024 * 1024;
@@ -55,7 +60,7 @@ public class BoardController {
 
 		String title = multipart.getParameter("title");
 		String content = multipart.getParameter("content");
-		String usersId = (String) session.getAttribute("users_id");
+		String usersId = user.getId();
 
 
 		if (multipart.getOriginalFileName("file") == null) {
@@ -71,7 +76,8 @@ public class BoardController {
 			
 			File uf = multipart.getFile(name1);			
 			File f = new File(realPath + filesystemName); 
-			board = new Board(title, content, filesystemName, usersId);
+			board = new Board(title, content, usersId);
+			board.setFileName(filesystemName);
 		}
 		logger.debug(board.toString());
 		dao.insertBoard(board);//보드에 정보입력.

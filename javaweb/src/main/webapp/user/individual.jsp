@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8" import="java.util.*, model.*"%>
 <%@ include file = "./userHead.jsp" %>
 		<link rel="stylesheet" type="text/css"
-			href="./css/user_nyamHistory.css" />
+			href="./user/css/user_nyamHistory.css" />
 		<script src="./js/daylight.js"></script>
 			<script>
 		<%HashMap<String, Integer> map = (HashMap<String, Integer>) request

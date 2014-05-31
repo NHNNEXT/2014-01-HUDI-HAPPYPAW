@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import database.DAO;
+import model.Restaurant;
 import model.StampHistory;
 import annotation.Controller;
 import annotation.RequestMapping;
@@ -54,7 +55,7 @@ public class MobileController {
 	@RequestMapping("/m_nyamHistory")
 	public String m_nyamHistory(HttpSession session, HttpServletRequest request) {
 		DAO db = DAO.getInstance();
-		String jsonString = "[";
+
 
 		// 세션에서 아이디를 못찾으면 로그인 페이지로 퉁
 		String id = (String) session.getAttribute("users_id");
@@ -66,16 +67,28 @@ public class MobileController {
 		request.setAttribute("record", stampList);
 
 		// json으로 만든걸 쉼표로 모두 연결?
-		for (int i = 0; i < stampList.size(); i++) {
-			if (i != 0)
-				jsonString += ",";
-			jsonString += JSON.makeJSON(stampList.get(i));
-		}
-		jsonString += "]";
-
+//		String jsonString = "[";
+//		for (int i = 0; i < stampList.size(); i++) {
+//			if (i != 0)
+//				jsonString += ",";
+//			jsonString += JSON.makeJSON(stampList.get(i));
+//		}
+//		jsonString += "]";
+		String jsonString = JSON.makeJSON(stampList);
 		// 얘네 json 어떻게 html로 보내주지?
 		return "text:" + jsonString;
-
 	}
-
+	@RequestMapping("/m/restaurant")
+	public String restaurant(HttpSession session, HttpServletRequest request) {
+		DAO dao = DAO.getInstance();
+		ArrayList<Restaurant> restList = dao.manageRestaurant();
+		return "text:" + JSON.makeJSON(restList);
+	}
+	
+	@RequestMapping("/m/requestBoard")
+	public String requestBoard(HttpSession session, HttpServletRequest request) {
+		DAO dao = DAO.getInstance();
+		ArrayList<HashMap<String, String>> boardList = dao.getBoardList();
+		return "text:" + JSON.makeJSON(boardList);
+	}
 }

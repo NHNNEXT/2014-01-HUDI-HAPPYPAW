@@ -26,4 +26,9 @@ public abstract class QueryTemplate extends DAOTemplate{
 		}
 		return returnValue;
 	}
+	static boolean executeQuery(String query, Object...objects) {
+		QueryTemplate template = new QueryTemplate(query, objects) {
+		};
+		return (boolean)template.execute();
+	}
 }

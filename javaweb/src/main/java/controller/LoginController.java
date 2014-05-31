@@ -11,7 +11,7 @@ import annotation.Controller;
 import annotation.RequestMapping;
 
 @Controller
-public class LoginController {
+public class LoginController extends DefaultController{
 	
 	@RequestMapping("/login")
 	public String loginPage(HttpSession session){
@@ -30,7 +30,7 @@ public class LoginController {
 		if(session != null){
 			session.invalidate();
 		}
-		return "redirect:/nyam/login";
+		return goLoginPage();
 	}
 	
 	@RequestMapping("/login_check")
@@ -44,7 +44,7 @@ public class LoginController {
 			User user = db.getUser(jspId);
 			
 			if(user == null) {
-				return "redirect:/nyam/login";
+				return goLoginPage();
 			} else if(user.checkPs(jspPs)){
 				session.setAttribute("users_id", jspId);
 				

@@ -23,7 +23,7 @@ public abstract class DAOTemplate {
 			System.err.println("driver load error:");
 			return null;
 		}
-		System.out.println("driver loading success");
+		//System.out.println("driver loading success");
 		try {
 			con = DriverManager.getConnection(url, user, pw);
 
@@ -31,7 +31,7 @@ public abstract class DAOTemplate {
 			System.err.println("connect fail:" + e.getMessage());
 			return null;
 		}
-		System.out.println("connection success");
+		//System.out.println("connection success");
 		return con;
 	}
 

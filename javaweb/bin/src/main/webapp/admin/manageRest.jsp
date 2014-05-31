@@ -5,58 +5,77 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="../css/reset.css">
+<link rel="stylesheet" type="text/css" href="../css/layout.css">
+<link rel="stylesheet" type="text/css" href="./css/admin_manageRest.css">
 <style>
-table {
-	border: solid 1px black;
-}
 
-td {
-	border: solid 1px black;
-}
 </style>
 </head>
 <body>
+	<section>
+		<header>
+			<p class="logo">넥스트인의 정식</p>
+		</header>
 	<%
 		ArrayList<Restaurant> restList = (ArrayList<Restaurant>)request.getAttribute("restList");
 	%>
 	<table>
-	<tr>
 		<thead>
-			<td>id</td>
-			<td>name</td>
-			<td>desc</td>
-			<td>location</td>
-		</thead>
-	</tr>
-		<%
-		for(int i = 0; i < restList.size(); i ++){	
-			int no = restList.get(i).getNo();
-			String name = restList.get(i).getName();
-			String desc = restList.get(i).getDesc();
-			String location = restList.get(i).getLocation();
-			String renew = restList.get(i).getRenew();
-		%>
-
 			<tr>
-				<td><%=no %></td>
-				<td><%=name %></td>
-				<td><%=desc %></td>
-				<td><%=location %></td>
-				<td>
-					<img src="<%= request.getAttribute("address") + renew + "@" + no %>">
-					
-				</td>
-				<td>
-					<form action ="/nyam/admin/renewQr" method="POST">
-						<button>UPDATE</button>
-						<input type="hidden" name = "restaurantNo" value="<%=no%>"/>
-					</form>
-				</td>
+				<th name="no">NO.</th>
+				<th name="short">상호명</th>
+				<th name="long">설명</th>
+				<th name="long">간단한 주소</th>
+				<th rowspan=2 name="qr">QR code</th>
 			</tr>
-			 
-		<%
-			} 
-		 %>
-	</table>
+		</thead>
+		
+			<%
+				for(int i = 0; i < restList.size(); i ++){	
+					int no = restList.get(i).getNo();
+					String name = restList.get(i).getName();
+					String desc = restList.get(i).getDesc();
+					String location = restList.get(i).getLocation();
+					String renew = restList.get(i).getRenew();
+			%>
+	
+				<tr>
+					<td><div class="fly"><%=no %></div></td>
+					<td><div class="fly"><%=name %></div></td>
+					<td><div class="fly"><%=desc %></div></td>
+					<td><div class="fly"><%=location %></div></td>
+					<td>
+						<img src="<%= request.getAttribute("address") + renew + "@" + no %>">
+						
+						<form action ="/nyam/admin/renewQr" method="POST">
+							<button>UPDATE</button>
+							<input type="hidden" name = "restaurantNo" value="<%=no%>"/>
+						</form>
+					</td>
+
+				</tr>
+				 
+				<%
+					} 
+				 %>
+		</table>
+			
+	</section>
+	<aside>
+		<div class="login_box">
+			<p>이름: 관리자</p>
+			<p><a href="./logout">logout</a></p>
+		</div>
+		<div class="menu">
+			<ul class="menu_ul">
+				<li><a href = "/nyam/admin/nyamHistory">메인</a></li>
+				<li><a href = "/nyam/admin/manageRest">지정식당 관리</a></li>
+				<li><a href = "/nyam/admin/nyamHistory">전체 학생 이용 기록</a></li>
+				<li><a href = "/nyam/admin/restaurantHistory">식당별 이용 횟수</a></li>
+				<li><a href = "">지정식당 신청 게시판</a></li>
+			</ul>
+		</div>
+	</aside>
 </body>
-</html> 
+</html>

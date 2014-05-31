@@ -1,65 +1,37 @@
 package model;
 
 public class Board {
-	String title;
-	String content;
-	String fileName;
-	String userId;
-	String writingNo;
+	private String title;
+	private String content;
+	private String fileName;
+	private String userId;
+	private String writingNo;
 	private String date;
 	
 	
-	public Board(String title, String content, String fileName, String userId,
-			String writingNo, String date) {
-		this.title = title;
-		this.content = content;
-		this.fileName = fileName;
-		this.userId = userId;
-		this.writingNo = writingNo;
-		this.date = date;
-	}
-
-	public Board(String title, String content, String fileName, String userId,
-			String writingNo) {
-		this.title = title;
-		this.content = content;
-		this.fileName = fileName;
-		this.userId = userId;
-		this.writingNo = writingNo;
-	}
-
 	public Board(String title, String content, String userId) {
 		this.title = title;
 		this.content = content;
 		this.userId = userId;
 	}
-
-
-
-	public Board(String title, String content, String fileName, String userId) {
+	public Board(String title, String content, String userId,
+			String writingNo, String date) {
 		this.title = title;
 		this.content = content;
-		this.fileName = fileName;
 		this.userId = userId;
+		this.writingNo = writingNo;
+		this.date = date;
 	}
-
 
 
 	public String getTitle() {
 		return title;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
 	public String getContent() {
 		return content;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
-	}
 
 	public String getFileName() {
 		return fileName;
@@ -71,10 +43,6 @@ public class Board {
 
 	public String getUserId() {
 		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
 	}
 
 

@@ -16,7 +16,6 @@ table {
 	background-color: white;
 	border: 1px gray solid;
 	padding: 10px;
-	display: inline-block;/*user_individual에서 가운데 정렬이 안돼서 바꿈.   */
 }
 
 th {

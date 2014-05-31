@@ -3,7 +3,7 @@ package database;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public abstract class ReadTemplate extends DAOTemplate{
+public abstract class ReadTemplate<T> extends DAOTemplate{
 	ReadTemplate(String query, Object... objects) {
 		super(query, objects);
 		// TODO Auto-generated constructor stub
@@ -11,11 +11,11 @@ public abstract class ReadTemplate extends DAOTemplate{
 
 
 
-	public abstract Object read(ResultSet rs) throws SQLException;
+	public abstract T read(ResultSet rs) throws SQLException;
 
-	public Object execute() {
+	public T execute() {
 		ResultSet rs = null;
-		Object returnValue = null;
+		T returnValue = null;
 		try {
 
 			rs = statement.executeQuery();

@@ -1,2 +1,6 @@
 eclipse.preferences.version=1
-encoding//src/main/webapp/user_nyamHistory.css=UTF-8
+encoding//src/main/webapp/admin/css/admin_manageRest.css=UTF-8
+encoding//src/main/webapp/user/css/user_nyamHistory.css=UTF-8
+encoding//src/main/webapp/user/foot.jsp=UTF-8
+encoding//src/main/webapp/user/restaurantList.jsp=UTF-8
+encoding//src/main/webapp/user/userNyamHistory.jsp=UTF-8

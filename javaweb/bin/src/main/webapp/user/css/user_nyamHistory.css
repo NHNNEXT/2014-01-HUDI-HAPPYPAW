@@ -1,0 +1,95 @@
+@CHARSET "US-ASCII";
+.title {
+	font-size: 2em;
+	text-align: center;
+	margin: 20px auto;
+}
+
+div.month {
+	font-size: 2em;
+	text-align: center;
+	margin: 20px auto;
+}
+
+table {
+	margin: 20px auto;
+	background-color: white;
+	border: 1px gray solid;
+	padding: 10px;
+	display: inline-block;/*user_individual에서 가운데 정렬이 안돼서 바꿈.   */
+}
+
+th {
+	
+	font-weight: bold;
+	font-family: "Times New Roman"; /* 폰트는 적절히 바꿉시다. 어떻게 할지 정해야.  */
+}
+
+td {
+	position: relative;
+/* 	border: 1px solid black; */
+	width: 80px;
+	height: 80px;
+	overflow: hidden;
+	vertical-align: top;
+}
+
+div.day {
+	text-align: center;
+	width: 100%;
+	height: 20%;
+	overflow: hidden;
+	font-family: "Times New Roman";
+	margin: 10px auto;
+}
+
+div.stamp_area {
+	width: 100%;
+	height: 40%;
+	position: absolute;
+	bottom: 10px;
+	text-align: center;
+	padding: 2px;
+}
+
+tr #record {
+	height: 20px;
+}
+
+p {
+	color: black;
+}
+
+div.calendarBox{
+	position:relative;
+	width: 800px;
+	margin: 0px auto;
+}
+
+div.stamp {
+	border-radius: 20px;
+	height: 15px;
+	width: 15px;
+	margin: 1px;
+	background-color: #E97248;
+	display: inline-block;
+}
+
+img.arrow {
+	width: 50px;
+	
+}
+
+img#leftArrow{
+	/* filter:fliph(); */
+	-webkit-transform: scale(-1, 1);
+}
+
+div.arrow {
+	display:inline-block;
+	height:500px;
+	overflow:hidden;
+	top:225px;/*높이 자동으로 50%가 안되는 이유가 뭐징?*/
+	position:relative;
+	margin: 20px;
+}

@@ -8,18 +8,21 @@
 		<link rel="stylesheet" type="text/css" href="../css/reset.css" />
 		<link rel="stylesheet" type="text/css" href="../css/layout.css" />
 		<link rel="stylesheet" type="text/css"
-			href="../css/user_nyamHistory.css" />
-		<script src="../js/daylight.js"></script>
+			href="/nyam/user/css/user_nyamHistory.css" />
+		<script src="/nyam/js/daylight.js"></script>
 			<script>
 		<%HashMap<String, Integer> map = (HashMap<String, Integer>) request
 				.getAttribute("nyamPerDay");
+		
+		DateInfo info = (DateInfo)request.getAttribute("dateInfo");
 		String id = (String)request.getAttribute("id");
-		String name = (String)request.getAttribute("name");
-		int year = (Integer)request.getAttribute("year");
-		int month = (Integer)request.getAttribute("month");
-		int dayOfMonth = (Integer)request.getAttribute("dayOfMonth");
-		int yoil = (Integer)request.getAttribute("yoil");
-		int week = (Integer)request.getAttribute("week");
+		String name = (String)request.getAttribute("name");	
+		
+		int year = info.getYear();
+		int month =  info.getMonth();
+		int dayOfMonth = info.getDayOfMonth();
+		int yoil = info.getYoil();
+		int week = info.getWeek();
 		int day = 1;%>
 		var yoil = <%=yoil%>;
 		console.log(yoil);
@@ -78,7 +81,7 @@
 				<div class="month"><%=year%>년
 					<%=month + 1%>월
 				</div>
-			</article>
+		
 			<table class="calendar">
 				<thead>
 					<tr id="record">
@@ -112,6 +115,7 @@
 				</tbody>
 		
 			</table>
+				</article>
 		</section>
 		<aside>
 			<div class="login_box">

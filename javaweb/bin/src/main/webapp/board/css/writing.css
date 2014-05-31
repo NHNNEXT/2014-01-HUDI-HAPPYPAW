@@ -1,0 +1,46 @@
+@CHARSET "US-ASCII";
+
+div.formBox{
+	width: 700px;
+	height: 500px;
+	margin: 0px auto;
+}
+
+div.writing{
+	width: 500px;
+	height: inherit;
+	margin: 0px auto;
+	border:1px solid gray;
+	box-sizing:border-box;
+    -moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+input[type="text"]{
+	width:500px;
+	margin:0px auto;
+	border:none;
+	background-color:#f5f5f5;
+	
+}
+
+textarea {
+	background-color:#f5f5f5;
+	width: inherit;
+	height: 400px;
+	margin:0px auto;
+	resize:none;
+	border:none;
+}
+
+input[name="file"]{
+	margin:0px auto;
+}
+
+input[type="submit"]{
+	margin:0px auto;	
+}
+
+.filebox{
+	display:inline-block;
+	}

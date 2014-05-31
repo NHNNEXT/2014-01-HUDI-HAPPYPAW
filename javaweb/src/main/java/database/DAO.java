@@ -2,12 +2,8 @@ package database;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,9 +24,11 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysql.jdbc.PreparedStatement;
+import com.mysql.jdbc.Statement;
+
 public class DAO {
 	// xml을 키밸류로 만들고. xml을 읽어서 자바 오브젝트로 만들어서 띄워놓으면 얘를 사용할 수 있는 라이브러리를 써야된다.
-
 
 	static DAO nyam;
 
@@ -40,7 +38,6 @@ public class DAO {
 		// connect();
 	}
 
-
 	public static DAO getInstance() {
 		if (nyam == null) {
 			nyam = new DAO();
@@ -48,10 +45,9 @@ public class DAO {
 		return nyam;
 	}
 
-
-
 	/**
 	 * selectMonthHistory에서 시작, 끝 날짜 설정하는 함수
+	 * 
 	 * @param day
 	 * @return
 	 */
@@ -81,7 +77,7 @@ public class DAO {
 	}
 
 	public ArrayList<StampHistory> selectMonthHistory(String users_id)
-			throws SQLException {
+			{
 		Calendar calendar = Calendar.getInstance();
 		int year = calendar.get(Calendar.YEAR);
 		int month = calendar.get(Calendar.MONTH);
@@ -90,44 +86,44 @@ public class DAO {
 	}
 
 	public ArrayList<StampHistory> selectMonthHistory(String users_id,
-			int year, int month) throws SQLException {
+			int year, int month) {
 
-		ArrayList<StampHistory> stampList = new ArrayList<StampHistory>();
 		String firstDay = makePeriod("first", year, month);
 		String lastDay = makePeriod("last", year, month);
 		String query = "select * from stamp_history where users_id = ? and regdate > ? and regdate < ?";
-//		PreparedStatement selHistory = null;
-//		ResultSet rs = null;
-//
-//		try {
-//			connect();
-//			selHistory = con.prepareStatement(query);
-//
-//			selHistory.setString(1, users_id);
-//			selHistory.setString(2, firstDay);
-//			selHistory.setString(3, lastDay);
-//
-//			rs = selHistory.executeQuery();
-//			while (rs.next()) {
-//				String id = rs.getString("users_id");
-//				String regdate = rs.getString("regDate");
-//				int restaurant = rs.getInt("restaurant_no");
-//				stampList.add(new StampHistory(id, regdate, restaurant));
-//			}
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} finally {
-//			rs.close();
-//			selHistory.close();
-//			close();
-//
-//		}
-		
-		DAOTemplate template = new ReadTemplate(query, users_id, firstDay, lastDay) {
+		// PreparedStatement selHistory = null;
+		// ResultSet rs = null;
+		//
+		// try {
+		// connect();
+		// selHistory = con.prepareStatement(query);
+		//
+		// selHistory.setString(1, users_id);
+		// selHistory.setString(2, firstDay);
+		// selHistory.setString(3, lastDay);
+		//
+		// rs = selHistory.executeQuery();
+		// while (rs.next()) {
+		// String id = rs.getString("users_id");
+		// String regdate = rs.getString("regDate");
+		// int restaurant = rs.getInt("restaurant_no");
+		// stampList.add(new StampHistory(id, regdate, restaurant));
+		// }
+		// } catch (SQLException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// } finally {
+		// rs.close();
+		// selHistory.close();
+		// close();
+		//
+		// }
+		ReadTemplate<ArrayList<StampHistory>> template = new ReadTemplate<ArrayList<StampHistory>>(
+				query, users_id, firstDay, lastDay) {
 
 			@Override
-			public Object read(ResultSet rs) throws SQLException {
+			public ArrayList<StampHistory> read(ResultSet rs)
+					throws SQLException {
 				ArrayList<StampHistory> stampList = new ArrayList<StampHistory>();
 				while (rs.next()) {
 					String id = rs.getString("users_id");
@@ -137,9 +133,9 @@ public class DAO {
 				}
 				return stampList;
 			}
-			
+
 		};
-		return (ArrayList<StampHistory>)template.execute();
+		return (ArrayList<StampHistory>) template.execute();
 	}
 
 	/**
@@ -148,9 +144,8 @@ public class DAO {
 	 * @param users_id
 	 * @param qrDate
 	 * @param restaurant
-	 * @throws SQLException 
 	 */
-	public boolean insertHistory(String users_id, String qrDate, int restaurant) throws SQLException {
+	public boolean insertHistory(String users_id, String qrDate, int restaurant) {
 		if (!checkRestaurant(qrDate, restaurant)) {
 			System.out.println("해당 정보 없음... date : " + qrDate
 					+ "   restaurant : " + restaurant);
@@ -161,27 +156,28 @@ public class DAO {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String nowDate = sdf.format(cal.getTime());
 		String insertQuery = "INSERT INTO stamp_history(users_id, regdate, restaurant_no) VALUES (?, ?, ?)";
-//		try {
-//			connect();
-//			PreparedStatement insertHistory;
-//			insertHistory = con.prepareStatement(insertQuery);
-//			insertHistory.setString(1, users_id);
-//			insertHistory.setString(2, nowDate);
-//			insertHistory.setInt(3, restaurant);
-//			insertHistory.execute();
-//			insertHistory.close();
-//
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			return false;
-//		} finally{
-//			close();
-//		}
-//		
-//		
-		DAOTemplate template = new QueryTemplate(insertQuery, users_id, nowDate, restaurant) {};
-		return (boolean) template.execute();
+		// try {
+		// connect();
+		// PreparedStatement insertHistory;
+		// insertHistory = con.prepareStatement(insertQuery);
+		// insertHistory.setString(1, users_id);
+		// insertHistory.setString(2, nowDate);
+		// insertHistory.setInt(3, restaurant);
+		// insertHistory.execute();
+		// insertHistory.close();
+		//
+		// } catch (SQLException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// return false;
+		// } finally{
+		// close();
+		// }
+		//
+		//
+
+		return (boolean) QueryTemplate.executeQuery(insertQuery, users_id,
+				nowDate, restaurant);
 	}
 
 	/**
@@ -190,23 +186,24 @@ public class DAO {
 	 * @param qrDate
 	 * @param restaurant
 	 * @return boolean
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
-	private boolean checkRestaurant(String qrDate, int restaurant) throws SQLException {
+	private boolean checkRestaurant(String qrDate, int restaurant){
 		/*
 		 * 레스토랑 테이블에서 레스토랑 넘버를 가지고 업데이트 날짜를 받아온다. 업데이트 날짜랑 큐알데이트가 다르면 return
 		 * false; 업데이트 날짜랑 같으면 return true;
 		 */
 		String checkQuery = "select count(*) as c from restaurant where no = ? and renew = ?;";
-		ReadTemplate template = new ReadTemplate(checkQuery, restaurant, qrDate){
+		ReadTemplate<Boolean> template = new ReadTemplate<Boolean>(checkQuery,
+				restaurant, qrDate) {
 			@Override
-			public Object read(ResultSet rs) throws SQLException {
+			public Boolean read(ResultSet rs) throws SQLException {
 				rs.next();
 				int count = rs.getInt("c");
 				return count == 1;
 			}
 		};
-		return (boolean) template.execute();
+		return template.execute();
 
 	}
 
@@ -214,41 +211,13 @@ public class DAO {
 	 * 유저를 가져옴.
 	 * 
 	 * @param id
-	 * @return
-	 * @throws SQLException 
+	 * @return user
 	 */
-	public User getUser(String id) throws SQLException {
-//		String query = "select * from users where id = ?";
-//		ResultSet rs= null;
-//		PreparedStatement statement = null;
-//		try {
-//			connect();
-//			statement = con.prepareStatement(query);
-//			statement.setString(1, id);
-//			rs = statement.executeQuery();
-//			while (rs.next()) {
-//				String users_id = rs.getString("id");
-//				String ps = "next";
-//				String name = rs.getString("name");
-//
-//				User user = new User(users_id, ps, name);
-//				rs.close();
-//				statement.close();
-//				return user;
-//			}
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} finally{
-//			rs.close();
-//			statement.close();
-//			close();
-//		}
-		
+	public User getUser(String id) {
 		String query = "select * from users where id = ?";
-		ReadTemplate template = new ReadTemplate(query, id){
+		ReadTemplate<User> template = new ReadTemplate<User>(query, id) {
 			@Override
-			public Object read(ResultSet rs) throws SQLException {
+			public User read(ResultSet rs) throws SQLException {
 				while (rs.next()) {
 					String users_id = rs.getString("id");
 					String ps = "next";
@@ -260,7 +229,7 @@ public class DAO {
 				return null;
 			}
 		};
-		return (User) template.execute();
+		return template.execute();
 	}
 
 	/**
@@ -270,32 +239,25 @@ public class DAO {
 	 * @param year
 	 * 
 	 * @return ArrayList<NyamList>
-	 * @throws SQLException 
 	 */
-	public ArrayList<NyamList> adminNyamHistory(int year, int month) throws SQLException {
+	public ArrayList<NyamList> adminNyamHistory(final int year, final int month) {
 		String userQuery = "SELECT * FROM users";
-		ArrayList<NyamList> nyamList = new ArrayList<NyamList>();
-		Statement st  = null;
-		ResultSet rs = null;
-		try {
-			connect();
-			st = con.createStatement();
-			rs = st.executeQuery(userQuery);
-			while (rs.next()) {
-
-				String users_id = rs.getString("id");
-				String users_name = rs.getString("name");
-				int sum = selectMonthHistory(users_id, year, month).size();
-				nyamList.add(new NyamList(users_id, users_name, sum));
+		ReadTemplate<ArrayList<NyamList>> template = new ReadTemplate<ArrayList<NyamList>>(
+				userQuery) {
+			@Override
+			public ArrayList<NyamList> read(ResultSet rs) throws SQLException {
+				ArrayList<NyamList> nyamList = new ArrayList<NyamList>();
+				while (rs.next()) {
+					String users_id = rs.getString("id");
+					String users_name = rs.getString("name");
+					int sum = selectMonthHistory(users_id, year, month).size();
+					nyamList.add(new NyamList(users_id, users_name, sum));
+					return nyamList;
+				}
+				return null;
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally{
-			rs.close();
-			st.close();
-			close();
-		}
-		return nyamList;
+		};
+		return template.execute();
 	}
 
 	/**
@@ -304,35 +266,31 @@ public class DAO {
 	 * @return
 	 */
 	public ArrayList<Restaurant> restaurantHistory() {
-		ArrayList<Restaurant> restaurant = new ArrayList<Restaurant>();
-		try {
-			String countQuery = "SELECT r.no, r.name, count(s.restaurant_no) FROM restaurant "
-					+ "r LEFT JOIN stamp_history s ON s.restaurant_no = r.no group by r.no;";
-			Statement rStatement = con.createStatement();
-			ResultSet rs = rStatement.executeQuery(countQuery);
-			while (rs.next()) {
-				int rId = rs.getInt("no");
-				String rName = rs.getString("name");
-				int num = rs.getInt("count(s.restaurant_no)");
-				restaurant.add(new Restaurant(rId, rName, num));
+		String countQuery = "SELECT r.no, r.name, count(s.restaurant_no) FROM restaurant "
+				+ "r LEFT JOIN stamp_history s ON s.restaurant_no = r.no group by r.no;";
+		ReadTemplate<ArrayList<Restaurant>> template = new ReadTemplate<ArrayList<Restaurant>>(
+				countQuery) {
+			@Override
+			public ArrayList<Restaurant> read(ResultSet rs) throws SQLException {
+				ArrayList<Restaurant> restaurant = new ArrayList<Restaurant>();
+				while (rs.next()) {
+					int rId = rs.getInt("no");
+					String rName = rs.getString("name");
+					int num = rs.getInt("count(s.restaurant_no)");
+					restaurant.add(new Restaurant(rId, rName, num));
+				}
+				return restaurant;
 			}
-			rs.close();
-			rStatement.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println(restaurant);
-		return restaurant;
+		};
+		return template.execute();
 	}
 
 	/**
 	 * 엑셀을 파일로 내보내는 함수.
 	 * 
 	 * @param path
-	 * @throws SQLException 
 	 */
-	public void exportExcel(String path) throws SQLException {
+	public void exportExcel(String path)  {
 		System.out.println("exportExcel");
 		MakeExcel me = new MakeExcel();
 		int year = 2013;// 임의 지정 수정해야합니다.
@@ -354,34 +312,30 @@ public class DAO {
 	 * @return ArrayList<Restaurant>
 	 * @throws SQLException
 	 */
-	public ArrayList<Restaurant> manageRestaurant() throws SQLException {
+	public ArrayList<Restaurant> manageRestaurant() {
 		String query = "SELECT * FROM restaurant";
-		ArrayList<Restaurant> restList = new ArrayList<Restaurant>();
-		ResultSet rs = null;
-		Statement st = null;
-		try {
-			st = con.createStatement();
-			rs = st.executeQuery(query);
-			int no;
-			String name, desc, location, renew = "";
-			while (rs.next()) {
-				no = rs.getInt("no");
-				name = rs.getString("name");
-				desc = rs.getString("description");
-				location = rs.getString("location");
-				renew = rs.getString("renew");
-				// renew.replace(" ", "%20");//요거 없어도 되는데? 왜 넣어놨지..
-				Restaurant rest = new Restaurant(no, name, desc, location,
-						renew);
-				restList.add(rest);
+		ReadTemplate<ArrayList<Restaurant>> template = new ReadTemplate<ArrayList<Restaurant>>(
+				query) {
+			@Override
+			public ArrayList<Restaurant> read(ResultSet rs) throws SQLException {
+				String name, desc, location, renew = "";
+				int no;
+				ArrayList<Restaurant> restList = new ArrayList<Restaurant>();
+				while (rs.next()) {
+					no = rs.getInt("no");
+					name = rs.getString("name");
+					desc = rs.getString("description");
+					location = rs.getString("location");
+					renew = rs.getString("renew");
+					// renew.replace(" ", "%20");//요거 없어도 되는데? 왜 넣어놨지..
+					Restaurant rest = new Restaurant(no, name, desc, location,
+							renew);
+					restList.add(rest);
+				}
+				return restList;
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			rs.close();
-			st.close();
-		}
+		};
+		ArrayList<Restaurant> restList = template.execute();
 		logger.debug(restList.toString());
 		return restList;
 	}
@@ -392,30 +346,29 @@ public class DAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	public void renewQrcode(String restaurantNo) throws SQLException {
-//		Calendar cal = Calendar.getInstance();
-//		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//		String ymd = date.format(cal.getTime());
-//		String query = "update restaurant set renew = ? where no = ?";
-//		PreparedStatement pst = null;
-//		try {
-//			pst = con.prepareStatement(query);
-//			pst.setString(1, ymd);
-//			pst.setInt(2, Integer.parseInt(restaurantNo));
-//			pst.executeUpdate();
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} finally {
-//			pst.close();
-//		}
+	public void renewQrcode(String restaurantNo) {
+		// Calendar cal = Calendar.getInstance();
+		// SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		// String ymd = date.format(cal.getTime());
+		// String query = "update restaurant set renew = ? where no = ?";
+		// PreparedStatement pst = null;
+		// try {
+		// pst = con.prepareStatement(query);
+		// pst.setString(1, ymd);
+		// pst.setInt(2, Integer.parseInt(restaurantNo));
+		// pst.executeUpdate();
+		// } catch (SQLException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// } finally {
+		// pst.close();
+		// }
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String ymd = date.format(cal.getTime());		
+		String ymd = date.format(cal.getTime());
 		String query = "update restaurant set renew = ? where no = ?";
-		DAOTemplate template = new QueryTemplate(query, ymd, Integer.parseInt(restaurantNo)) {};
-		template.execute();
-		
+		QueryTemplate.executeQuery(query, ymd, Integer.parseInt(restaurantNo));
+
 		return;
 	}
 
@@ -426,31 +379,28 @@ public class DAO {
 	 * @param id
 	 * @throws SQLException
 	 */
-	public HashMap<String, Integer> checkEachRestaurant(String id)
-			throws SQLException {
+	public HashMap<String, Integer> checkEachRestaurant(String id) {
 		int restaurantNo = Integer.parseInt(id);
-		HashMap<String, Integer> hash = new HashMap<String, Integer>();
+
 		String query = "select count(*) as num, substring(regdate, 1, 10) as stamp_date  "
 				+ "from stamp_history where restaurant_no = ? group by substring(regdate, 1, 10); ";
-		PreparedStatement pst = null;
-		ResultSet rs = null;
-		try {
-			pst = con.prepareStatement(query);
-			pst.setInt(1, restaurantNo);
 
-			rs = pst.executeQuery();
-			while (rs.next()) {
-				String stamp_date = rs.getString("stamp_date");
-				int num = rs.getInt("num");
-				hash.put(stamp_date, num);
+		ReadTemplate<HashMap<String, Integer>> template = new ReadTemplate<HashMap<String, Integer>>(
+				query, restaurantNo) {
+			@Override
+			public HashMap<String, Integer> read(ResultSet rs)
+					throws SQLException {
+				HashMap<String, Integer> hash = new HashMap<String, Integer>();
+				while (rs.next()) {
+					String stamp_date = rs.getString("stamp_date");
+					int num = rs.getInt("num");
+					hash.put(stamp_date, num);
+				}
+				return hash;
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			rs.close();
-			pst.close();
-		}
-		return hash;
+		};
+
+		return template.execute();
 	}
 
 	public HashMap<String, Integer> arrangeNyamHistory(
@@ -496,39 +446,31 @@ public class DAO {
 		return date;
 	}
 
-	public Restaurant getRestaurant(String id) throws SQLException {
+	public Restaurant getRestaurant(String id) {
 		String query = "SELECT * FROM restaurant where no = ?";
-		ArrayList<Restaurant> restList = new ArrayList<Restaurant>();
-		ResultSet rs = null;
-		PreparedStatement st = null;
-		try {
-			st = con.prepareStatement(query);
-			st.setString(1, id);
-			rs = st.executeQuery();
-			int no;
-			String name, desc, location, renew = "";
-			while (rs.next()) {
-				no = rs.getInt("no");
-				name = rs.getString("name");
-				desc = rs.getString("description");
-				location = rs.getString("location");
-				renew = rs.getString("renew");
-				// renew.replace(" ", "%20");//요거 없어도 되는데? 왜 넣어놨지..
-				Restaurant rest = new Restaurant(no, name, desc, location,
-						renew);
-				rs.close();
-				st.close();
-				return rest;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			rs.close();
-			st.close();
 
-		}
-		return null;
+		ReadTemplate<Restaurant> template = new ReadTemplate<Restaurant>(query,
+				id) {
+			@Override
+			public Restaurant read(ResultSet rs) throws SQLException {
+				int no;
+				String name, desc, location, renew = "";
+				while (rs.next()) {
+					no = rs.getInt("no");
+					name = rs.getString("name");
+					desc = rs.getString("description");
+					location = rs.getString("location");
+					renew = rs.getString("renew");
+					// renew.replace(" ", "%20");//요거 없어도 되는데? 왜 넣어놨지..
+					Restaurant rest = new Restaurant(no, name, desc, location,
+							renew);
+					return rest;
+				}
+				return null;
+			}
+		};
+
+		return template.execute();
 	}
 
 	/**
@@ -582,8 +524,7 @@ public class DAO {
 		return historyList;
 	}
 
-	public ArrayList<HashMap<String, String>> rankingHistory(int year, int month)
-			throws SQLException {
+	public ArrayList<HashMap<String, String>> rankingHistory(int year, int month) {
 		// original source
 		// String rankingQuery =
 		// "select s.users_id, users.name,  count(*) as c from stamp_history s "
@@ -592,37 +533,31 @@ public class DAO {
 
 		String rankingQuery = "SELECT user.id, user.name, count(history.regdate) as c FROM users user left join stamp_history history"
 				+ " on history.regdate > ? and history.regdate <? and user.id = history.users_id group by user.id order by c desc";
-		ArrayList<HashMap<String, String>> rankingList = new ArrayList<HashMap<String, String>>();
-		PreparedStatement statement = null;
-		ResultSet rs = null;
-		try {
-			statement = con.prepareStatement(rankingQuery);
-			String firstDay = makePeriod("first", year, month);
-			String lastDay = makePeriod("last", year, month);
-			statement.setString(1, firstDay);
-			statement.setString(2, lastDay);
 
-			rs = statement.executeQuery();
+		String firstDay = makePeriod("first", year, month);
+		String lastDay = makePeriod("last", year, month);
 
-			while (rs.next()) {
-				HashMap<String, String> nyamRanking = new HashMap<String, String>();
-				String id = rs.getString("id");
-				String nyamNum = Integer.toString(rs.getInt("c"));
-				String name = rs.getString("name");
+		ReadTemplate<ArrayList<HashMap<String, String>>> template = new ReadTemplate<ArrayList<HashMap<String, String>>>(
+				rankingQuery, firstDay, lastDay) {
+			@Override
+			public ArrayList<HashMap<String, String>> read(ResultSet rs)
+					throws SQLException {
+				ArrayList<HashMap<String, String>> rankingList = new ArrayList<HashMap<String, String>>();
+				while (rs.next()) {
+					HashMap<String, String> nyamRanking = new HashMap<String, String>();
+					String id = rs.getString("id");
+					String nyamNum = Integer.toString(rs.getInt("c"));
+					String name = rs.getString("name");
 
-				nyamRanking.put("id", id);
-				nyamRanking.put("name", name);
-				nyamRanking.put("nyamNum", nyamNum);
-				rankingList.add(nyamRanking);
+					nyamRanking.put("id", id);
+					nyamRanking.put("name", name);
+					nyamRanking.put("nyamNum", nyamNum);
+					rankingList.add(nyamRanking);
+				}
+				return rankingList;
 			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			rs.close();
-			statement.close();
-		}
-		return rankingList;
+		};
+		return template.execute();
 	}
 
 	/**
@@ -650,33 +585,19 @@ public class DAO {
 	 */
 	public void insertBoard(Board board) {
 		// 일단 파일이 없는걸로 테스트해보자.
-		PreparedStatement ps;
-		String insertRequestBoard;
-		String insertRecommend;
+		String query;
 		if (board.getFileName() == null) {
-			insertRequestBoard = "INSERT INTO request_board (title, contents, users_id) values (?,?,?)";
-
-			try {
-				ps = con.prepareStatement(insertRequestBoard);
-				ps.setString(1, board.getTitle());
-				ps.setString(2, board.getContent());
-				ps.setString(3, board.getUserId());
-				ps.execute();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			query = "INSERT INTO request_board (title, contents, users_id) values (?,?,?)";
+			QueryTemplate template = new QueryTemplate(query, board.getTitle(),
+					board.getContent(), board.getUserId()) {
+			};
+			template.execute();
 		} else {
-			insertRequestBoard = "INSERT INTO request_board (title, contents, users_id, file_name) values (?,?,?,?)";
-			try {
-				ps = con.prepareStatement(insertRequestBoard);
-				ps.setString(1, board.getTitle());
-				ps.setString(2, board.getContent());
-				ps.setString(3, board.getUserId());
-				ps.setString(4, board.getFileName());
-				ps.execute();// 왜 에러가 여기서 나지. 되던게?;;;
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			query = "INSERT INTO request_board (title, contents, users_id, file_name) values (?,?,?,?)";
+			QueryTemplate template = new QueryTemplate(query, board.getTitle(),
+					board.getContent(), board.getUserId(), board.getFileName()) {
+			};
+			template.execute();
 		}
 		insertRecommendNo();// foreign keyㅋㅋ연동!
 
@@ -688,22 +609,23 @@ public class DAO {
 	 */
 	public void insertRecommendNo() {
 
-		String insertRecommend = "INSERT INTO recommend(no) values (?)";
+		final String insertRecommend = "INSERT INTO recommend(no) values (?)";
 		String selectNo = "SELECT (no) FROM request_board ORDER BY no DESC LIMIT 1";
-		try {
-			Statement st = con.createStatement();
-			ResultSet rs = st.executeQuery(selectNo);
-			int no = 0;
-			while (rs.next()) {
-				no = rs.getInt("no");
+
+		ReadTemplate<Object> template = new ReadTemplate<Object>(selectNo) {
+
+			@Override
+			public Object read(ResultSet rs) throws SQLException {
+				int no = 0;
+				while (rs.next()) {
+					no = rs.getInt("no");
+
+					QueryTemplate.executeQuery(insertRecommend, no);
+				}
+				return null;
 			}
-			PreparedStatement ps = con.prepareStatement(insertRecommend);
-			ps.setInt(1, no);
-			ps.execute();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		};
+		template.execute();
 	}
 
 	/**
@@ -712,89 +634,72 @@ public class DAO {
 	 * @return 어레이 리스트<hashmap>ㅋ
 	 */
 	public ArrayList<HashMap<String, String>> getBoardList() {
-		Statement state;
-		ResultSet rs;
-		ArrayList<HashMap<String, String>> arrBoard = new ArrayList<HashMap<String, String>>();
+
 		String query = "select * from request_board b inner join recommend r on b.no = r.no order by r.no desc limit 15;";
-		try {
-			state = con.createStatement();
-			rs = state.executeQuery(query);
-			while (rs.next()) {
-				HashMap<String, String> map = new HashMap<String, String>();
-				String writer = rs.getString("users_id");
-				User user = getUser(writer);
+		ReadTemplate<ArrayList<HashMap<String, String>>> template = new ReadTemplate<ArrayList<HashMap<String, String>>>(
+				query) {
 
-				map.put("no", rs.getString("r.no"));
-				map.put("userId", rs.getString("users_id"));
-				map.put("contents", rs.getString("contents"));
-				map.put("fileName", rs.getString("file_name"));
-				map.put("title", rs.getString("title"));
-				map.put("date", rs.getString("date"));
-				map.put("recommend", rs.getString("recommend"));
-				map.put("notRecommend", rs.getString("not_recommend"));
+			@Override
+			public ArrayList<HashMap<String, String>> read(ResultSet rs)
+					throws SQLException {
+				ArrayList<HashMap<String, String>> arrBoard = new ArrayList<HashMap<String, String>>();
+				while (rs.next()) {
+					HashMap<String, String> map = new HashMap<String, String>();
+					String writer = rs.getString("users_id");
+					User user = getUser(writer);
 
-				arrBoard.add(map);
+					map.put("no", rs.getString("r.no"));
+					map.put("userId", rs.getString("users_id"));
+					map.put("contents", rs.getString("contents"));
+					map.put("fileName", rs.getString("file_name"));
+					map.put("title", rs.getString("title"));
+					map.put("date", rs.getString("date"));
+					map.put("recommend", rs.getString("recommend"));
+					map.put("notRecommend", rs.getString("not_recommend"));
 
+					arrBoard.add(map);
+
+				}
+				return arrBoard;
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
-		return arrBoard;
+		};
+
+		return template.execute();
 	}
 
 	public void plusRecommend(String id) {
 		String plusRecommend = "UPDATE recommend SET recommend = recommend+1 where no=?";
-		int no = Integer.parseInt(id);
-		try {
-			PreparedStatement ps = con.prepareStatement(plusRecommend);
-			ps.setInt(1, no);
-			ps.execute();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		QueryTemplate.executeQuery(plusRecommend);
 	}
 
-	public Board getBoard(int no) {
+	public Board getBoard(final int no) {
 		String selectBoard = "SELECT * from request_board where no = ?";
-		Board board = null;
-		try {
-			PreparedStatement ps = con.prepareStatement(selectBoard);
-			ps.setInt(1, no);
-			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				String title = rs.getString("title");
-				String contents = rs.getString("contents");
-				String usersId = Integer.toString(rs.getInt("users_id"));
-				String fileName = rs.getString("file_name");
-				String date = rs.getString("date");
+		ReadTemplate<Board> template = new ReadTemplate<Board>(selectBoard, no) {
 
-				board = new Board(title, contents, fileName, usersId,
-						Integer.toString(no), date);
+			@Override
+			public Board read(ResultSet rs) throws SQLException {
+				Board board;
+				while (rs.next()) {
+					String title = rs.getString("title");
+					String contents = rs.getString("contents");
+					String usersId = Integer.toString(rs.getInt("users_id"));
+					String fileName = rs.getString("file_name");
+					String date = rs.getString("date");
 
+					board = new Board(title, contents, usersId, no +"", date);
+					board.setFileName(fileName);
+					return board;
+				}
+				return null;
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return board;
+		};
+		return template.execute();
 	}
 
 	public void minusRecommend(String id) {
 		String minusRecommend = "UPDATE recommend SET not_recommend = not_recommend + 1 where no=?";
-		int no = Integer.parseInt(id);
-		try {
-			PreparedStatement ps = con.prepareStatement(minusRecommend);
-			ps.setInt(1, no);
-			ps.execute();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		QueryTemplate.executeQuery(minusRecommend, id);
 	}
 
 	/**
@@ -804,71 +709,65 @@ public class DAO {
 	 * @return
 	 */
 	public HashMap<String, Integer> getRecommend(int id) {
-		HashMap<String, Integer> recommendTable = new HashMap<String, Integer>();
+
 		String query = "SELECT * FROM recommend where no = ?";
-		try {
-			PreparedStatement ps = con.prepareStatement(query);
-			ps.setInt(1, id);
-			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
+		ReadTemplate<HashMap<String, Integer>> template = new ReadTemplate<HashMap<String, Integer>>(
+				query, id) {
 
-				int recommend = rs.getInt("recommend");
-				int notRecommend = rs.getInt("not_recommend");
+			@Override
+			public HashMap<String, Integer> read(ResultSet rs)
+					throws SQLException {
+				HashMap<String, Integer> recommendTable = new HashMap<String, Integer>();
+				while (rs.next()) {
 
-				recommendTable.put("recommend", recommend);
-				recommendTable.put("notRecommend", notRecommend);
+					int recommend = rs.getInt("recommend");
+					int notRecommend = rs.getInt("not_recommend");
 
+					recommendTable.put("recommend", recommend);
+					recommendTable.put("notRecommend", notRecommend);
+
+				}
+				return recommendTable;
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
-		return recommendTable;
+		};
+		return template.execute();
 
 	}
 
 	public void deleteWriting(String no) {
 		String requestBoardQuery = "delete from request_board where no=?";
 		String recommendQuery = "delete from recommend where no = ?";
-		int num = Integer.parseInt(no);
-		try {
-			PreparedStatement ps = con.prepareStatement(recommendQuery);
-			ps.setInt(1, num);
-			ps.execute();
-			ps = con.prepareStatement(requestBoardQuery);
-			ps.setInt(1, num);
-			ps.execute();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		QueryTemplate.executeQuery(requestBoardQuery, no);
+		QueryTemplate.executeQuery(recommendQuery, no);
 
 	}
 
 	public ArrayList<HashMap<String, Integer>> getRecommendList() {
 		String query = "SELECT * FROM recommend ORDER BY no DESC LIMIT 15";
-		ArrayList<HashMap<String, Integer>> arrRecommend = new ArrayList<HashMap<String, Integer>>();
-		try {
-			Statement state = con.createStatement();
-			ResultSet rs = state.executeQuery(query);
-			while (rs.next()) {
-				String no = rs.getString("no");
-				String recommend = rs.getString("recommend");
-				String notRecommend = rs.getString("not_recommend");
-				HashMap<String, Integer> map = new HashMap<String, Integer>();
-				map.put("no", Integer.parseInt(no));
-				map.put("recommend", Integer.parseInt(recommend));
-				map.put("notRecommend", Integer.parseInt(notRecommend));
+		ReadTemplate<ArrayList<HashMap<String, Integer>>> template = new ReadTemplate<ArrayList<HashMap<String, Integer>>>(
+				query) {
 
-				arrRecommend.add(map);
+			@Override
+			public ArrayList<HashMap<String, Integer>> read(ResultSet rs)
+					throws SQLException {
+				ArrayList<HashMap<String, Integer>> arrRecommend = new ArrayList<HashMap<String, Integer>>();
+				while (rs.next()) {
+					String no = rs.getString("no");
+					String recommend = rs.getString("recommend");
+					String notRecommend = rs.getString("not_recommend");
+					HashMap<String, Integer> map = new HashMap<String, Integer>();
+					map.put("no", Integer.parseInt(no));
+					map.put("recommend", Integer.parseInt(recommend));
+					map.put("notRecommend", Integer.parseInt(notRecommend));
 
+					arrRecommend.add(map);
+				}
+				return arrRecommend;
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return arrRecommend;
+
+		};
+		return template.execute();
 	}
 
 }

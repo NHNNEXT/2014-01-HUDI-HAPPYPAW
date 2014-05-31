@@ -90,7 +90,9 @@ public class AdminController {
 	public String checkIndividual(HttpServletRequest request) {
 		DAO dao = DAO.getInstance();
 		String users_id = request.getParameter("studentId");
-
+		if(users_id == "" || users_id == null)
+			return "redirect:/nyam/admin/nyamHistory";
+		
 		User user = dao.getUser(users_id);
 		String name = user.getName();
 		request.setAttribute("id", users_id);
@@ -103,13 +105,10 @@ public class AdminController {
 
 		Calendar cal = Calendar.getInstance();
 		int month = cal.get(Calendar.MONTH);
-		int year = cal.YEAR;
+		int year = cal.get(cal.YEAR);
 		DateInfo info = dao.setDate(year, month);
-		request.setAttribute("dayOfMonth", info.getDayOfMonth());
-		request.setAttribute("month", info.getMonth());
-		request.setAttribute("week", info.getWeek());
-		request.setAttribute("year", info.getYear());
-		request.setAttribute("yoil", info.getYoil());
+		request.setAttribute("dateInfo", info);
+
 
 		return "/admin/individual.jsp";
 	}

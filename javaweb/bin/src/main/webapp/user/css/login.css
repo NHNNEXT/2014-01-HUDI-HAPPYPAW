@@ -1,0 +1,35 @@
+@CHARSET "US-ASCII";
+.login_form {
+	width:300px;
+	height:250px;
+	text-align:center;
+	margin:200px auto;
+	border: 2px solid #ccc;
+	border-radius: 5px;
+	padding:20px 10px 10px;
+}
+.login_form .title {
+	font-weight:bold;
+	font-size:2em;
+	margin-bottom:20px;
+}
+.id, .ps {
+	width:200px;
+	height:35px;
+	text-indent:10px;
+	border:0;
+	border-bottom:1px solid #ccc;
+}
+button {
+	display:inline-block;
+	width:180px;
+	height:35px;
+	border:0;
+	background:#DF7743;
+	border-radius:5px;
+	-webkit-border-radius: 5px;
+	color:#fff;
+	font-size:1em;
+	font-weight:300;
+	margin:45px 0px 0px;
+}
