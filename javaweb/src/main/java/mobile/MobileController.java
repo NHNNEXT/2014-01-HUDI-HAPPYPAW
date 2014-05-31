@@ -6,11 +6,12 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import database.DAO;
 import model.Restaurant;
 import model.StampHistory;
 import annotation.Controller;
 import annotation.RequestMapping;
+import database.DAO;
+import database.RestaurantDAO;
 
 @Controller
 public class MobileController {
@@ -84,7 +85,16 @@ public class MobileController {
 		ArrayList<Restaurant> restList = dao.manageRestaurant();
 		return "text:" + JSON.makeJSON(restList);
 	}
-	
+	@RequestMapping("/m/restaurant/view")
+	public String restaurantView(HttpSession session, HttpServletRequest request) {
+		String no = request.getParameter("no");
+		RestaurantDAO dao = RestaurantDAO.getInstance();
+		HashMap<String, String> hash = dao.getRestaurant(no);
+		if(hash == null)
+			return "text:";
+		else
+			return "text:" + JSON.makeJSON(hash);
+	}	
 	@RequestMapping("/m/requestBoard")
 	public String requestBoard(HttpSession session, HttpServletRequest request) {
 		DAO dao = DAO.getInstance();
