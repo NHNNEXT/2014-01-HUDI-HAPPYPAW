@@ -9,11 +9,9 @@ ${board }
 		<form action="/nyam/board/sendContent" method="POST"
 			enctype="multipart/form-data">
 			<div class="writing">
-				<input type="text" name="title" value="${board.title} "  placeholder="Title"><br /> 
+				<input type="text" name="title" value="${board.title}"  placeholder="Title"><br /> 
 				
-				<textarea name="content" placeholder="Content">
-				${board.content }
-				</textarea><br/>
+				<textarea name="content" placeholder="Content">${board.content }</textarea><br/>
 			</div>
 			<div class="filebox">
 				<c:if test="${board.fileName != null}"></c:if>
