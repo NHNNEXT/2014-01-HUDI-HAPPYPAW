@@ -670,7 +670,7 @@ public class DAO {
 
 	public void plusRecommend(String id) {
 		String plusRecommend = "UPDATE recommend SET recommend = recommend+1 where no=?";
-		QueryTemplate.executeQuery(plusRecommend);
+		QueryTemplate.executeQuery(plusRecommend, id);
 	}
 
 	public Board getBoard(final int no) {
