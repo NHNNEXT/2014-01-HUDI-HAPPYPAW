@@ -12,7 +12,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -25,7 +24,6 @@ import model.Restaurant;
 import model.StampHistory;
 import model.User;
 
-import org.apache.poi.hssf.record.ObjRecord;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,41 +31,15 @@ import org.slf4j.LoggerFactory;
 public class DAO {
 	// xml을 키밸류로 만들고. xml을 읽어서 자바 오브젝트로 만들어서 띄워놓으면 얘를 사용할 수 있는 라이브러리를 써야된다.
 
-	 private String url = "jdbc:mysql://10.73.45.131/happypaw";
-	 private String user = "dayoungles";
-	 private String pw = "ekdudrmf2";
-//	private String url = "jdbc:mysql://127.0.0.1/happypaw";
-//	private String user = "dayg";
-//	private String pw = "ekdudrmf2";
 
-	private Connection con;
 	static DAO nyam;
 
 	private static Logger logger = LoggerFactory.getLogger(DAO.class);
 
 	private DAO() {
-		connect();
+		// connect();
 	}
 
-	public Connection connect() {
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			System.err.println("driver load error:");
-			return null;
-		}
-		System.out.println("driver loading success");
-		try {
-			con = DriverManager.getConnection(url, user, pw);
-
-		} catch (SQLException e) {
-			System.err.println("connect fail:" + e.getMessage());
-			return null;
-		}
-		System.out.println("connection success");
-		return con;
-	}
 
 	public static DAO getInstance() {
 		if (nyam == null) {
@@ -76,72 +48,98 @@ public class DAO {
 		return nyam;
 	}
 
+
+
 	/**
 	 * selectMonthHistory에서 시작, 끝 날짜 설정하는 함수
-	 * 
 	 * @param day
 	 * @return
 	 */
 	private String makePeriod(String day, int year, int month) {
-		Calendar cal = Calendar.getInstance();
-
-		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
 		String datee = null;
+		try {
 
-		if (day.equals("first")) {
-			cal.set(year, month, 1);
-			datee = date.format(cal.getTime());
-			datee += " 00:00:00";
+			Calendar cal = Calendar.getInstance();
 
-		} else {
-			cal.set(year, month, 1);
-			int dayOfMonth = cal.getActualMaximum(cal.DAY_OF_MONTH);
-			cal.set(year, month, dayOfMonth);
-			datee = date.format(cal.getTime());
-			datee += " 23:59:59";
+			SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+
+			if (day.equals("first")) {
+				cal.set(year, month, 1);
+				datee = date.format(cal.getTime());
+				datee += " 00:00:00";
+			} else {
+				cal.set(year, month, 1);
+				int dayOfMonth = cal.getActualMaximum(cal.DAY_OF_MONTH);
+				cal.set(year, month, dayOfMonth);
+				datee = date.format(cal.getTime());
+				datee += " 23:59:59";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
 		return datee;
 	}
 
-	public ArrayList<StampHistory> selectMonthHistory(String users_id) {
+	public ArrayList<StampHistory> selectMonthHistory(String users_id)
+			throws SQLException {
 		Calendar calendar = Calendar.getInstance();
 		int year = calendar.get(Calendar.YEAR);
 		int month = calendar.get(Calendar.MONTH);
+
 		return this.selectMonthHistory(users_id, year, month);
 	}
 
 	public ArrayList<StampHistory> selectMonthHistory(String users_id,
-			int year, int month) {
+			int year, int month) throws SQLException {
 
 		ArrayList<StampHistory> stampList = new ArrayList<StampHistory>();
 		String firstDay = makePeriod("first", year, month);
 		String lastDay = makePeriod("last", year, month);
 		String query = "select * from stamp_history where users_id = ? and regdate > ? and regdate < ?";
-		PreparedStatement selHistory;
-		try {
-			selHistory = con.prepareStatement(query);
+//		PreparedStatement selHistory = null;
+//		ResultSet rs = null;
+//
+//		try {
+//			connect();
+//			selHistory = con.prepareStatement(query);
+//
+//			selHistory.setString(1, users_id);
+//			selHistory.setString(2, firstDay);
+//			selHistory.setString(3, lastDay);
+//
+//			rs = selHistory.executeQuery();
+//			while (rs.next()) {
+//				String id = rs.getString("users_id");
+//				String regdate = rs.getString("regDate");
+//				int restaurant = rs.getInt("restaurant_no");
+//				stampList.add(new StampHistory(id, regdate, restaurant));
+//			}
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} finally {
+//			rs.close();
+//			selHistory.close();
+//			close();
+//
+//		}
+		
+		DAOTemplate template = new ReadTemplate(query, users_id, firstDay, lastDay) {
 
-			selHistory.setString(1, users_id);
-			selHistory.setString(2, firstDay);
-			selHistory.setString(3, lastDay);
-
-			ResultSet rs = selHistory.executeQuery();
-			while (rs.next()) {
-				String id = rs.getString("users_id");
-				String regdate = rs.getString("regDate");
-				int restaurant = rs.getInt("restaurant_no");
-				stampList.add(new StampHistory(id, regdate, restaurant));
+			@Override
+			public Object read(ResultSet rs) throws SQLException {
+				ArrayList<StampHistory> stampList = new ArrayList<StampHistory>();
+				while (rs.next()) {
+					String id = rs.getString("users_id");
+					String regdate = rs.getString("regDate");
+					int restaurant = rs.getInt("restaurant_no");
+					stampList.add(new StampHistory(id, regdate, restaurant));
+				}
+				return stampList;
 			}
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			// rs.close();
-			// selHistory.close();
-		}
-		return stampList;
+			
+		};
+		return (ArrayList<StampHistory>)template.execute();
 	}
 
 	/**
@@ -150,8 +148,9 @@ public class DAO {
 	 * @param users_id
 	 * @param qrDate
 	 * @param restaurant
+	 * @throws SQLException 
 	 */
-	public boolean insertHistory(String users_id, String qrDate, int restaurant) {
+	public boolean insertHistory(String users_id, String qrDate, int restaurant) throws SQLException {
 		if (!checkRestaurant(qrDate, restaurant)) {
 			System.out.println("해당 정보 없음... date : " + qrDate
 					+ "   restaurant : " + restaurant);
@@ -162,22 +161,27 @@ public class DAO {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String nowDate = sdf.format(cal.getTime());
 		String insertQuery = "INSERT INTO stamp_history(users_id, regdate, restaurant_no) VALUES (?, ?, ?)";
-
-		try {
-			PreparedStatement insertHistory;
-			insertHistory = con.prepareStatement(insertQuery);
-			insertHistory.setString(1, users_id);
-			insertHistory.setString(2, nowDate);
-			insertHistory.setInt(3, restaurant);
-			insertHistory.execute();
-			insertHistory.close();
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-		return true;
+//		try {
+//			connect();
+//			PreparedStatement insertHistory;
+//			insertHistory = con.prepareStatement(insertQuery);
+//			insertHistory.setString(1, users_id);
+//			insertHistory.setString(2, nowDate);
+//			insertHistory.setInt(3, restaurant);
+//			insertHistory.execute();
+//			insertHistory.close();
+//
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			return false;
+//		} finally{
+//			close();
+//		}
+//		
+//		
+		DAOTemplate template = new QueryTemplate(insertQuery, users_id, nowDate, restaurant) {};
+		return (boolean) template.execute();
 	}
 
 	/**
@@ -186,32 +190,23 @@ public class DAO {
 	 * @param qrDate
 	 * @param restaurant
 	 * @return boolean
+	 * @throws SQLException 
 	 */
-	private boolean checkRestaurant(String qrDate, int restaurant) {
+	private boolean checkRestaurant(String qrDate, int restaurant) throws SQLException {
 		/*
 		 * 레스토랑 테이블에서 레스토랑 넘버를 가지고 업데이트 날짜를 받아온다. 업데이트 날짜랑 큐알데이트가 다르면 return
 		 * false; 업데이트 날짜랑 같으면 return true;
 		 */
-		String checkQuery = "select * from restaurant where no = ? and renew = ?;";
-		try {
-			PreparedStatement statement = con.prepareStatement(checkQuery);
-			statement.setInt(1, restaurant);
-			statement.setString(2, qrDate);
-			ResultSet rs = statement.executeQuery();
-			int count = 0;
-
-			while (rs.next()) {
-				count++;
+		String checkQuery = "select count(*) as c from restaurant where no = ? and renew = ?;";
+		ReadTemplate template = new ReadTemplate(checkQuery, restaurant, qrDate){
+			@Override
+			public Object read(ResultSet rs) throws SQLException {
+				rs.next();
+				int count = rs.getInt("c");
+				return count == 1;
 			}
-			if (count == 1)
-				return true;
-			rs.close();
-			statement.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return false;
+		};
+		return (boolean) template.execute();
 
 	}
 
@@ -220,31 +215,52 @@ public class DAO {
 	 * 
 	 * @param id
 	 * @return
+	 * @throws SQLException 
 	 */
-	public User getUser(String id) {
+	public User getUser(String id) throws SQLException {
+//		String query = "select * from users where id = ?";
+//		ResultSet rs= null;
+//		PreparedStatement statement = null;
+//		try {
+//			connect();
+//			statement = con.prepareStatement(query);
+//			statement.setString(1, id);
+//			rs = statement.executeQuery();
+//			while (rs.next()) {
+//				String users_id = rs.getString("id");
+//				String ps = "next";
+//				String name = rs.getString("name");
+//
+//				User user = new User(users_id, ps, name);
+//				rs.close();
+//				statement.close();
+//				return user;
+//			}
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} finally{
+//			rs.close();
+//			statement.close();
+//			close();
+//		}
+		
 		String query = "select * from users where id = ?";
+		ReadTemplate template = new ReadTemplate(query, id){
+			@Override
+			public Object read(ResultSet rs) throws SQLException {
+				while (rs.next()) {
+					String users_id = rs.getString("id");
+					String ps = "next";
+					String name = rs.getString("name");
 
-		try {
-			PreparedStatement statement = con.prepareStatement(query);
-			statement.setString(1, id);
-			ResultSet rs = statement.executeQuery();
-			while (rs.next()) {
-				String users_id = rs.getString("id");
-				String ps = "next";
-				String name = rs.getString("name");
-
-				User user = new User(users_id, ps, name);
-				rs.close();
-				statement.close();
-				return user;
+					User user = new User(users_id, ps, name);
+					return user;
+				}
+				return null;
 			}
-			rs.close();
-			statement.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+		};
+		return (User) template.execute();
 	}
 
 	/**
@@ -254,14 +270,17 @@ public class DAO {
 	 * @param year
 	 * 
 	 * @return ArrayList<NyamList>
+	 * @throws SQLException 
 	 */
-	public ArrayList<NyamList> adminNyamHistory(int year, int month) {
+	public ArrayList<NyamList> adminNyamHistory(int year, int month) throws SQLException {
 		String userQuery = "SELECT * FROM users";
 		ArrayList<NyamList> nyamList = new ArrayList<NyamList>();
-
+		Statement st  = null;
+		ResultSet rs = null;
 		try {
-			Statement st = con.createStatement();
-			ResultSet rs = st.executeQuery(userQuery);
+			connect();
+			st = con.createStatement();
+			rs = st.executeQuery(userQuery);
 			while (rs.next()) {
 
 				String users_id = rs.getString("id");
@@ -269,10 +288,12 @@ public class DAO {
 				int sum = selectMonthHistory(users_id, year, month).size();
 				nyamList.add(new NyamList(users_id, users_name, sum));
 			}
-			rs.close();
-			st.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally{
+			rs.close();
+			st.close();
+			close();
 		}
 		return nyamList;
 	}
@@ -309,8 +330,9 @@ public class DAO {
 	 * 엑셀을 파일로 내보내는 함수.
 	 * 
 	 * @param path
+	 * @throws SQLException 
 	 */
-	public void exportExcel(String path) {
+	public void exportExcel(String path) throws SQLException {
 		System.out.println("exportExcel");
 		MakeExcel me = new MakeExcel();
 		int year = 2013;// 임의 지정 수정해야합니다.
@@ -371,23 +393,29 @@ public class DAO {
 	 * @throws SQLException
 	 */
 	public void renewQrcode(String restaurantNo) throws SQLException {
+//		Calendar cal = Calendar.getInstance();
+//		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//		String ymd = date.format(cal.getTime());
+//		String query = "update restaurant set renew = ? where no = ?";
+//		PreparedStatement pst = null;
+//		try {
+//			pst = con.prepareStatement(query);
+//			pst.setString(1, ymd);
+//			pst.setInt(2, Integer.parseInt(restaurantNo));
+//			pst.executeUpdate();
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} finally {
+//			pst.close();
+//		}
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String ymd = date.format(cal.getTime());
+		String ymd = date.format(cal.getTime());		
 		String query = "update restaurant set renew = ? where no = ?";
-		PreparedStatement pst = null;
-		try {
-			pst = con.prepareStatement(query);
-			pst.setString(1, ymd);
-			pst.setInt(2, Integer.parseInt(restaurantNo));
-			pst.executeUpdate();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			pst.close();
-		}
-
+		DAOTemplate template = new QueryTemplate(query, ymd, Integer.parseInt(restaurantNo)) {};
+		template.execute();
+		
 		return;
 	}
 
@@ -597,15 +625,6 @@ public class DAO {
 		return rankingList;
 	}
 
-	public void close() {
-		try {
-			con.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 	/**
 	 * 로그인 돼있는지 boolean으로 확인
 	 * 
@@ -635,8 +654,8 @@ public class DAO {
 		String insertRequestBoard;
 		String insertRecommend;
 		if (board.getFileName() == null) {
-			 insertRequestBoard = "INSERT INTO request_board (title, contents, users_id) values (?,?,?)";
-			 
+			insertRequestBoard = "INSERT INTO request_board (title, contents, users_id) values (?,?,?)";
+
 			try {
 				ps = con.prepareStatement(insertRequestBoard);
 				ps.setString(1, board.getTitle());
@@ -647,36 +666,35 @@ public class DAO {
 				e.printStackTrace();
 			}
 		} else {
-			 insertRequestBoard = "INSERT INTO request_board (title, contents, users_id, file_name) values (?,?,?,?)";
+			insertRequestBoard = "INSERT INTO request_board (title, contents, users_id, file_name) values (?,?,?,?)";
 			try {
 				ps = con.prepareStatement(insertRequestBoard);
 				ps.setString(1, board.getTitle());
 				ps.setString(2, board.getContent());
 				ps.setString(3, board.getUserId());
 				ps.setString(4, board.getFileName());
-				ps.execute();//왜 에러가 여기서 나지. 되던게?;;;
+				ps.execute();// 왜 에러가 여기서 나지. 되던게?;;;
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		insertRecommendNo();//foreign keyㅋㅋ연동!
+		insertRecommendNo();// foreign keyㅋㅋ연동!
 
 	}
-	
+
 	/**
-	 * 글 하나를 생성하면 글 no가 생기는데, 그 no를 찾아서 추천 테이블에 입력해주는 것.
-	 * 그런데 이 상태로라면 문제가 생길 수 있다.title이랑 전부다 매치하는게 효율적으로는 떨어지지만 정확한데, 
-	 * 어떤게 더 좋은 잘 모르겠음. 
+	 * 글 하나를 생성하면 글 no가 생기는데, 그 no를 찾아서 추천 테이블에 입력해주는 것. 그런데 이 상태로라면 문제가 생길 수
+	 * 있다.title이랑 전부다 매치하는게 효율적으로는 떨어지지만 정확한데, 어떤게 더 좋은 잘 모르겠음.
 	 */
-	public void insertRecommendNo(){
-		
+	public void insertRecommendNo() {
+
 		String insertRecommend = "INSERT INTO recommend(no) values (?)";
 		String selectNo = "SELECT (no) FROM request_board ORDER BY no DESC LIMIT 1";
 		try {
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(selectNo);
 			int no = 0;
-			while(rs.next()){
+			while (rs.next()) {
 				no = rs.getInt("no");
 			}
 			PreparedStatement ps = con.prepareStatement(insertRecommend);
@@ -689,22 +707,23 @@ public class DAO {
 	}
 
 	/**
-	 * boardList페이지 함수. 글을 15개 찾아서되돌려준다.  
+	 * boardList페이지 함수. 글을 15개 찾아서되돌려준다.
+	 * 
 	 * @return 어레이 리스트<hashmap>ㅋ
 	 */
 	public ArrayList<HashMap<String, String>> getBoardList() {
 		Statement state;
 		ResultSet rs;
 		ArrayList<HashMap<String, String>> arrBoard = new ArrayList<HashMap<String, String>>();
-		String query= "select * from request_board b inner join recommend r on b.no = r.no order by r.no desc limit 15;";
+		String query = "select * from request_board b inner join recommend r on b.no = r.no order by r.no desc limit 15;";
 		try {
 			state = con.createStatement();
-			rs= state.executeQuery(query);
-			while(rs.next()){
+			rs = state.executeQuery(query);
+			while (rs.next()) {
 				HashMap<String, String> map = new HashMap<String, String>();
 				String writer = rs.getString("users_id");
 				User user = getUser(writer);
-				
+
 				map.put("no", rs.getString("r.no"));
 				map.put("userId", rs.getString("users_id"));
 				map.put("contents", rs.getString("contents"));
@@ -715,7 +734,7 @@ public class DAO {
 				map.put("notRecommend", rs.getString("not_recommend"));
 
 				arrBoard.add(map);
-						
+
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -736,31 +755,32 @@ public class DAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public Board getBoard(int no) {
 		String selectBoard = "SELECT * from request_board where no = ?";
-		Board board = null ;
+		Board board = null;
 		try {
 			PreparedStatement ps = con.prepareStatement(selectBoard);
 			ps.setInt(1, no);
-			ResultSet rs  = ps.executeQuery();
-			while(rs.next()){
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
 				String title = rs.getString("title");
 				String contents = rs.getString("contents");
 				String usersId = Integer.toString(rs.getInt("users_id"));
 				String fileName = rs.getString("file_name");
 				String date = rs.getString("date");
 
-				board = new Board(title, contents, fileName,usersId, Integer.toString(no), date );
-				
+				board = new Board(title, contents, fileName, usersId,
+						Integer.toString(no), date);
+
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
+
 		return board;
 	}
 
@@ -774,10 +794,12 @@ public class DAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
+		}
 	}
+
 	/**
-	 * pageview에서 추천 비추천 확인하도록. 
+	 * pageview에서 추천 비추천 확인하도록.
+	 * 
 	 * @param id
 	 * @return
 	 */
@@ -788,22 +810,22 @@ public class DAO {
 			PreparedStatement ps = con.prepareStatement(query);
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
-			while(rs.next()){
-				
+			while (rs.next()) {
+
 				int recommend = rs.getInt("recommend");
 				int notRecommend = rs.getInt("not_recommend");
-				
+
 				recommendTable.put("recommend", recommend);
 				recommendTable.put("notRecommend", notRecommend);
-				
+
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return recommendTable;
-		
+
 	}
 
 	public void deleteWriting(String no) {
@@ -812,7 +834,7 @@ public class DAO {
 		int num = Integer.parseInt(no);
 		try {
 			PreparedStatement ps = con.prepareStatement(recommendQuery);
-			ps.setInt(1, num );
+			ps.setInt(1, num);
 			ps.execute();
 			ps = con.prepareStatement(requestBoardQuery);
 			ps.setInt(1, num);
@@ -821,16 +843,16 @@ public class DAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public ArrayList<HashMap<String, Integer>> getRecommendList() {
-		String query= "SELECT * FROM recommend ORDER BY no DESC LIMIT 15";
-		ArrayList<HashMap<String, Integer>> arrRecommend = new ArrayList<HashMap<String,Integer>>();
+		String query = "SELECT * FROM recommend ORDER BY no DESC LIMIT 15";
+		ArrayList<HashMap<String, Integer>> arrRecommend = new ArrayList<HashMap<String, Integer>>();
 		try {
 			Statement state = con.createStatement();
-			ResultSet rs= state.executeQuery(query);
-			while(rs.next()){
+			ResultSet rs = state.executeQuery(query);
+			while (rs.next()) {
 				String no = rs.getString("no");
 				String recommend = rs.getString("recommend");
 				String notRecommend = rs.getString("not_recommend");
@@ -838,9 +860,9 @@ public class DAO {
 				map.put("no", Integer.parseInt(no));
 				map.put("recommend", Integer.parseInt(recommend));
 				map.put("notRecommend", Integer.parseInt(notRecommend));
-				
+
 				arrRecommend.add(map);
-						
+
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -848,36 +870,5 @@ public class DAO {
 		}
 		return arrRecommend;
 	}
-	
-	
-	
-	
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

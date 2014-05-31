@@ -132,10 +132,5 @@ public class Core extends HttpServlet {
 
 	}
 
-	
-	@Override	
-	public void destroy(){
-		System.out.println("DESTROY");
-		DAO.getInstance().close();
-	 }
+
 }
