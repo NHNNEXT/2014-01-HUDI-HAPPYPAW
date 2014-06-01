@@ -138,6 +138,10 @@ public class MobileController extends DefaultController{
 		User user = getLoginuser(session);
 		DAO dao = DAO.getInstance();
 		String originalFileName, uploadPath;
+		
+		
+		
+		boolean is_multipart = request.getContentType().indexOf("multipart") != -1;
 		int size = 10 * 1024 * 1024;
 		MultipartRequest multipart = null;
 		//uploadPath = "/Users/dayoungle/Documents/fileUpload";
@@ -146,21 +150,28 @@ public class MobileController extends DefaultController{
 		String realPath = request.getSession().getServletContext().getRealPath("/");
 		realPath += "../images/";
 		
-		
-		try {
-			multipart = new MultipartRequest(request, realPath, size,
-					"UTF-8", new controller.MyFileRenamePolicy());
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		String title = null;
+		String content = null;
+		String usersId = user.getId();
+		if(is_multipart) {
+			try {
+				multipart = new MultipartRequest(request, realPath, size,
+						"UTF-8", new controller.MyFileRenamePolicy());
+				is_multipart = multipart.getOriginalFileName("file") == null;
+				title = multipart.getParameter("title");
+				content = multipart.getParameter("content");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+		} else {
+			title = request.getParameter("title");
+			content = request.getParameter("content");
 		}
 
-		String title = multipart.getParameter("title");
-		String content = multipart.getParameter("content");
-		String usersId = user.getId();
 
-
-		if (multipart.getOriginalFileName("file") == null) {
+		if (!is_multipart) {
 			board = new Board(title, content, usersId);
 			
 		} else {
