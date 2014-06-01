@@ -31,6 +31,9 @@ public class JSON {
 			Object key = iterator.next();
 			String value = hash.get(key) + "";
 			value = value.replace("\"", "\\\"");
+			value = value.replace("\r", "");
+			value = value.replace("\t", "");
+			value = value.replace("\n", "");
 			try {
 				int number = Integer.parseInt(value);
 				json += "\"" + key + "\"" + ":" + number;
@@ -47,7 +50,9 @@ public class JSON {
 		Method[] methods = obj.getClass().getMethods();
 		if (obj instanceof HashMap)
 			return makeJSON((HashMap) obj);
-
+		else if(obj instanceof ArrayList)
+			return makeJSON((ArrayList) obj);
+		
 		String sValue = "";
 		String json = "{";
 		for (int i = 0; i < methods.length; i++) {
@@ -66,7 +71,10 @@ public class JSON {
 					Object value = method.invoke(obj, new Object[] {});
 					System.out.println(value.getClass().toString());
 					sValue = value.toString();
-
+					sValue = sValue.replace("\"", "\\\"");
+					sValue = sValue.replace("\r", "");
+					sValue = sValue.replace("\t", "");
+					sValue = sValue.replace("\n", "");
 				} catch (IllegalAccessException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
