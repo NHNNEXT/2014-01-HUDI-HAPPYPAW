@@ -4,6 +4,8 @@ public class User {
 	private String id;
 	private String ps;
 	private String name;
+	private int num;
+	
 	
 	public User (String id, String ps, String name){
 		this.id = id;
@@ -38,5 +40,10 @@ public class User {
 	public boolean checkPs(String inputPs){
 		return this.ps.equals(inputPs);//happy zzangzzang puppy coding dog
 	}
-	
+	public int getNum() {
+		return this.num;
+	}
+	public void setNum(int num) {
+		this.num = num;
+	}
 }
