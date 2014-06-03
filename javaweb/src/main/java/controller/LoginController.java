@@ -1,22 +1,31 @@
 package controller;
 
-import javax.servlet.RequestDispatcher;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import database.DAO;
 import model.User;
 import annotation.Controller;
 import annotation.RequestMapping;
+import database.DAO;
 
 @Controller
 public class LoginController extends DefaultController{
 	
 	@RequestMapping("/login")
-	public String loginPage(HttpSession session){
+	public String loginPage(HttpServletRequest request, HttpSession session){
 		String id = (String) session.getAttribute("users_id");
+		String error = (String) session.getAttribute("error");
+		if(error == null)
+			error = "";
+		
+		if(error != "")
+				session.removeAttribute("error");
+			
 		if(id == null || id.equals("")){
+			request.setAttribute("error", error);
 			return "/user/login.jsp";
 		} else {
 			//http://localhost/nyam/app/nyamHistory
@@ -44,6 +53,11 @@ public class LoginController extends DefaultController{
 			User user = db.getUser(jspId);
 			
 			if(user == null) {
+			
+				//request.getRequestDispatcher("").
+				//response.setStatus(302); //this makes the redirection keep your requesting method as is.
+				//response.addHeader("Location", "http://address.to/redirect");
+				session.setAttribute("error", "아이디가 없거나 비밀번호가 틀렸습니다.");
 				return goLoginPage();
 			} else if(user.checkPs(jspPs)){
 				session.setAttribute("users_id", jspId);

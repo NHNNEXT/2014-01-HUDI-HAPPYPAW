@@ -11,6 +11,11 @@
 <body>
 	<div class="login_form">
 		<p class="title">넥스트인의 정식</p>
+		<%if(request.getAttribute("error") != "") {%>
+			<div class="error-message">
+				${error}
+			</div>
+		<%} %>
 		<form action="./login_check" method="POST">
 			<input type ="text" name="id" class="id" placeholder="id"><br>
 			<input type="password" name="password" class="ps" placeholder="password">
