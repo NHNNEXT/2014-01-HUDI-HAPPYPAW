@@ -35,7 +35,7 @@ public class Hfilter implements Filter {
 				req.getContextPath().length());
 		String uri = req.getRequestURI();
 		
-		System.out.println(this.encoding + "   " +  request.getCharacterEncoding());
+		//System.out.println(this.encoding + "   " +  request.getCharacterEncoding());
 
 		if (this.encoding != null
 				&& (this.forceEncoding || request.getCharacterEncoding() == null)) {
