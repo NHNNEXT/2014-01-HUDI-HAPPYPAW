@@ -1,3 +1,7 @@
+//여기 코드는 전반적으로 100,3000,1265,60,1.5 4,25 등등 어떤 걸 의미하는 숫자인지 모르는 코드가 너무 많음.
+//read()함수 아래 있는 것중 비슷한 일을 하는 놈들인 click이벤트 핸들러 등록 부분을 그루핑해서 다른 함수에서 처리하는 게 어떨까 함.
+//initRangkingdata, initraingsign 함수도 작은 객체에 담아두고 관리하기.
+
 function initRankingData() {
 	var people ='<div class="people" data-num="{num}" data-id="{id}"><img src="./img/profile1.jpg" alt=""/><div class="desc">{name}</div></div>';
 

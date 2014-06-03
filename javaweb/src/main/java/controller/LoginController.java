@@ -16,7 +16,7 @@ public class LoginController extends DefaultController{
 	@RequestMapping("/login")
 	public String loginPage(HttpSession session){
 		String id = (String) session.getAttribute("users_id");
-		if(id == null || id.equals("")){
+		if(id == null || id.equals("")){ //null체크해주는 함수를 사용해도 되겠는데, 아님 만들던가?
 			return "/user/login.jsp";
 		} else {
 			//http://localhost/nyam/app/nyamHistory
@@ -48,6 +48,7 @@ public class LoginController extends DefaultController{
 			} else if(user.checkPs(jspPs)){
 				session.setAttribute("users_id", jspId);
 				
+				//이하 return으로 처리되는 url이 모두 다 동일한데 각각 조건마다 써줘야 할까?
 				System.out.println("login complete :"+ jspId);
 				return "redirect:/nyam/ranking";
 			} else {

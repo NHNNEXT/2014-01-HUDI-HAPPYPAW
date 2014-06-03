@@ -2,7 +2,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!-- 위의 doctype을 html5버전으로 사용하면,
+<!DOCTYPE html>
+으로 사용할 수 있음.
+ -->
+ <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" type="text/css" href="../css/reset.css" />
@@ -72,6 +76,7 @@
 
 		elList.addEventListener("click",function(e) {
 			var elTarget = e.target;
+			//console코드는 이제 삭제하고,,(이대로 출시되면 안됨으로).. 가급적 디버깅을 하기 위해서는 크롬개발자도구에서 직접 해당 소스코드를 찾아서 breakpoint를 걸고 디버깅을 해보는 게 좋음.
 			console.log("target:" + e.target);
 			for (var a = 0,yearLen = year.length; a < yearLen ; a++) {
 				console.log("year" + year[a]);

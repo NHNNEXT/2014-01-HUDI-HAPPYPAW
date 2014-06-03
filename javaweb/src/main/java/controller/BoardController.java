@@ -33,6 +33,8 @@ public class BoardController extends DefaultController{
 		return "/board/writing.jsp";
 	}
 
+	//이정도 규모는 메소드 단위로 잘게 쪼개도 되겠지?
+	//예외처리를 몇 군데 했는데 잘 마무리 된 것인지는 예상상황을 의도적으로 만들어서 한 번 테스트 해보는 것도 좋을 듯.
 	@RequestMapping("/board/sendContent")
 	public String storeContent(HttpServletRequest request, HttpSession session) {
 		User user = getLoginuser(session);
@@ -58,6 +60,7 @@ public class BoardController extends DefaultController{
 			e1.printStackTrace();
 		}
 
+		//변수값은 가급적 함수 윗 부분으로 옮겨두는 게 좋지 않나?
 		String title = multipart.getParameter("title");
 		String content = multipart.getParameter("content");
 		String usersId = user.getId();

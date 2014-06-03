@@ -191,6 +191,7 @@ public class UserController {
 		HashMap<String, Integer> map = dao.arrangeNyamHistory(stampList);
 		request.setAttribute("nyamPerDay", map);
 
+		//가능하면 아래 7라인 정도는 하나로 묶어서 다른 함수에서 처리할 수 있을까?
 		DateInfo info = dao.setDate(year, month);
 		request.setAttribute("dayOfMonth", info.getDayOfMonth());
 		request.setAttribute("month", info.getMonth());

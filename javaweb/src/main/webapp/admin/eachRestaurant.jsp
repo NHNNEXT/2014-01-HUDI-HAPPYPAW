@@ -4,7 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" type="text/css" href="../css/reset.css"/>
+<!-- css파일을 모두 상대경로로 썻는데 나중에 jsp위치가 바꿀 수도 있으니..보통은 절대경로로 작성하는 게 좋음.
+ -->
+ <link rel="stylesheet" type="text/css" href="../css/reset.css"/>
 <link rel="stylesheet" type="text/css" href="../css/layout.css"/>
 <link rel="stylesheet" type="text/css" href="./css/history.css"/>
 <title>넥스트인의 정식</title>
