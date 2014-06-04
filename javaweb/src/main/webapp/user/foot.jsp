@@ -1,16 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-	
-	</section>
-	<aside>
+	pageEncoding="UTF-8" import="model.User"%>
+<%
+	User user = User.getLoginuser(session);
+%>
+</section>
+<aside>
 	<div class="login_box">
 		<p>
 			ID :
-			<%=request.getAttribute("session")%><!-- id -->
+			<%=user.getId()%><!-- id -->
 		</p>
 		<p>
 			Name :
-			<%=request.getAttribute("name")%></p>
+			<%=user.getName()%></p>
 		<p>
 			<a href="./logout">logout</a>
 		</p>
@@ -24,7 +26,7 @@
 			<li><a href="/nyam/board/boardList">지정식당 신청 게시판</a></li>
 		</ul>
 	</div>
-	</aside>
+</aside>
 
 </body>
 </html>

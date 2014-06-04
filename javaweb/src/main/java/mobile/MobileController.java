@@ -3,7 +3,11 @@ package mobile;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import java.util.Enumeration;
+
+import java.util.Calendar;
+
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +27,6 @@ import annotation.RequestMapping;
 import com.oreilly.servlet.MultipartRequest;
 
 import controller.DefaultController;
-import controller.UserController;
 import database.DAO;
 import database.RestaurantDAO;
 
@@ -74,7 +77,6 @@ public class MobileController extends DefaultController{
 	public String m_nyamHistory(HttpSession session, HttpServletRequest request) {
 		DAO db = DAO.getInstance();
 
-
 		// 세션에서 아이디를 못찾으면 로그인 페이지로 퉁
 		String id = (String) session.getAttribute("users_id");
 		if (id == null || id == "") {
@@ -85,34 +87,37 @@ public class MobileController extends DefaultController{
 		request.setAttribute("record", stampList);
 
 		// json으로 만든걸 쉼표로 모두 연결?
-//		String jsonString = "[";
-//		for (int i = 0; i < stampList.size(); i++) {
-//			if (i != 0)
-//				jsonString += ",";
-//			jsonString += JSON.makeJSON(stampList.get(i));
-//		}
-//		jsonString += "]";
+		// String jsonString = "[";
+		// for (int i = 0; i < stampList.size(); i++) {
+		// if (i != 0)
+		// jsonString += ",";
+		// jsonString += JSON.makeJSON(stampList.get(i));
+		// }
+		// jsonString += "]";
 		String jsonString = JSON.makeJSON(stampList);
 		// 얘네 json 어떻게 html로 보내주지?
 		return "text:" + jsonString;
 	}
+
 	@RequestMapping("/m/restaurant")
 	public String restaurant(HttpSession session, HttpServletRequest request) {
 		DAO dao = DAO.getInstance();
 		ArrayList<Restaurant> restList = dao.manageRestaurant();
 		return "text:" + JSON.makeJSON(restList);
 	}
+
 	@RequestMapping("/m/restaurant/view")
 	public String restaurantView(HttpSession session, HttpServletRequest request) {
 		String no = request.getParameter("no");
 		RestaurantDAO dao = RestaurantDAO.getInstance();
 		HashMap<String, String> hash = dao.getRestaurant(no);
-		if(hash == null)
+		if (hash == null)
 			return "text:";
 		else
 			return "text:" + JSON.makeJSON(hash);
 	}	
 	
+
 	@RequestMapping("/m/requestBoard")
 	public String requestBoard(HttpSession session, HttpServletRequest request) {
 		DAO dao = DAO.getInstance();
@@ -190,6 +195,26 @@ public class MobileController extends DefaultController{
 		logger.debug(board.toString());
 		dao.insertBoard(board);//보드에 정보입력.
 		return "text:" + JSON.makeJSON(InfoMessage.getMessage(200, "OK"));
+	}
+
+	@RequestMapping("/m/ranking")
+	public String showRankingAll(HttpSession session, HttpServletRequest request) {
+		DAO dao = DAO.getInstance();
+		Calendar calendar = Calendar.getInstance();
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH) + 1;
+		ArrayList<HashMap<String, String>> nyamRanking = dao.rankingHistory(
+				year, month - 1);
+
+		return "text:" + JSON.makeJSON(nyamRanking);
+	}
+	@RequestMapping("/m/myranking")
+	public String showMyRanking(HttpSession session, HttpServletRequest request) {
+		DAO dao = DAO.getInstance();
+
+		//ArrayList<HashMap<String, String>> nyamRanking = 
+
+		return "text:" + "";
 	}
 
 }

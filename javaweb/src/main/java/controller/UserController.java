@@ -57,20 +57,20 @@ public class UserController {
 			month = Integer.parseInt(request.getParameter("month"));
 			year = Integer.parseInt(request.getParameter("year"));
 
+			month = month - 1;
 			if (month < 0) {
 				year -= 1;
 				month = 11;
-			} else if (month > 11) {
+			} else if (month >= 12) {
 				year += 1;
 				month = 0;
 			}
 			// 다음달을 눌러도 현재 달 다음달로 가려고 하면 안되게 막아버림. 더 좋은 코드가 있을 듯. 연규느님.
-			if (month > currentMonth) {
+			if (month > currentMonth && year >= currentYear) {
 				year = currentYear;
 				month = currentMonth;
 			}
 		} else {
-
 			month = currentMonth;
 			year = currentYear;
 		}
@@ -82,11 +82,8 @@ public class UserController {
 		HashMap<String, Integer> map = db.arrangeNyamHistory(stampList);
 
 		request.setAttribute("nyamPerDay", map);
-		request.setAttribute("dayOfMonth", info.getDayOfMonth());
-		request.setAttribute("month", info.getMonth());
-		request.setAttribute("week", info.getWeek());
-		request.setAttribute("year", info.getYear());
-		request.setAttribute("yoil", info.getYoil());
+		request.setAttribute("dateinfo", info);
+
 
 		return "/user/userNyamHistory.jsp";
 	}

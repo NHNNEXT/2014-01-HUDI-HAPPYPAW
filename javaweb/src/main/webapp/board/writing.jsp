@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@include file="../user/userHead.jsp"%>
+<%@include file="../user/head.jsp"%>
 
 <link rel="stylesheet" type="text/css" href="./css/writing.css">
 ${board }
@@ -24,4 +24,4 @@ ${board }
 		</form>
 	</div>
 
-<%@include file="../user/userFoot.jsp"%>
+<%@include file="../user/foot.jsp"%>

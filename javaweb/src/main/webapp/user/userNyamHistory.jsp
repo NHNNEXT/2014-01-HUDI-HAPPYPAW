@@ -2,18 +2,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" import="java.util.*, model.*"%>
 
-<%@include file="./userHead.jsp" %>
+<%@include file="./head.jsp" %>
 <link rel="stylesheet" type="text/css" href="/nyam/user/css/user_nyamHistory.css">
 <script>
 	<%
 	
 	HashMap<String, Integer> map = (HashMap<String, Integer>) request
 			.getAttribute("nyamPerDay");
-	int year = (Integer)request.getAttribute("year");
-	int month = (Integer)request.getAttribute("month") + 1;
-	int dayOfMonth = (Integer)request.getAttribute("dayOfMonth");
-	int yoil = (Integer)request.getAttribute("yoil");
-	int week = (Integer)request.getAttribute("week");
+	DateInfo dateinfo = (DateInfo)request.getAttribute("dateinfo");
+	int year = dateinfo.getYear();
+	int month = dateinfo.getCorrectMonth();
+	int dayOfMonth = dateinfo.getDayOfMonth();
+	int yoil = dateinfo.getYoil();
+	int week = dateinfo.getWeek();
 	int day = 1;%>
 	var yoil = <%=yoil%>;
 	console.log(yoil);
@@ -71,7 +72,7 @@
 		</article>
 		<div class="calendarBox">
 				<div class="lastMonth arrow">
-					<a href="/nyam/nyamHistory?month=<%=month - 2%>&year=<%=year %>">
+					<a href="/nyam/nyamHistory?month=<%=month - 1%>&year=<%=year %>">
 						<img src = "./img/arrow.png" id = "leftArrow" class="arrow"/>
 					</a>
 				</div>
@@ -109,10 +110,10 @@
 		
 			</table>
 			<div class="nextMonth arrow">
-				<a href="/nyam/nyamHistory?month=<%=month%>&year=<%=year %>">
+				<a href="/nyam/nyamHistory?month=<%=month + 1%>&year=<%=year %>">
 					<img src = "./img/arrow.png" id = "rightArrow" class="arrow"/>
 				</a>
 					
 			</div>
 		</div>
-<%@include file="./userFoot.jsp"%>
+<%@include file="./foot.jsp"%>

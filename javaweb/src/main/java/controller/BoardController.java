@@ -49,7 +49,10 @@ public class BoardController extends DefaultController{
 		String realPath = request.getSession().getServletContext().getRealPath("/");
 		realPath += "../images/";
 		
-		
+		File file = new File(realPath);
+		if(!file.exists()) {
+			file.mkdir();
+		}
 		try {
 			multipart = new MultipartRequest(request, realPath, size,
 					"UTF-8", new controller.MyFileRenamePolicy());
