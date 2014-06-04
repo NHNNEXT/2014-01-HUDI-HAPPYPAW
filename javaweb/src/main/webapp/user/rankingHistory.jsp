@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import="java.util.*"%>
-<%@include file="./userHead.jsp"%>
+<%@include file="./head.jsp"%>
 <link rel="stylesheet" type="text/css" href="./admin/css/history.css"/>
 
 	<%
@@ -45,4 +45,4 @@
 			%>
 		</table>
 		
-<%@include file="./userFoot.jsp"%>
+<%@include file="./foot.jsp"%>
