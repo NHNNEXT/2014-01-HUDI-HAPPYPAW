@@ -1,20 +1,37 @@
 @CHARSET "US-ASCII";
-
+.title {
+	width: 500px;
+	margin:0px auto;
+	text-align:center;
+}
 div.list {
 	width: 500px;
-	border: 1px solid black;
+	border: 1px solid #ccc;
+	border-bottom:0;
 	margin: 30px auto;
 }
 
-ul.hidden {
+.year {
+	height:40px;
+	line-height:40px;
+	border-bottom:1px solid #ccc;
+	box-sizing:border-box;
+	padding-left: 10px;
+	font-size: 1.2em;
+}
+section ul.hidden {
 	display: none;
 }
 
-ul.show {
+section ul.show {
 	display: block;
 }
-
-li:hover{
+section ul li {
+	height:25px;
+	line-height:25px;
+	padding-left: 20px;
+}
+section li:hover{
 	background-color: #e6e6e6;
 }
 

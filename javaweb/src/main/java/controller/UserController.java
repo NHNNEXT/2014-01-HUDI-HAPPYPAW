@@ -27,7 +27,12 @@ import database.DAO;
 public class UserController {
 	private static Logger logger = LoggerFactory
 			.getLogger(UserController.class);
-
+	
+		@RequestMapping("/")
+	public String showIndex(HttpServletRequest request, HttpSession session) {
+		return showNyamHistory(request, session);
+	}
+	
 	@RequestMapping("/nyamHistory")
 	public String showNyamHistory(HttpServletRequest request,
 			HttpSession session) {

@@ -17,11 +17,16 @@
 	int week = dateinfo.getWeek();
 	int day = 1;%>
 	var yoil = <%=yoil%>;
-	console.log(yoil);
-	var day = 1;
-	var dayOfMonth = <%=dayOfMonth%>
-	var week = <%=week%>
+	
+	var dayOfMonth = <%=dayOfMonth%>;
+	var month = <%=month%>;
+	var week = <%=week%>;
+	var year = <%=year%>;
 	$(document).ready(function() {
+		var today = new Date();
+		var todayMonth = today.getMonth() + 1;
+		var todayYear = 1900 +  today.getYear();
+		today = today.getDate();
 		var stamp = {"-1": 0
 		<%for(String date : map.keySet()) {
 				out.println(","+date+" : "+map.get(date));
@@ -31,22 +36,26 @@
 		for(var i = 1; i < week ; i++){
 			trWeek.after(trWeek.html());
 		}
-		
+		var day = 1;
 		$(".calendar td").each(function(td, index) {
+			
 			if(index +1 < yoil){
 				return;
 			}else if(day > dayOfMonth){
 				return;	
 			}else{
+				var td = $(this);
+				if(todayYear === year && month === todayMonth && today === day )
+					td.addClass("today");
 				
-				$(this).find(".day").html(day);
 				
-				var stamp_print = $(".stamp");
+				td.find(".day").html(day);
+				
+				var stamp_area =td.find(".stamp_area");//stamp_print = $(".stamp");
 				if(day in stamp){
 					var stamp_num = stamp[day];
 					for(var i =0; i<stamp_num;i++){
-						$(this).find(".stamp_area").append('<div class="stamp"></div>');
-						console.log("test");
+						stamp_area.append('<div class="stamp"></div>');
 					}
 				}
 				++day;
@@ -61,21 +70,28 @@
 
 
 
-		<article>
-	
-			<div class="month">
-				<%=year%>년
-				<%=month%>월
-			</div>
-			
-
-		</article>
 		<div class="calendarBox">
-				<div class="lastMonth arrow">
+
+			<div class="month">
+				<div class="monthcontrol">
+					<a href="/nyam/nyamHistory?month=<%=month - 1%>&year=<%=year %>">◀</a>
+					<a href="/nyam/nyamHistory">오늘</a>
+					<a href="/nyam/nyamHistory?month=<%=month + 1%>&year=<%=year %>">▶</a>
+
+				</div>
+				<h2><%=year%>년
+				<%=month%>월</h2>
+			</div>
+				<%-- <div class="lastMonth arrow">
 					<a href="/nyam/nyamHistory?month=<%=month - 1%>&year=<%=year %>">
 						<img src = "./img/arrow.png" id = "leftArrow" class="arrow"/>
 					</a>
 				</div>
+				<div class="nextMonth arrow">
+				<a href="/nyam/nyamHistory?month=<%=month + 1%>&year=<%=year %>">
+					<img src = "./img/arrow.png" id = "rightArrow" class="arrow"/>
+				</a>
+			</div> --%>
 			<table class="calendar">
 				<thead>
 					<tr id="record">
@@ -109,11 +125,6 @@
 				</tbody>
 		
 			</table>
-			<div class="nextMonth arrow">
-				<a href="/nyam/nyamHistory?month=<%=month + 1%>&year=<%=year %>">
-					<img src = "./img/arrow.png" id = "rightArrow" class="arrow"/>
-				</a>
-					
-			</div>
+			
 		</div>
 <%@include file="./foot.jsp"%>

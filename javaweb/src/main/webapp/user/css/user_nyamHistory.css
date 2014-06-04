@@ -1,44 +1,82 @@
-@CHARSET "US-ASCII";
+@CHARSET "UTF-8";
 .title {
 	font-size: 2em;
 	text-align: center;
-	margin: 20px auto;
+	padding: 20px;
 }
 
 div.month {
 	font-size: 2em;
 	text-align: center;
-	margin: 20px auto;
+	margin: 0px auto;
+	padding-top: 50px;
+	vertical-align:middle;
+}
+div.month h2 {
+	font-size:1.4em;
+	display: inline-block;
+	vertical-align:middle;
+	margin:0px 10px;
+}
+.monthcontrol {
+	position:absolute;
+	line-height: 45px;
+	height: 45px;
+	font-size:15px;
+}
+.monthcontrol a {
+	margin-right: 10px;
+}
+.month .arrow {
+	width:15px;
+	height:15px;
+	vertical-align:middle;	
+}
+div.calendarBox{
+	position:relative;
+	margin: 0px auto;
+	max-width:800px;
+	width: 100%;
 }
 
 table {
 	margin: 20px auto;
 	background-color: white;
-	border: 1px gray solid;
 	padding: 10px;
+	border-top:1px solid #DDDDDD;
+	border-left:1px solid #DDDDDD;
+	width: 100%;
 }
+table * {
 
+}
+th, td {
+	border-bottom:1px solid #DDDDDD;
+	border-right:1px solid #DDDDDD;
+	width:14.2857%;
+}
 th {
-	
-	font-weight: bold;
-	font-family: "Times New Roman"; /* 폰트는 적절히 바꿉시다. 어떻게 할지 정해야.  */
+	font-weight: 700;
+	background: #F3F3F3;
+	padding:10px;
+	font-size:1em;
 }
 
 td {
 	position: relative;
 /* 	border: 1px solid black; */
-	width: 80px;
-	height: 80px;
+	height: 90px;
 	overflow: hidden;
 	vertical-align: top;
 }
-
+td.today {
+	background:#FFF5F5;
+}
 div.day {
 	text-align: center;
 	width: 100%;
 	height: 20%;
 	overflow: hidden;
-	font-family: "Times New Roman";
 	margin: 10px auto;
 }
 
@@ -59,11 +97,6 @@ p {
 	color: black;
 }
 
-div.calendarBox{
-	position:relative;
-	width: 800px;
-	margin: 0px auto;
-}
 
 div.stamp {
 	border-radius: 20px;

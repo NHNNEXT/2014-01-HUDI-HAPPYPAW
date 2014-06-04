@@ -73,11 +73,11 @@ $(document).ready(function() {
 			element.setAttribute("style", ostyle + daylight.objectToCSS({ty:-top * speed+"px"}));
 		});
 	});
-	function copyToClipboard( text )
-	{
-	  temp = prompt("이 글의 트랙백 주소입니다. Ctrl+C를 눌러 클립보드로 복사하세요", text);
-	}
-	
+//	function copyToClipboard( text )
+//	{
+//	  temp = prompt("이 글의 트랙백 주소입니다. Ctrl+C를 눌러 클립보드로 복사하세요", text);
+//	}
+//	
 	var timeline = new $.Timeline("body");
 	var others = timeline.createLayer(".other");
 	timeline.addMotion(others, [
@@ -90,5 +90,7 @@ $(document).ready(function() {
 });
 
 $(window).load(function() {
-	$("body").scrollTop($('[data-count="'+myNum+'"]').offset().top - 100);
+	setTimeout(function() {
+		$("body").scrollTop($('[data-count="'+myNum+'"]').offset().top - 100);
+	}, 200);
 });

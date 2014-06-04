@@ -24,7 +24,11 @@ aside {
 	-webkit-box-sizing:border-box;
 	-o-box-sizing:border-box;
 }
-
+.title {
+	font-weight:bold;
+	font-size:32px;
+	padding-top:50px;
+}
 div.login_box {
 	background-color: #ffbf40;
 	height: 80px;
