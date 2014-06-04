@@ -22,7 +22,6 @@ public class DefaultController {
 		User user = db.getUser(id);
 		
 		return user;
-		
 	}
 	public String getError(String message) {
 		

@@ -1,5 +1,9 @@
 package model;
 
+import javax.servlet.http.HttpSession;
+
+import database.DAO;
+
 public class User {
 	private String id;
 	private String ps;
@@ -45,5 +49,14 @@ public class User {
 	}
 	public void setNum(int num) {
 		this.num = num;
+	}
+	public static User getLoginuser(HttpSession session) {
+		DAO db = DAO.getInstance();
+		String id = (String) session.getAttribute("users_id");
+		if(id == null || id.equals(""))
+			return null;
+		User user = db.getUser(id);
+		
+		return user;
 	}
 }
