@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import="java.util.* , model.*"%>
 <%@include file="./head.jsp"%>
-<link rel="stylesheet" type="text/css" href="./admin/css/history.css"/>
+<link rel="stylesheet" type="text/css" href="./admin/css/restaurant.css"/>
 
 
 <%
@@ -9,6 +9,7 @@
 	
 
 %>
+<div class="title">넥스트인의 정직한 식사</div>
 		<table>
 			<tr>
 			<thead>

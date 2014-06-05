@@ -1,7 +1,6 @@
-p.title {
-	display:block;
+.title {
+	text-align:center;
 	margin:30px auto;
-	width:600px;
 	font-size: 2em;
 }
 table {

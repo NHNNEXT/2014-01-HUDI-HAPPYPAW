@@ -1,7 +1,9 @@
 @CHARSET "US-ASCII";
-
+.title {
+	text-align:center;
+}
 table {
-	margin: 50px auto;
+	margin: 10px auto;
 	width: 700px;
 	background-color:white;
 }

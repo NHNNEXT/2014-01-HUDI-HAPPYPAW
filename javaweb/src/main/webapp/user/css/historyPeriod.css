@@ -19,6 +19,9 @@ div.list {
 	padding-left: 10px;
 	font-size: 1.2em;
 }
+.months {
+	border-bottom:1px solid #ccc;
+}
 section ul.hidden {
 	display: none;
 }

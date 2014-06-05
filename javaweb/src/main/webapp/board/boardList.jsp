@@ -5,6 +5,7 @@
 <link rel="stylesheet" type="text/css" href="/nyam/board/css/boardList.css">
 
 <div class= "content">
+<div class="title">정직한 식사 신청</div>
 	<table>
 		<tr>
 			<thead>
