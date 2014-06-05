@@ -14,7 +14,6 @@
 				<th name="date">날짜</th>
 				<th name="recommend">추천</th>
 				<th name="notRecommend">비추천</th>
-				<th name="read">조회수</th>
 			</thead>
 		</tr>
 		<c:forEach items = "${boardList}" var = "writing" >
@@ -26,7 +25,6 @@
 				<td>${writing.date} </td>
 				<td name="recommend">${writing.recommend }</td>
 				<td name="not_recommend">${writing.notRecommend }</td>
-				<td>234</td>
 		</c:forEach>
 			</tr>
 	</table>
