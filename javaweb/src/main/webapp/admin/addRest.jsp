@@ -1,12 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+<%@include file ="./adminHead.jsp"%>
+<link rel="stylesheet" type="text/css" href="./css/addRest.css">
 
-</body>
-</html>
+	<form action="/nyam/admin/sendRestInfo" method="POST">
+		<table>
+			<tr>
+				<td>상호명 </td>
+				<td><input type="text" name="restName"/></td>
+			</tr>
+			<tr>
+				<td>설명 </td>
+				<td><input type="text" name="desc"/></td>
+			</tr>
+			<tr>
+				<td>위치 </td>
+				<td><input type="text" name="location"/></td>
+			</tr>
+		</table>
+			<input type="submit" name="submit" value="등록"/>
+	</form>
+
+
+<%@include file ="./adminFoot.jsp"%>
