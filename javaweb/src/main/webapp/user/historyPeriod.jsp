@@ -47,7 +47,14 @@
 				if (year[a] === elTarget) {
 					var ulHidden = elTarget.nextElementSibling;
 					console.log("className:"+ ulHidden.className);
-					ulHidden.className = (ulHidden.className == "months show" ? "months hidden": "months show");
+					daylight.each(year, function() {
+						this.nextElementSibling.className = "months hidden";
+					});
+					
+					ulHidden.className = "months show";
+				
+				} else {
+					
 				}
 			}
 		});

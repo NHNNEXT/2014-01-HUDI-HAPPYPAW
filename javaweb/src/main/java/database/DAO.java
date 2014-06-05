@@ -76,8 +76,7 @@ public class DAO {
 		return datee;
 	}
 
-	public ArrayList<StampHistory> selectMonthHistory(String users_id)
-			{
+	public ArrayList<StampHistory> selectMonthHistory(String users_id) {
 		Calendar calendar = Calendar.getInstance();
 		int year = calendar.get(Calendar.YEAR);
 		int month = calendar.get(Calendar.MONTH);
@@ -188,7 +187,7 @@ public class DAO {
 	 * @return boolean
 	 * @throws SQLException
 	 */
-	private boolean checkRestaurant(String qrDate, int restaurant){
+	private boolean checkRestaurant(String qrDate, int restaurant) {
 		/*
 		 * 레스토랑 테이블에서 레스토랑 넘버를 가지고 업데이트 날짜를 받아온다. 업데이트 날짜랑 큐알데이트가 다르면 return
 		 * false; 업데이트 날짜랑 같으면 return true;
@@ -289,7 +288,7 @@ public class DAO {
 	 * 
 	 * @param path
 	 */
-	public void exportExcel(String path)  {
+	public void exportExcel(String path) {
 		System.out.println("exportExcel");
 		MakeExcel me = new MakeExcel();
 		int year = 2013;// 임의 지정 수정해야합니다.
@@ -483,7 +482,8 @@ public class DAO {
 		int presentMonth = cal.get(Calendar.MONTH);
 		int presentYear = cal.get(Calendar.YEAR);
 
-		int initYear = Integer.parseInt(("20" + id.substring(0, 2)));
+		String idYear = id.substring(0, 2);// 입학년도부터 시작
+		int initYear = Integer.parseInt("20" + idYear);
 		int initMonth = 2;
 		ArrayList<HashMap<String, Object>> historyList = new ArrayList<HashMap<String, Object>>();
 
@@ -686,7 +686,7 @@ public class DAO {
 					String fileName = rs.getString("file_name");
 					String date = rs.getString("date");
 
-					board = new Board(title, contents, usersId, no +"", date);
+					board = new Board(title, contents, usersId, no + "", date);
 					board.setFileName(fileName);
 					return board;
 				}

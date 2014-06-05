@@ -20,19 +20,18 @@ import annotation.Controller;
 import annotation.RequestMapping;
 import annotation.RequestMapping.Method;
 
-
 import database.DAO;
 
 @Controller
-public class UserController {
+public class UserController extends DefaultController {
 	private static Logger logger = LoggerFactory
 			.getLogger(UserController.class);
-	
-		@RequestMapping("/")
+
+	@RequestMapping("/")
 	public String showIndex(HttpServletRequest request, HttpSession session) {
 		return showNyamHistory(request, session);
 	}
-	
+
 	@RequestMapping("/nyamHistory")
 	public String showNyamHistory(HttpServletRequest request,
 			HttpSession session) {
@@ -89,19 +88,21 @@ public class UserController {
 		request.setAttribute("nyamPerDay", map);
 		request.setAttribute("dateinfo", info);
 
-
 		return "/user/userNyamHistory.jsp";
 	}
-
-	
 
 	@RequestMapping("/historyPeriod")
 	// 위에 있는 함수랑 똑같은데...
 	public String rankingHistoryPeriod(HttpServletRequest request,
 			HttpSession session) {
+		User user = getLoginuser(session);
+		if (user == null)
+			return goLoginPage();
+
+		
 		DAO dao = DAO.getInstance();
-		String id = (String) session.getAttribute("users_id");
-		ArrayList<HashMap<String, Object>> history = dao.getHistory(id);
+
+		ArrayList<HashMap<String, Object>> history = dao.getHistory(user.getId());
 		request.setAttribute("history", history);
 		return "/user/historyPeriod.jsp";
 	}
