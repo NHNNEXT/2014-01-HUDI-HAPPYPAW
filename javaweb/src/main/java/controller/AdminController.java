@@ -137,4 +137,20 @@ public class AdminController {
 		request.setAttribute("history", history);
 		return "/admin/historyList.jsp";
 	}
+	
+	@RequestMapping("/admin/addRestaurant")
+	public String addRest(){
+		return "/admin/addRest.jsp";
+	}
+	
+	@RequestMapping("/admin/sendRestInfo")
+	public String insertRestInfo(HttpServletRequest request){
+		DAO dao = DAO.getInstance();
+		String name = request.getParameter("restName");
+		String desc = request.getParameter("desc");
+		String location = request.getParameter("location");
+		
+		dao.insertRest(name, desc, location);
+		return "redirect:/nyam/admin/manageRest";
+	}
 }
