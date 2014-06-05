@@ -23,7 +23,7 @@
 	<a href = "/nyam/board/delete?no=${board.writingNo}"><button class="delete">Delete</button></a>
 	<a href = "/nyam/board/modify?no=${board.writingNo}"><button class="modify">Modify</button></a>
 	
-	<img src="/images/{board.fileName}" alt="file"/>
+	<img src="/images/${board.fileName}" alt="file"/>
 	<script>
 		var writer_id = ${board.userId};
 		var session = ${userId};
