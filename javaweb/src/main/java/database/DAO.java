@@ -250,9 +250,8 @@ public class DAO {
 					String users_name = rs.getString("name");
 					int sum = selectMonthHistory(users_id, year, month).size();
 					nyamList.add(new NyamList(users_id, users_name, sum));
-					return nyamList;
 				}
-				return null;
+				return nyamList;
 			}
 		};
 		return template.execute();
