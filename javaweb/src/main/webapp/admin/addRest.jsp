@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@include file ="./adminHead.jsp"%>
-<link rel="stylesheet" type="text/css" href="./css/addRest.css">
+<%@include file ="./head.jsp"%>
+<link rel="stylesheet" type="text/css" href="./css/plusRest.css">
 
 	<form action="/nyam/admin/sendRestInfo" method="POST">
 		<table>
@@ -22,4 +22,4 @@
 	</form>
 
 
-<%@include file ="./adminFoot.jsp"%>
+<%@include file ="./foot.jsp"%>

@@ -767,5 +767,9 @@ public class DAO {
 		};
 		return template.execute();
 	}
-
+	
+	public void insertRest(String name, String desc, String location) {
+		String query= "INSERT INTO restaurant(name, description, location) VALUES(?. ?, ?)";
+		
+	}
 }

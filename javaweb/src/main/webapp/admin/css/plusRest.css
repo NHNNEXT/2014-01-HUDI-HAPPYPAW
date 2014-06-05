@@ -1,0 +1,29 @@
+@CHARSET "US-ASCII";
+
+input[name="restName"]{
+	width: 500px;
+}
+
+input[name="desc"]{
+	width: 500px;
+	height: 200px;
+}
+
+input[name="location"]{
+	width: 500px;
+}
+
+table{
+	border:none;
+	width: 700px;
+	margin: 0px auto;
+}
+
+input[name="submit"]{
+	border: 1px solid #eee;
+	border-radius: 3px;
+	width: 100px;
+	height:25px;
+	margin: 20px auto;
+	
+}
