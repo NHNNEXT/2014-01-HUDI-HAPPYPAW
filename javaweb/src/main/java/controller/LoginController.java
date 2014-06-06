@@ -6,13 +6,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import model.User;
 import annotation.Controller;
 import annotation.RequestMapping;
 import database.DAO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 public class LoginController extends DefaultController{
+	private static Logger logger = LoggerFactory
+			.getLogger(UserController.class);
 	
 	@RequestMapping("/login")
 	public String loginPage(HttpServletRequest request, HttpSession session){
@@ -61,8 +68,10 @@ public class LoginController extends DefaultController{
 				return goLoginPage();
 			} else if(user.checkPs(jspPs)){
 				session.setAttribute("users_id", jspId);
-				
-				System.out.println("login complete :"+ jspId);
+				if(jspId.equals("123456")){
+					return "redirect:/nyam/admin/manageRest";
+				}
+				logger.debug("login complete :"+ jspId);
 				return "redirect:/nyam/ranking";
 			} else {
 				return "redirect:/nyam/ranking";
