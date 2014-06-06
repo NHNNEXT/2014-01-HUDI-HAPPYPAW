@@ -15,6 +15,7 @@
 				<ul class="menu_ul">
 					<li><a href="/nyam/admin/manageRest">지정식당 관리</a></li>
 					<li><a href="/nyam/admin/nyamHistory">전체 학생 이용 기록</a></li>
+					<li><a href="/nyam/admin/rankingPeriod">학생 식사 순위 기록</a></li>
 					<li><a href="/nyam/admin/restaurantHistory">식당별 이용 횟수</a></li>
 					<li><a href="/nyam/admin/boardList">지정식당 신청 게시판</a></li>
 				</ul>

@@ -3,6 +3,7 @@
 	margin:30px auto;
 	font-size: 2em;
 }
+
 table {
 	margin:0px auto;
 	width:600px;
@@ -33,6 +34,14 @@ th.nyamNum{
 td {
 	height:40px;
 	border-bottom: 1px solid #ccc;
+}
+
+tr:nth-child(2n){
+	background-color:#fff;
+	
+}
+tr:nth-child(2n-1){
+	background-color: #eee;
 }
 .export {
 	display:block;

@@ -206,4 +206,45 @@ public class AdminController {
 		
 		return "redirect:/nyam/admin/boardList";
 	}
+	
+	@RequestMapping("/admin/rankingPeriod")
+	public String rankingHistoryPeriod(HttpServletRequest request,
+			HttpSession session) {
+
+		DAO dao = DAO.getInstance();
+
+		ArrayList<HashMap<String, Object>> history = dao.getHistory("123456");
+		request.setAttribute("history", history);
+		logger.debug(history.toString());
+		return "/admin/rankingPeriod.jsp";
+	}
+	
+	@RequestMapping(value = "/admin/rankingHistory", method = Method.GET)
+	public String showRankingHistory(HttpServletRequest request)
+			throws SQLException {
+		DAO dao = DAO.getInstance();
+		int year, month;
+		// original source
+		// year = Integer.parseInt(request.getParameter("year"));
+		// month = Integer.parseInt(request.getParameter("month"));
+		try {
+			year = Integer.parseInt(request.getParameter("year"));
+			month = Integer.parseInt(request.getParameter("month"));
+		} catch (Exception e) {
+			Calendar calendar = Calendar.getInstance();
+			year = calendar.get(Calendar.YEAR);
+			month = calendar.get(Calendar.MONTH);
+		}
+
+		ArrayList<HashMap<String, String>> nyamRanking = dao.rankingHistory(
+				year, month);// 서버단에서는 month -1안하고 전부다 처리함. 최연규 때문에 에러남. ㅋㅋ
+
+		request.setAttribute("nyamRanking", nyamRanking);
+		request.setAttribute("year", year);
+		request.setAttribute("month", month);
+		logger.info("" + nyamRanking);
+		return "/admin/rankingHistory.jsp";
+	}
+
+	
 }
