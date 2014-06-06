@@ -118,11 +118,16 @@ public class AdminController {
 			throws SQLException {
 		DAO dao = DAO.getInstance();
 		String id = request.getParameter("restaurantId");
+		String month = request.getParameter("month");
+		String year = request.getParameter("year");
+		
 		Restaurant rest = dao.getRestaurant(id);
 		if (rest == null)
 			return "redirect:/nyam/admin/restaurantHistory";
-		HashMap<String, Integer> map = dao.checkEachRestaurant(id);
-		request.setAttribute("map", map);
+		int intMonth = Integer.parseInt(month)+1;
+		
+		ArrayList<HashMap<String, String>> array= dao.checkEachRestaurant(id, Integer.toString(intMonth), year);
+		request.setAttribute("array", array);
 		request.setAttribute("restaurant", rest.getName());
 		return "/admin/eachRestaurant.jsp";
 	}
@@ -153,4 +158,18 @@ public class AdminController {
 		dao.insertRest(name, desc, location);
 		return "redirect:/nyam/admin/manageRest";
 	}
+	
+	@RequestMapping("/admin/restPeriod")
+	public String showPeriod(HttpSession session, HttpServletRequest request){
+		DAO dao = DAO.getInstance();
+		String id = (String) session.getAttribute("users_id");
+		System.out.println(id);
+		String restId = request.getParameter("restaurantId");
+		ArrayList<HashMap<String, Object>> list = dao.getHistory(id);
+		logger.debug(list.toString());
+		request.setAttribute("list", list);
+		request.setAttribute("restId", restId);
+		return "/admin/restPeriod.jsp";
+	}
+	
 }

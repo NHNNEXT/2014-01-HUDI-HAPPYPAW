@@ -1,0 +1,31 @@
+@CHARSET "US-ASCII";
+
+table {
+	margin: 0px auto;
+}
+
+tr{
+	height: 40px;
+}
+td.name{
+	width: 200px;
+	text-align:center;
+}
+
+td.no{
+	text-align:center;
+	width: 50px;
+}
+
+td.nyamNum{
+	text-align:center;
+	width: 150px;
+}
+
+tr:nth-child(2n-1){
+	background-color: #eee;
+}
+
+tr:nth-child(2n){
+	background-color:#fff;
+}

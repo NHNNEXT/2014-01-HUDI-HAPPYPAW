@@ -333,7 +333,6 @@ public class DAO {
 			}
 		};
 		ArrayList<Restaurant> restList = template.execute();
-		logger.debug(restList.toString());
 		return restList;
 	}
 
@@ -376,24 +375,37 @@ public class DAO {
 	 * @param id
 	 * @throws SQLException
 	 */
-	public HashMap<String, Integer> checkEachRestaurant(String id) {
+	public ArrayList<HashMap<String, String>> checkEachRestaurant(String id,
+			final String month, final String year) {
 		int restaurantNo = Integer.parseInt(id);
-
 		String query = "select count(*) as num, substring(regdate, 1, 10) as stamp_date  "
 				+ "from stamp_history where restaurant_no = ? group by substring(regdate, 1, 10); ";
 
-		ReadTemplate<HashMap<String, Integer>> template = new ReadTemplate<HashMap<String, Integer>>(
+		ReadTemplate<ArrayList<HashMap<String, String>>> template = new ReadTemplate<ArrayList<HashMap<String, String>>>(
 				query, restaurantNo) {
 			@Override
-			public HashMap<String, Integer> read(ResultSet rs)
+			public ArrayList<HashMap<String, String>> read(ResultSet rs)
 					throws SQLException {
-				HashMap<String, Integer> hash = new HashMap<String, Integer>();
+				ArrayList<HashMap<String, String>> array = new ArrayList<HashMap<String, String>>();
 				while (rs.next()) {
-					String stamp_date = rs.getString("stamp_date");
-					int num = rs.getInt("num");
-					hash.put(stamp_date, num);
+					HashMap<String, String> hash = new HashMap<String, String>();
+					String stampDate = rs.getString("stamp_date");
+					String dbMonth = stampDate.substring(5, 7);
+					String dbYear = stampDate.substring(0,4);
+
+					if (dbMonth.startsWith("0")) {
+						dbMonth = dbMonth.substring(1);
+					}
+					
+					if (dbYear.equals(year) && dbMonth.equals(month)) {
+							int num = rs.getInt("num");
+							hash.put("nyamNum", Integer.toString(num));
+							hash.put("stampDate", stampDate);
+							array.add(hash);
+					}
+
 				}
-				return hash;
+				return array;
 			}
 		};
 
@@ -486,7 +498,7 @@ public class DAO {
 		int initMonth = 2;
 		ArrayList<HashMap<String, Object>> historyList = new ArrayList<HashMap<String, Object>>();
 
-		if (id.startsWith("11")) {// 아이디가 관리자라면 줄 조건. 관리자 아이디를 따로 만들어야 할 듯.
+		if (id.equals("123456")) {
 			initYear = 2013;
 		}
 
@@ -507,7 +519,7 @@ public class DAO {
 					}
 				}
 			} else if (i == presentYear) {
-				for (int j = initMonth; j <= presentMonth; j++) {
+				for (int j = 0; j <= presentMonth; j++) {
 					months.add(Integer.toString(j));
 				}
 			} else {
@@ -767,9 +779,9 @@ public class DAO {
 		};
 		return template.execute();
 	}
-	
+
 	public void insertRest(String name, String desc, String location) {
-		String query= "INSERT INTO restaurant(name, description, location) VALUES(?, ?, ?)";
+		String query = "INSERT INTO restaurant(name, description, location) VALUES(?, ?, ?)";
 		QueryTemplate.executeQuery(query, name, desc, location);
 
 	}

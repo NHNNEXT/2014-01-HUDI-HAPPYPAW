@@ -7,6 +7,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/reset.css" />
 		<link rel="stylesheet" type="text/css" href="../css/layout.css" />
 		<link rel="stylesheet" type="text/css" href="./css/head.css" />
+		<script src="/nyam/js/daylight.js"></script>
 		<title>넥스트인의 정식</title>
 	</head>
 <body>
