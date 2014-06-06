@@ -10,13 +10,9 @@
 
 	<table>
 		<tr>
-
-			
 				<th class="no">번호</td>
 				<th class="name">식당명</td>
 				<th class="nyamNum">식사 횟수</td>
-				
-
 		</tr>
 		<%
 			for(int i =0; i < restList.size(); i++){

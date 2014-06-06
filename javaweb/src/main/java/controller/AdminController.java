@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import model.Board;
 import model.DateInfo;
 import model.NyamList;
 import model.Restaurant;
@@ -172,4 +173,37 @@ public class AdminController {
 		return "/admin/restPeriod.jsp";
 	}
 	
+	@RequestMapping("/admin/boardList")
+	public String showBoardList(HttpServletRequest request){
+		DAO dao = DAO.getInstance();
+		ArrayList<HashMap<String, String>> boardList = dao.getBoardList();
+		request.setAttribute("boardList", boardList);
+		return "/admin/boardList.jsp";
+	}
+	
+	@RequestMapping(value = "/admin/boardView", method= Method.GET)
+	public String showView(HttpServletRequest request, HttpSession session){
+		DAO dao = DAO.getInstance();
+		String no = (String)request.getParameter("no");
+		Board board = dao.getBoard(Integer.parseInt(no));
+		HashMap<String, Integer> map = dao.getRecommend(Integer.parseInt(no));
+		request.setAttribute("board", board);
+		request.setAttribute("recommendInfo", map);
+		
+		String userId = (String)session.getAttribute("users_id");
+		request.setAttribute("userId", userId);
+		return "/admin/boardView.jsp";
+	}
+	
+	@RequestMapping(value="/admin/delete", method=Method.GET)
+	public String deleteWriting(HttpServletRequest request, HttpSession session){
+		//함수 추출 가능할 듯. 교수님 조언대로. 
+		DAO dao = DAO.getInstance();
+		String no = (String) request.getParameter("no");
+		Board board = dao.getBoard(Integer.parseInt(no));
+		
+		dao.deleteWriting(no);
+		
+		return "redirect:/nyam/admin/boardList";
+	}
 }

@@ -1,0 +1,46 @@
+@CHARSET "US-ASCII";
+
+table {
+	margin: 0px auto;
+	
+}
+
+tr{
+	height: 40px;
+	text-align: center;
+}
+td.name{
+	width: 200px;
+	text-align:center;
+}
+
+td.id{
+	text-align:center;
+	width: 100px;
+}
+
+td.nyamNum{
+	text-align:center;
+	width: 150px;
+}
+
+tr:nth-child(2n-1){
+	background-color: #eee;
+}
+
+tr:nth-child(2n){
+	background-color:#fff;
+}
+
+button.export{
+	width: 100px;
+	height: 50px;
+	border-radius: 3px;
+	border: 1px solid gray;
+	background: #e3e3e3;
+	margin: 0px auto;
+}
+div.button{
+	margin:20px auto;
+	width: 100px;
+}
