@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import="java.util.*, model.*"%>
-<%@include file= "./head.jsp" %>
+<%@include file= "/admin/head.jsp" %>
 <link rel="stylesheet" type="text/css" href="./css/eachRestaurant.css"/>
 
 			<p class="title"><%=(String)request.getAttribute("restaurant")%></p>
@@ -30,4 +30,4 @@
 	%>
 			</table>
 
-<%@include file = "./foot.jsp"%>
+<%@include file = "/admin/foot.jsp"%>

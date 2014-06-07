@@ -1,22 +1,7 @@
 <%@page import="java.util.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" type="text/css" href="../css/reset.css" />
-<link rel="stylesheet" type="text/css" href="../css/layout.css" />
-<link rel="stylesheet" type="text/css"
-	href="./css/admin_historyList.css" />
-<title>Insert title here</title>
-</head>
-<body>
-	<div style="float: left;"></div>
-	<section> <header>
-
-	<p class="logo">넥스트인의 정식</p>
-	</header>
+<%@include file="/admin/head.jsp" %>
 
 	<div class="list">
 		<%
@@ -42,23 +27,7 @@
 	</div>
 	</section>
 
-	<aside>
-	<div class="login_box">
-		<p>이름: 관리자</p>
-		<p>
-			<a href="./logout">logout</a>
-		</p>
-	</div>
-	<div class="menu">
-		<ul class="menu_ul">
-			<li><a href="/nyam/admin/nyamHistory">메인</a></li>
-			<li><a href="/nyam/admin/manageRest">지정식당 관리</a></li>
-			<li><a href="/nyam/admin/nyamHistory">전체 학생 이용 기록</a></li>
-			<li><a href="/nyam/admin/restaurantHistory">식당별 이용 횟수</a></li>
-			<li><a href="">지정식당 신청 게시판</a></li>
-		</ul>
-	</div>
-	</aside>
+	<%@include file="/admin/foot.jsp" %>
 	<script>
 	    //load 된 이후에 동작되도록 하기. 
 	        // window.addEventListener('load', function() {
@@ -90,5 +59,6 @@
 
 		});
 	</script>
+	
 </body>
 </html>

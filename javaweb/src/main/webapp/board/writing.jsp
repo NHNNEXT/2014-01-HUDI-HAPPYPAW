@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@include file="../user/head.jsp"%>
+<%@include file="/user/head.jsp"%>
 
-<link rel="stylesheet" type="text/css" href="./css/writing.css">
+<link rel="stylesheet" type="text/css" href="/nyam/board/css/writing.css">
 ${board }
 	<div class="formBox">
 		<form action="/nyam/board/sendContent" method="POST"
@@ -24,4 +24,4 @@ ${board }
 		</form>
 	</div>
 
-<%@include file="../user/foot.jsp"%>
+<%@include file="/user/foot.jsp"%>

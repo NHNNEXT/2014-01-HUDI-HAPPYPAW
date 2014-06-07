@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" import="model.*, java.util.* "%>
 
-<%@include file="./head.jsp" %>
-<link rel="stylesheet" type="text/css" href="./css/nyamHistory.css"/>
+<%@include file="/admin/head.jsp" %>
+<link rel="stylesheet" type="text/css" href="/nyam/admin/css/nyamHistory.css"/>
 
 
 <%
@@ -47,4 +47,4 @@
 		
 </section>
 
-<%@include file="./foot.jsp" %>
+<%@include file="/admin/foot.jsp" %>

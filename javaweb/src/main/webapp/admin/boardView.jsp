@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import="model.Board"%>
-<%@include file="./head.jsp" %>
+<%@include file="/admin/head.jsp" %>
 	${board}
 	no: ${board.writingNo}<br/>
 	writer: ${board.userId}<br/>
@@ -20,4 +20,4 @@
 		<img src="/images/${board.fileName}" alt="file"/>
 	<%} %>
 
-<%@include file="./foot.jsp"%>
+<%@include file="/admin/foot.jsp"%>

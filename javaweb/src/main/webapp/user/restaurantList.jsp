@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import="java.util.* , model.*"%>
-<%@include file="./head.jsp"%>
-<link rel="stylesheet" type="text/css" href="./admin/css/restaurant.css"/>
+<%@include file="/user/head.jsp"%>
+<link rel="stylesheet" type="text/css" href="/nyam/admin/css/restaurant.css"/>
 
 
 <%
@@ -39,4 +39,4 @@
 				}
 			%>
 		</table>
-<%@include file="./foot.jsp"%>
+<%@include file="/user/foot.jsp"%>

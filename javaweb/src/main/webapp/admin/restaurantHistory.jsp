@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import = "model.*, java.util.*"%>
-<%@include file= "./head.jsp" %>
-<link rel="stylesheet" type="text/css" href="./css/restaurantHistory.css"/>
+<%@include file= "/admin/head.jsp" %>
+<link rel="stylesheet" type="text/css" href="/nyam/admin/css/restaurantHistory.css"/>
 
 	<%
 		ArrayList<Restaurant> restList = (ArrayList<Restaurant>)request.getAttribute("restList");
@@ -34,4 +34,4 @@
 	</table>
 	
 	
-<%@include file = "./foot.jsp"%>
+<%@include file = "/admin/foot.jsp"%>

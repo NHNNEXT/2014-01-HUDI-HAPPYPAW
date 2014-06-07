@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import = "model.*, java.util.*"%>
 <!DOCTYPE html>
-<%@include file="./head.jsp" %>
-<link rel="stylesheet" type="text/css" href="./css/admin_manageRest.css">
+<%@include file="/admin/head.jsp" %>
+<link rel="stylesheet" type="text/css" href="/nyam/admin/css/admin_manageRest.css">
 
 
 		<%
@@ -58,4 +58,4 @@
 					 %>
 			</table>
 
-<%@include file="./foot.jsp" %>
+<%@include file="/admin/foot.jsp" %>

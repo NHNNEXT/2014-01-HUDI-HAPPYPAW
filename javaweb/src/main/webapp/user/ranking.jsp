@@ -1,11 +1,11 @@
-<%@include file="./head.jsp"%>
+<%@include file="/user/head.jsp"%>
 
-<script src="./js/daylight.animation.js" type="text/javascript"></script>
-<script src="./js/daylight.Event.js" type="text/javascript"></script>
+<script src="/nyam/js/daylight.animation.js" type="text/javascript"></script>
+<script src="/nyam/js/daylight.Event.js" type="text/javascript"></script>
 
-<link href="./user/css/ranking.css" rel="stylesheet"/>
+<link href="/nyam/user/css/ranking.css" rel="stylesheet"/>
 <div class="background">
-	<img src="./img/rank.png" class="background_rank"/>
+	<img src="/nyam/img/rank.png" class="background_rank"/>
 	<div class="signs">
 		<div class="sign hide {class}" style="left:{x}%; top:{y}%;" data-count="{num}">{num}<div class="peoples"></div></div>
 	</div>
@@ -43,5 +43,5 @@ user_data[<%=nyamNum%>].push({id:"<%=id%>", name:"<%=name%>", num:user_data[<%=n
 var myId = "${id}";
 var myNum = <%=myNum%>;
 </script>
-<script src="./js/ranking.js" type="text/javascript"></script>
-<%@include file="./foot.jsp"%>
+<script src="/nyam/js/ranking.js" type="text/javascript"></script>
+<%@include file="/user/foot.jsp"%>

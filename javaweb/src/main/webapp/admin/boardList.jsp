@@ -33,4 +33,4 @@
 
 
 
-<%@ include file="./foot.jsp"%>
+<%@ include file="/admin/foot.jsp"%>

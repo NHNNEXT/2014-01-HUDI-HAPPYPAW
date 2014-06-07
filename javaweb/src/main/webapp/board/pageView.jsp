@@ -1,12 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import="model.Board"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+<%@include file="/user/head.jsp" %>
 	${board}
 	no: ${board.writingNo}<br/>
 	writer: ${board.userId}<br/>
@@ -36,5 +30,4 @@
 		}
 		
 	</script>
-</body>
-</html>
+<%@include file="/user/foot.jsp"%>

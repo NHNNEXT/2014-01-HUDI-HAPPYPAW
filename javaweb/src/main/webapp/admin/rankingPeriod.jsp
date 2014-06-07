@@ -2,7 +2,7 @@
 <%@page import="java.util.HashMap"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ include file="./head.jsp"%>
+<%@ include file="/admin/head.jsp"%>
 <link rel="stylesheet" type="text/css" href="/nyam/user/css/historyPeriod.css">
 	<div class="title">넥스트인의 정직한 식사</div>
 	<div class="list">
@@ -66,4 +66,4 @@
 
 		});
 	</script>
-<%@ include file="./foot.jsp"%>
+<%@ include file="/admin/foot.jsp"%>
