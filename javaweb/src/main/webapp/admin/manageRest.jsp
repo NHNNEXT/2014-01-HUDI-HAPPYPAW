@@ -47,8 +47,8 @@
 								<button>UPDATE</button>
 								<input type="hidden" name = "restaurantNo" value="<%=no%>"/>
 							</form>
-							<input type="button" name="modify" value="수정">
-							<input type="button" name="delete" value="삭제">
+							<a href="/nyam/admin/restModify?no=<%=no%>"><input type="button" name="modify" value="수정"></a>
+							<a href="/nyam/admin/restDelete?no=<%=no%>"><input type="button" name="delete" value="삭제"></a>
 						</td>
 						
 					</tr>
@@ -58,4 +58,4 @@
 					 %>
 			</table>
 
-<%@include file="./foot.jsp"%>
+<%@include file="./foot.jsp" %>

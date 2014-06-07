@@ -245,6 +245,23 @@ public class AdminController {
 		logger.info("" + nyamRanking);
 		return "/admin/rankingHistory.jsp";
 	}
+	
+	@RequestMapping("/admin/restModify")
+	public String modifyRestInfo(HttpServletRequest request){
+		DAO dao = DAO.getInstance();
+		String no= request.getParameter("no");
+		Restaurant restaurant = dao.getRestaurant(no);
+		request.setAttribute("restaurant", restaurant);
+		return "/admin/addRest.jsp";//수정하는 부분 찾아볼 것 
+	}
+	
+	@RequestMapping("/admin/restDelete")
+	public String deleteRestInfo(HttpServletRequest request){
+		String restNo = request.getParameter("no");
+		DAO dao = DAO.getInstance();
+		dao.deleteRest(restNo);
+		return "redirect:/nyam/admin/manageRest";
+	}
 
 	
 }

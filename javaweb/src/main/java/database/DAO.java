@@ -785,4 +785,9 @@ public class DAO {
 		QueryTemplate.executeQuery(query, name, desc, location);
 
 	}
+
+	public void deleteRest(String restNo) {
+		String query = "DELETE FROM restaurant where no = ? ";
+		QueryTemplate.executeQuery(query, restNo);
+	}
 }
