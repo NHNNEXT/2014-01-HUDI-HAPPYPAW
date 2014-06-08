@@ -29,7 +29,9 @@
 		</c:forEach>
 			</tr>
 	</table>
-	<a href = "/nyam/board/writing"><button>글쓰기</button></a>
+	<footer>
+		<a href = "/nyam/board/writing"><button class="btn">글쓰기</button></a>
+	</footer>
 </div>
 
 
