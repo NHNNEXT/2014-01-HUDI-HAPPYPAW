@@ -612,7 +612,31 @@ public class DAO {
 		insertRecommendNo();// foreign keyㅋㅋ연동!
 
 	}
+	/**
+	 * board를 수정하는 함수
+	 * 
+	 * @param no
+	 * @param board
+	 */
+	public void modifyBoard(String no, Board board) {
+		// 일단 파일이 없는걸로 테스트해보자.
+		String query;
+		if (board.getFileName() == null) {
+			query = "update request_board set title=?, contents=? where no = ?";
+			QueryTemplate template = new QueryTemplate(query, board.getTitle(),
+					board.getContent(), no) {
+			};
+			template.execute();
+		} else {
+			query = "update request_board set title=?, contents=?, file_name=? where no = ?";
+			QueryTemplate template = new QueryTemplate(query, board.getTitle(),
+					board.getContent(), board.getFileName(), no) {
+			};
+			template.execute();
+		}
+		//insertRecommendNo();// foreign keyㅋㅋ연동!
 
+	}
 	/**
 	 * 글 하나를 생성하면 글 no가 생기는데, 그 no를 찾아서 추천 테이블에 입력해주는 것. 그런데 이 상태로라면 문제가 생길 수
 	 * 있다.title이랑 전부다 매치하는게 효율적으로는 떨어지지만 정확한데, 어떤게 더 좋은 잘 모르겠음.

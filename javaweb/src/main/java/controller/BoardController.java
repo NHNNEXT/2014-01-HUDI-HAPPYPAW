@@ -37,6 +37,10 @@ public class BoardController extends DefaultController {
 		return "/board/writing.jsp";
 	}
 
+	public void modifyContent(Board board) {
+
+	}
+
 	@RequestMapping("/board/sendContent")
 	public String storeContent(HttpServletRequest request, HttpSession session) {
 		User user = getLoginuser(session);
@@ -68,11 +72,11 @@ public class BoardController extends DefaultController {
 
 		String title = multipart.getParameter("title");
 		String content = multipart.getParameter("content");
+		String no = multipart.getParameter("no");
 		String usersId = user.getId();
 
 		if (multipart.getOriginalFileName("file") == null) {
 			board = new Board(title, content, usersId);
-
 		} else {
 			Enumeration files = multipart.getFileNames();
 			String name1 = (String) files.nextElement();
@@ -86,8 +90,15 @@ public class BoardController extends DefaultController {
 			board.setFileName(filesystemName);
 		}
 		logger.debug(board.toString());
-		dao.insertBoard(board);// 보드에 정보입력.
+		if (no == "" || no == null) {
+			dao.insertBoard(board);// 보드에 정보입력.
+		} else {
+			Board originalBoard = dao.getBoard(Integer.parseInt(no));
+			if (!originalBoard.getUserId().equals(board.getUserId()))
+				return "redirect:/nyam/board/boardList";
 
+			dao.modifyBoard(no, board);
+		}
 		return "redirect:/nyam/board/boardList";
 	}
 
@@ -184,7 +195,7 @@ public class BoardController extends DefaultController {
 		Board board = dao.getBoard(no);
 		request.setAttribute("board", board);
 
-		return "redirect:/nyam/board/writing.jsp";
+		return "/board/writing.jsp";
 	}
 
 }

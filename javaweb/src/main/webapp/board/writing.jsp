@@ -8,6 +8,9 @@ ${board }
 	<div class="formBox">
 		<form action="/nyam/board/sendContent" method="POST"
 			enctype="multipart/form-data">
+			<%if(request.getAttribute("board") != null) { %>
+			<input type="hidden" name="no" value="${board.writingNo }"/>
+			<%} %>
 			<div class="writing">
 				<input type="text" name="title" value="${board.title}"  placeholder="Title"><br /> 
 				
