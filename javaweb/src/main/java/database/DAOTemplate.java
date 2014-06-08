@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public abstract class DAOTemplate {
 //	protected String url = "jdbc:mysql://10.73.45.131/happypaw";
-	protected String user = "dayg";
+	protected String user = "dayoungles";
 	protected String pw = "ekdudrmf2";
 	protected String url = "jdbc:mysql://localhost/happypaw";
 //	protected String user = "itoolsg";
