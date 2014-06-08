@@ -30,7 +30,7 @@
 			</tr>
 	</table>
 	<footer>
-		<a href = "/nyam/board/writing"><button class="btn">글쓰기</button></a>
+			<a href = "/nyam/board/writing"><button class="btn">글쓰기</button></a>
 	</footer>
 </div>
 

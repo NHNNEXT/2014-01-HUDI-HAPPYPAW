@@ -52,6 +52,8 @@ th[name="read"]{
 td{
 	text-align:center;
 	overflow:hidden;
+	height: 50px;
+	border-bottom: 1px solid #ccc;
 }
 td[name="title"]{
 	text-align:left;

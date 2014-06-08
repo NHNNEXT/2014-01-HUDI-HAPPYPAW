@@ -1,1 +1,41 @@
 @CHARSET "US-ASCII";
+
+.content {
+	width: 700px;
+	margin: 0px auto;
+}
+
+.content .title {
+	margin-bottom: 10px;
+}
+.board-info {
+	margin-bottom: 10px;
+}
+.content .writer:before {
+	content: "by ";
+	color:#999;
+}
+.content .desc {
+	font-size:1.4em;
+}
+.content .like-area {
+	margin: 10px 0px;
+	text-align: center;
+}
+.content .like-area .like, .content .like-area .dislike {
+	display:inline-block;
+	padding-left: 40px;
+	height: 30px;
+	line-height: 30px;
+	margin:0px 20px;
+}
+.content .like-area .like {
+	background:url("/nyam/img/like.png") no-repeat;
+	background-size:30px auto;
+}
+
+.content .like-area .dislike {
+	background:url("/nyam/img/like.png") no-repeat;
+	background-size:30px auto;
+}
+.content .like-area

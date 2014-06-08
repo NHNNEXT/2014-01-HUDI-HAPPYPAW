@@ -4,7 +4,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/user/head.jsp"%>
 <link rel="stylesheet" type="text/css" href="/nyam/user/css/historyPeriod.css">
-
+	<div class="title">
+	역대 식사 순위</div>
 	<div class="list">
 <% 
 		ArrayList<HashMap<String, Object>> historyPeriod = (ArrayList<HashMap<String, Object>>) request.getAttribute("history");
