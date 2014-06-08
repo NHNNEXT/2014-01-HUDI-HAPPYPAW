@@ -781,8 +781,11 @@ public class DAO {
 	}
 
 	public void insertRest(String name, String desc, String location) {
-		String query = "INSERT INTO restaurant(name, description, location) VALUES(?, ?, ?)";
-		QueryTemplate.executeQuery(query, name, desc, location);
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String renew = date.format(cal.getTime());
+		String query = "INSERT INTO restaurant(name, description, location, renew) VALUES(?, ?, ?, ?)";
+		QueryTemplate.executeQuery(query, name, desc, location, renew);
 
 	}
 

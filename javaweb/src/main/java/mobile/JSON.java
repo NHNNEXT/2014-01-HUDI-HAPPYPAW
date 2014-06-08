@@ -8,7 +8,13 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import database.DAO;
+
 public class JSON {
+	private static Logger logger = LoggerFactory.getLogger(JSON.class);
 	public static String makeJSON(ArrayList arr) {
 		String json = "[";
 		for (int i = 0; i < arr.size(); ++i) {
@@ -66,10 +72,9 @@ public class JSON {
 						continue;
 					name = name.substring(3, name.length());
 					name = name.toLowerCase();
-					System.out.println(name);
-
+					logger.info("invoke : " + name);
+					
 					Object value = method.invoke(obj, new Object[] {});
-					System.out.println(value.getClass().toString());
 					sValue = value.toString();
 					sValue = sValue.replace("\"", "\\\"");
 					sValue = sValue.replace("\r", "");
