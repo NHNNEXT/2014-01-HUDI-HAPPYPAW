@@ -14,7 +14,7 @@
 			Name :
 			<%=user.getName()%></p>
 		<p>
-			<a href="./logout">logout</a>
+			<a href="/nyam/logout">logout</a>
 		</p>
 	</div>
 	<div class="menu">

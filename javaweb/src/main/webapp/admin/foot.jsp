@@ -8,7 +8,7 @@
 			<div class="login_box">
 				<p>이름: 관리자</p>
 				<p>
-					<a href="./logout">logout</a>
+					<a href="/nyam/logout">logout</a>
 				</p>
 			</div>
 			<div class="menu">
