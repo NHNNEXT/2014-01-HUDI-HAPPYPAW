@@ -165,8 +165,12 @@ public class UserController extends DefaultController {
 	}
 
 	@RequestMapping("/restaurantList")
-	public String restaurantList(HttpServletRequest request)
+	public String restaurantList(HttpServletRequest request, HttpSession session)
 			throws SQLException {
+		User user = getLoginuser(session);
+		if (user == null)
+			return goLoginPage();
+		
 		DAO dao = DAO.getInstance();
 		ArrayList<Restaurant> restList = dao.manageRestaurant();
 		request.setAttribute("restList", restList);
@@ -176,14 +180,18 @@ public class UserController extends DefaultController {
 	@RequestMapping("/individual")
 	public String checkUserIndividual(HttpServletRequest request,
 			HttpSession session) {
+		User user = getLoginuser(session);
+		if (user == null)
+			return goLoginPage();
+		
 		DAO dao = DAO.getInstance();
 		if (!dao.checkLogin(session))
 			return "redirect:/nyam/login";
 
 		String users_id = request.getParameter("studentId");
 
-		User user = dao.getUser(users_id);
-		String name = user.getName();
+		User individual_user = dao.getUser(users_id);
+		String name = individual_user.getName();
 		request.setAttribute("id", users_id);
 		request.setAttribute("name", name);
 

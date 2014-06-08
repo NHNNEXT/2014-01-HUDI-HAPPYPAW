@@ -35,7 +35,14 @@
 }
 
 .content .like-area .dislike {
-	background:url("/nyam/img/like.png") no-repeat;
+	background:url("/nyam/img/dislike.png") no-repeat;
 	background-size:30px auto;
 }
-.content .like-area
+.btn {
+	margin: 10px 10px;
+	padding: 10px 20px;
+	background:#E5743E;
+	color:#fff;
+	border:0;
+	font-size:1.1em;
+}

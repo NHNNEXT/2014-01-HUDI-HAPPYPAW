@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" import="java.util.*, model.*"%>
-<%@ include file = "/user/head.jsp" %>
-		<link rel="stylesheet" type="text/css"
-			href="/nyam/user/css/user_nyamHistory.css" />
-		<script src="./js/daylight.js"></script>
-			<script>
+<%@ include file="/user/head.jsp"%>
+<link rel="stylesheet" type="text/css"
+	href="/nyam/user/css/user_nyamHistory.css" />
+<script src="./js/daylight.js"></script>
+<script>
 		<%HashMap<String, Integer> map = (HashMap<String, Integer>) request
 				.getAttribute("nyamPerDay");
 		String id = (String)request.getAttribute("id");
@@ -56,54 +56,47 @@
 			});
 		});
 	</script>
-	
-	</head>
-	
-	<body>
-	
+<div class="content">
+	<div>
+		<p class="logo">넥스트인의 정식</p>
+	</div>
+	<article>
+		<div class="month"><%=name%>의 &nbsp;<%=year%>년
+			<%=month + 1%>월 식사기록
+		</div>
+	</article>
+	<table class="calendar">
+		<thead>
+			<tr id="record">
+				<th>SUN</th>
+				<th>MON</th>
+				<th>TUE</th>
+				<th>WED</th>
+				<th>THR</th>
+				<th>FRI</th>
+				<th>SAT</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="week">
+				<td><div class="day"></div>
+					<div class="stamp_area"></div></td>
+				<td><div class="day"></div>
+					<div class="stamp_area"></div></td>
+				<td><div class="day"></div>
+					<div class="stamp_area"></div></td>
+				<td><div class="day"></div>
+					<div class="stamp_area"></div></td>
+				<td><div class="day"></div>
+					<div class="stamp_area"></div></td>
+				<td><div class="day"></div>
+					<div class="stamp_area"></div></td>
+				<td><div class="day"></div>
+					<div class="stamp_area"></div></td>
+			</tr>
 
-		<section> 
-			<header>
-				<p class="logo">넥스트인의 정식</p>
-			</header> 
-			<article>
-				<div class="title"><%=id%>
-					<%=name%></div>
-				<div class="month"><%=year%>년
-					<%=month + 1%>월
-				</div>
-			</article>
-			<table class="calendar">
-				<thead>
-					<tr id="record">
-						<th>SUN</th>
-						<th>MON</th>
-						<th>TUE</th>
-						<th>WED</th>
-						<th>THR</th>
-						<th>FRI</th>
-						<th>SAT</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr class="week">
-						<td><div class="day"></div>
-							<div class="stamp_area"></div></td>
-						<td><div class="day"></div>
-							<div class="stamp_area"></div></td>
-						<td><div class="day"></div>
-							<div class="stamp_area"></div></td>
-						<td><div class="day"></div>
-							<div class="stamp_area"></div></td>
-						<td><div class="day"></div>
-							<div class="stamp_area"></div></td>
-						<td><div class="day"></div>
-							<div class="stamp_area"></div></td>
-						<td><div class="day"></div>
-							<div class="stamp_area"></div></td>
-					</tr>
-		
-				</tbody>
-		
-			</table>
+		</tbody>
+
+	</table>
+</div>
 <%@include file="/user/foot.jsp"%>

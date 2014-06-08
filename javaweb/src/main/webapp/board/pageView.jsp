@@ -28,8 +28,8 @@ ${board.content }
 	User check_user = User.getLoginuser(session); 
 	%>
 	<% if(board.getUserId().equals(check_user.getId())) {%>
-		<a href = "/nyam/board/delete?no=${board.writingNo}"><button class="delete">Delete</button></a>
-		<a href = "/nyam/board/modify?no=${board.writingNo}"><button class="modify">Modify</button></a>
+		<a href = "/nyam/board/delete?no=${board.writingNo}"><button class="delete btn">Delete</button></a>
+		<a href = "/nyam/board/modify?no=${board.writingNo}"><button class="modify btn">Modify</button></a>
 	<%} %>
 	
 
