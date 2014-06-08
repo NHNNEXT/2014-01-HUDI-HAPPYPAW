@@ -114,7 +114,7 @@ public class MobileController extends DefaultController{
 		if (hash == null)
 			return "text:";
 		else
-			return "text:" + JSON.makeJSON(hash);
+			return "text:" + JSON.makeJSON((HashMap)hash);
 	}	
 	
 
