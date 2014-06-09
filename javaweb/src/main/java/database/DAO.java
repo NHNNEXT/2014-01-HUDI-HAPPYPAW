@@ -708,7 +708,7 @@ public class DAO {
 	}
 
 	public Board getBoard(final int no) {
-		String selectBoard = "SELECT * from request_board where no = ?";
+		String selectBoard = "select * from request_board b inner join recommend r on b.no = r.no where b.no= ?";
 		ReadTemplate<Board> template = new ReadTemplate<Board>(selectBoard, no) {
 
 			@Override
@@ -720,8 +720,11 @@ public class DAO {
 					String usersId = Integer.toString(rs.getInt("users_id"));
 					String fileName = rs.getString("file_name");
 					String date = rs.getString("date");
-
+					int recommend = rs.getInt("recommend");
+					int notRecommend = rs.getInt("not_recommend");
 					board = new Board(title, contents, usersId, no + "", date);
+					board.setRecommend(recommend);
+					board.setNotRecommend(notRecommend);
 					board.setFileName(fileName);
 					return board;
 				}

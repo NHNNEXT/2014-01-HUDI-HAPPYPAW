@@ -7,7 +7,8 @@ public class Board {
 	private String userId;
 	private String writingNo;
 	private String date;
-	
+	private int recommend;
+	private int notRecommend;
 	
 	public Board(String title, String content, String userId) {
 		this.title = title;
@@ -64,6 +65,19 @@ public class Board {
 		this.date = date;
 	}
 
+	public void setRecommend(int recommend) {
+		this.recommend = recommend;
+	}
+	public void setNotRecommend(int notRecommend) {
+		this.notRecommend = notRecommend;
+	}
+	public int getRecommend() {
+		return recommend;
+	}
+	public int getNotRecommend() {
+		return notRecommend;
+	}
+	
 	@Override
 	public String toString() {
 		return "Board [title=" + title + ", content=" + content + ", fileName="
