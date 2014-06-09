@@ -90,33 +90,7 @@ public class DAO {
 		String firstDay = makePeriod("first", year, month);
 		String lastDay = makePeriod("last", year, month);
 		String query = "select * from stamp_history where users_id = ? and regdate > ? and regdate < ?";
-		// PreparedStatement selHistory = null;
-		// ResultSet rs = null;
-		//
-		// try {
-		// connect();
-		// selHistory = con.prepareStatement(query);
-		//
-		// selHistory.setString(1, users_id);
-		// selHistory.setString(2, firstDay);
-		// selHistory.setString(3, lastDay);
-		//
-		// rs = selHistory.executeQuery();
-		// while (rs.next()) {
-		// String id = rs.getString("users_id");
-		// String regdate = rs.getString("regDate");
-		// int restaurant = rs.getInt("restaurant_no");
-		// stampList.add(new StampHistory(id, regdate, restaurant));
-		// }
-		// } catch (SQLException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// } finally {
-		// rs.close();
-		// selHistory.close();
-		// close();
-		//
-		// }
+
 		ReadTemplate<ArrayList<StampHistory>> template = new ReadTemplate<ArrayList<StampHistory>>(
 				query, users_id, firstDay, lastDay) {
 
@@ -144,39 +118,57 @@ public class DAO {
 	 * @param qrDate
 	 * @param restaurant
 	 */
-	public boolean insertHistory(String users_id, String qrDate, int restaurant) {
-		if (!checkRestaurant(qrDate, restaurant)) {
-			System.out.println("해당 정보 없음... date : " + qrDate
-					+ "   restaurant : " + restaurant);
-			return false;
-		}
+	public void insertBlackList(String users_id, String qrDate, int restaurant) {
+		System.out.println("해당 정보 없음... date : " + qrDate + "   restaurant : "
+				+ restaurant);
 
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String nowDate = sdf.format(cal.getTime());
-		String insertQuery = "INSERT INTO stamp_history(users_id, regdate, restaurant_no) VALUES (?, ?, ?)";
-		// try {
-		// connect();
-		// PreparedStatement insertHistory;
-		// insertHistory = con.prepareStatement(insertQuery);
-		// insertHistory.setString(1, users_id);
-		// insertHistory.setString(2, nowDate);
-		// insertHistory.setInt(3, restaurant);
-		// insertHistory.execute();
-		// insertHistory.close();
-		//
-		// } catch (SQLException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// return false;
-		// } finally{
-		// close();
-		// }
-		//
-		//
 
-		return (boolean) QueryTemplate.executeQuery(insertQuery, users_id,
+		String insertQuery = "INSERT INTO blacklist(users_id, restaurant, stampdate, renew) VALUES (?, ?, ?, ?)";
+		QueryTemplate.executeQuery(insertQuery, users_id, restaurant, nowDate,
+				qrDate);
+	}
+
+	public int getNumHistory(String users_id) {
+		Calendar calendar = Calendar.getInstance();
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH);
+		String firstDay = makePeriod("first", year, month);
+		String lastDay = makePeriod("last", year, month);
+
+		String query = "select count(*) as c from stamp_history where users_id=? and regdate > ? and regdate < ?";
+		ReadTemplate<Integer> template = new ReadTemplate<Integer>(query,
+				users_id, firstDay, lastDay) {
+			@Override
+			public Integer read(ResultSet rs) throws SQLException {
+				while (rs.next()) {
+					return rs.getInt("c");
+				}
+				return 0;
+			}
+		};
+		return template.execute();
+	}
+
+	public int insertHistory(String users_id, String qrDate, int restaurant) {
+		if (!checkRestaurant(qrDate, restaurant)) {
+			insertBlackList(users_id, qrDate, restaurant);
+			return -400;
+		}
+		//Max Stamp Count = 40
+		if(getNumHistory(users_id) >= 40) {
+			return -500;
+		}
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String nowDate = sdf.format(cal.getTime());
+		String insertQuery = "INSERT INTO stamp_history(users_id, regdate, restaurant_no) VALUES (?, ?, ?)";
+		boolean result = QueryTemplate.executeQuery(insertQuery, users_id,
 				nowDate, restaurant);
+
+		return result ? 200 : -200;
 	}
 
 	/**
@@ -391,17 +383,17 @@ public class DAO {
 					HashMap<String, String> hash = new HashMap<String, String>();
 					String stampDate = rs.getString("stamp_date");
 					String dbMonth = stampDate.substring(5, 7);
-					String dbYear = stampDate.substring(0,4);
+					String dbYear = stampDate.substring(0, 4);
 
 					if (dbMonth.startsWith("0")) {
 						dbMonth = dbMonth.substring(1);
 					}
-					
+
 					if (dbYear.equals(year) && dbMonth.equals(month)) {
-							int num = rs.getInt("num");
-							hash.put("nyamNum", Integer.toString(num));
-							hash.put("stampDate", stampDate);
-							array.add(hash);
+						int num = rs.getInt("num");
+						hash.put("nyamNum", Integer.toString(num));
+						hash.put("stampDate", stampDate);
+						array.add(hash);
 					}
 
 				}
@@ -612,6 +604,7 @@ public class DAO {
 		insertRecommendNo();// foreign keyㅋㅋ연동!
 
 	}
+
 	/**
 	 * board를 수정하는 함수
 	 * 
@@ -634,9 +627,10 @@ public class DAO {
 			};
 			template.execute();
 		}
-		//insertRecommendNo();// foreign keyㅋㅋ연동!
+		// insertRecommendNo();// foreign keyㅋㅋ연동!
 
 	}
+
 	/**
 	 * 글 하나를 생성하면 글 no가 생기는데, 그 no를 찾아서 추천 테이블에 입력해주는 것. 그런데 이 상태로라면 문제가 생길 수
 	 * 있다.title이랑 전부다 매치하는게 효율적으로는 떨어지지만 정확한데, 어떤게 더 좋은 잘 모르겠음.
