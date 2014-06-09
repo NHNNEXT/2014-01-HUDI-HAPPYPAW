@@ -212,5 +212,15 @@ public class UserController extends DefaultController {
 		return "/user/individual.jsp";
 
 	}
+	
+	@RequestMapping("/user/restInfo")
+	public String showRestInfo(HttpServletRequest request){
+		DAO dao = DAO.getInstance();
+		logger.debug("restInfo");
+		String restNo= request.getParameter("no");
+		Restaurant rest = dao.getRestaurant(restNo);
+		request.setAttribute("rest", rest);
+		return "/user/restInfo.jsp";
+	}
 
 }

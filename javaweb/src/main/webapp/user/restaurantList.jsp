@@ -28,12 +28,14 @@
 
 			
 			%>
-			<tr>
-					<td><%=no%></td>
-					<td><%=name%></td>
-					<td><%=desc %></td>
-					<td><%=location%></td>
-			</tr>
+				<tr>
+					
+						<td><%=no%></td>
+						<td><a href = "/nyam/user/restInfo?no=<%=no%>"><%=name%></a></td>
+						<td><%=desc %></td>
+						<td><%=location%></td>
+					
+				</tr>
 	
 			<%
 				}

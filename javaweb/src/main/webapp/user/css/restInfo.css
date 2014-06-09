@@ -1,0 +1,25 @@
+@CHARSET "US-ASCII";
+
+div.box{
+	
+	width: 800px;
+	max-width:800px;
+	margin: 0px auto;
+	margin-top: 30px;
+}
+
+table{
+	width: 800px;
+	margin: 30px auto;
+}
+
+td.info{
+	padding: 20px 0px;
+	width: 15%;
+	
+}
+
+td.desc{
+	padding: 20px 0px;
+	width: 70%;
+}
