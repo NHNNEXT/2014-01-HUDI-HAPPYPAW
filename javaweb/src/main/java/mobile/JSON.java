@@ -80,6 +80,8 @@ public class JSON {
 					sValue = sValue.replace("\r", "");
 					sValue = sValue.replace("\t", "");
 					sValue = sValue.replace("\n", "");
+					
+					logger.info("invoke value: " + sValue);
 				} catch (IllegalAccessException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
