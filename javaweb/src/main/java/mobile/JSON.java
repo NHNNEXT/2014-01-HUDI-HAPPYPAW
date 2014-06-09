@@ -75,6 +75,9 @@ public class JSON {
 					logger.info("invoke : " + name);
 					
 					Object value = method.invoke(obj, new Object[] {});
+					if(sValue == null)
+						sValue = "";
+					
 					sValue = value.toString();
 					sValue = sValue.replace("\"", "\\\"");
 					sValue = sValue.replace("\r", "");
