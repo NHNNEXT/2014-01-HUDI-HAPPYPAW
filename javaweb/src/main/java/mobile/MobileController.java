@@ -44,11 +44,10 @@ public class MobileController extends DefaultController {
 		User user = getLoginuser(session);
 		if (user == null)
 			return InfoMessage.getMessage(500, Message.getStampMessage(500));
-		
+
 		try {
 
 			DAO dao = DAO.getInstance();
-			
 
 			String qrcode = request.getParameter("qrcode");
 			System.out.println("METHOD :  " + request.getMethod());
@@ -65,11 +64,13 @@ public class MobileController extends DefaultController {
 
 			String date = data[0];
 			int restaurant_no = Integer.parseInt(data[1]);
-			int is_insert = dao.insertHistory(user.getId(), date, restaurant_no);
+			int is_insert = dao
+					.insertHistory(user.getId(), date, restaurant_no);
 
-			InfoMessage message = InfoMessage.getMessage(is_insert,
-					Message.getStampMessage(is_insert));
+			String sMessage = Message.getStampMessage(is_insert);
+			InfoMessage message = InfoMessage.getMessage(is_insert, sMessage);
 			// 설정하는거;;;
+			logger.info("code : " + is_insert + " message : " + sMessage);
 			return message;
 		} catch (Exception e) {
 			e.printStackTrace();
