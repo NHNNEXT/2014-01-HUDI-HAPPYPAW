@@ -707,7 +707,7 @@ public class DAO {
 
 					map.put("no", rs.getString("r.no"));
 					map.put("userId", rs.getString("users_id"));
-					map.put("contents", rs.getString("contents"));
+					//map.put("contents", rs.getString("contents"));
 					map.put("fileName", rs.getString("file_name"));
 					map.put("title", rs.getString("title"));
 					map.put("date", rs.getString("date"));
@@ -804,7 +804,7 @@ public class DAO {
 	}
 
 	public ArrayList<HashMap<String, Integer>> getRecommendList() {
-		String query = "SELECT * FROM recommend ORDER BY no DESC LIMIT 15";
+		String query = "SELECT * FROM recommend ORDER BY no DESC LIMIT 30";
 		ReadTemplate<ArrayList<HashMap<String, Integer>>> template = new ReadTemplate<ArrayList<HashMap<String, Integer>>>(
 				query) {
 
