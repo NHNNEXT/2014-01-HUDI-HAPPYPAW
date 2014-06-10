@@ -126,7 +126,7 @@ public class MobileController extends DefaultController {
 	@RequestMapping("/m/requestBoard")
 	public String requestBoard(HttpSession session, HttpServletRequest request) {
 		DAO dao = DAO.getInstance();
-		ArrayList<HashMap<String, String>> boardList = dao.getBoardList();
+		ArrayList<HashMap<String, String>> boardList = dao.getBoardList(1);
 		return "text:" + JSON.makeJSON(boardList);
 	}
 

@@ -9,14 +9,15 @@ public class Board {
 	private String date;
 	private int recommend;
 	private int notRecommend;
-	
+	public String removeTag(String str) {
+		str = str.replace("<", "&lt;");
+		str = str.replace(">", "&gt;");
+		
+		return str;
+	}
 	public Board(String title, String content, String userId) {
-		this.title = title;
-		
-		content = content.replace("<", "&lt;");
-		content = content.replace(">", "&gt;");
-		
-		this.content = content;
+		this.title = removeTag(title);
+		this.content = removeTag(content);
 		this.userId = userId;
 	}
 	public Board(String title, String content, String userId,

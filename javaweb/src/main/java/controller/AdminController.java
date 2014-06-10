@@ -174,9 +174,27 @@ public class AdminController {
 	}
 	
 	@RequestMapping("/admin/boardList")
-	public String showBoardList(HttpServletRequest request){
+	public String showBoardList(HttpServletRequest request, HttpSession session){
 		DAO dao = DAO.getInstance();
-		ArrayList<HashMap<String, String>> boardList = dao.getBoardList();
+		
+		String sPage = request.getParameter("page");
+		int page = 1;
+		try {
+			if(sPage != null && !sPage.equals(""))
+				page = Integer.parseInt(sPage);
+
+			if (page < 1)
+				page = 1;
+			int totalCount = dao.boardCount();
+			if (totalCount <= (page - 1) * 15)
+				page = (int) (totalCount / 15) + 1;
+			
+		} catch (Exception e) {
+			session.setAttribute("error", "페이지가 잘못되었습니다.");
+			return "redirect:/nyam/board/boardList";
+		}
+		
+		ArrayList<HashMap<String, String>> boardList = dao.getBoardList(page);
 		request.setAttribute("boardList", boardList);
 		return "/admin/boardList.jsp";
 	}

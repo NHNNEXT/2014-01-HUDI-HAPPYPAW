@@ -617,20 +617,22 @@ public class DAO {
 	public void insertBoard(Board board) {
 		// 일단 파일이 없는걸로 테스트해보자.
 		String query;
+		boolean is_result = false;
 		if (board.getFileName() == null) {
 			query = "INSERT INTO request_board (title, contents, users_id) values (?,?,?)";
 			QueryTemplate template = new QueryTemplate(query, board.getTitle(),
 					board.getContent(), board.getUserId()) {
 			};
-			template.execute();
+			is_result = (boolean) template.execute();
 		} else {
 			query = "INSERT INTO request_board (title, contents, users_id, file_name) values (?,?,?,?)";
 			QueryTemplate template = new QueryTemplate(query, board.getTitle(),
 					board.getContent(), board.getUserId(), board.getFileName()) {
 			};
-			template.execute();
+			is_result = (boolean) template.execute();
 		}
-		insertRecommendNo();// foreign keyㅋㅋ연동!
+		if (is_result)
+			insertRecommendNo();// foreign keyㅋㅋ연동!
 
 	}
 
@@ -690,11 +692,30 @@ public class DAO {
 	 * 
 	 * @return 어레이 리스트<hashmap>ㅋ
 	 */
-	public ArrayList<HashMap<String, String>> getBoardList() {
+	public int boardCount() {
+		String query = "select count(*) as c from request_board;";
+		ReadTemplate<Integer> template = new ReadTemplate<Integer>(query) {
 
-		String query = "select * from request_board b inner join recommend r on b.no = r.no order by r.no desc limit 15;";
+			@Override
+			public Integer read(ResultSet rs) throws SQLException {
+				while (rs.next()) {
+					return rs.getInt("c");
+				}
+				return 0;
+			}
+		};
+
+		return template.execute();
+	}
+
+	public ArrayList<HashMap<String, String>> getBoardList(int page) {
+
+
+
+		int startNum = (page - 1) * 15;
+		String query = "select * from request_board b inner join recommend r on b.no = r.no order by r.no desc limit ?, 15;";
 		ReadTemplate<ArrayList<HashMap<String, String>>> template = new ReadTemplate<ArrayList<HashMap<String, String>>>(
-				query) {
+				query, startNum) {
 
 			@Override
 			public ArrayList<HashMap<String, String>> read(ResultSet rs)
@@ -703,11 +724,11 @@ public class DAO {
 				while (rs.next()) {
 					HashMap<String, String> map = new HashMap<String, String>();
 					String writer = rs.getString("users_id");
-					User user = getUser(writer);
+					// User user = getUser(writer);
 
 					map.put("no", rs.getString("r.no"));
 					map.put("userId", rs.getString("users_id"));
-					//map.put("contents", rs.getString("contents"));
+					// map.put("contents", rs.getString("contents"));
 					map.put("fileName", rs.getString("file_name"));
 					map.put("title", rs.getString("title"));
 					map.put("date", rs.getString("date"));
