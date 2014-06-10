@@ -131,6 +131,30 @@ public class DAO {
 				qrDate);
 	}
 
+	public boolean isAlreadyEat(String users_id) {
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) - 10);
+		String prevDate = sdf.format(cal.getTime());
+		cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) + 20);
+		String nextDate = sdf.format(cal.getTime());
+
+		String query = "select count(*) as c from stamp_history where users_id=? and regdate > ? and regdate < ?";
+		ReadTemplate<Integer> template = new ReadTemplate<Integer>(query,
+				users_id, prevDate, nextDate) {
+			@Override
+			public Integer read(ResultSet rs) throws SQLException {
+				while (rs.next()) {
+					return rs.getInt("c");
+				}
+				return 0;
+			}
+		};
+
+		return template.execute() > 0 ? true : false;
+	}
+
 	public int getNumHistory(String users_id) {
 		Calendar calendar = Calendar.getInstance();
 		int year = calendar.get(Calendar.YEAR);
@@ -157,10 +181,15 @@ public class DAO {
 			insertBlackList(users_id, qrDate, restaurant);
 			return -400;
 		}
-		//Max Stamp Count = 40
-		if(getNumHistory(users_id) >= 40) {
+		// Max Stamp Count = 40
+		if (getNumHistory(users_id) >= 40) {
 			return -500;
 		}
+
+		if (isAlreadyEat(users_id)) {
+			return -600;
+		}
+
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String nowDate = sdf.format(cal.getTime());
