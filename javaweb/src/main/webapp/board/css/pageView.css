@@ -40,6 +40,9 @@
 	background:url("/nyam/img/dislike.png") no-repeat;
 	background-size:30px auto;
 }
+.file {
+	max-width: 100%;
+}
 .btn {
 	margin: 10px 10px;
 	padding: 10px 20px;

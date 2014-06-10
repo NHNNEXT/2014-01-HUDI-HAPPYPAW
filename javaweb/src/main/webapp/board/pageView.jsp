@@ -11,7 +11,7 @@ ${board.content }
 
 <br/><br/>
 	<%if(board.getFileName() != null) {%>
-		<img src="/images/${board.fileName}" alt="file"/>
+		<img src="/images/${board.fileName}" alt="file" class="file"/>
 	<%} %>
 
 </div>
