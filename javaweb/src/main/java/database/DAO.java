@@ -769,8 +769,8 @@ public class DAO {
 	public void deleteWriting(String no) {
 		String requestBoardQuery = "delete from request_board where no=?";
 		String recommendQuery = "delete from recommend where no = ?";
-		QueryTemplate.executeQuery(requestBoardQuery, no);
 		QueryTemplate.executeQuery(recommendQuery, no);
+		QueryTemplate.executeQuery(requestBoardQuery, no);
 
 	}
 
