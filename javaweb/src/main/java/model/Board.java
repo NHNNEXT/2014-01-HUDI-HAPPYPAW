@@ -12,6 +12,10 @@ public class Board {
 	
 	public Board(String title, String content, String userId) {
 		this.title = title;
+		
+		content = content.replace("<", "&lt;");
+		content = content.replace(">", "&gt;");
+		
 		this.content = content;
 		this.userId = userId;
 	}

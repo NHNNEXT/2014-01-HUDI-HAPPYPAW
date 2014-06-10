@@ -13,9 +13,9 @@ public abstract class QueryTemplate extends DAOTemplate{
 
 
 	public Object execute() {
-		boolean returnValue = false;
+		//boolean returnValue = false;
 		try {
-			returnValue = statement.execute();
+			statement.execute();
 			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -24,7 +24,7 @@ public abstract class QueryTemplate extends DAOTemplate{
 		} finally {
 			close();
 		}
-		return returnValue;
+		return true;
 	}
 	static boolean executeQuery(String query, Object...objects) {
 		QueryTemplate template = new QueryTemplate(query, objects) {

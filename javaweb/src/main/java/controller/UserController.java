@@ -29,8 +29,10 @@ public class UserController extends DefaultController {
 
 	@RequestMapping("/")
 	public String showIndex(HttpServletRequest request, HttpSession session) {
+		//DAO.getInstance().checkHistory("121001");
 		return showNyamHistory(request, session);
 	}
+	
 
 	@RequestMapping("/nyamHistory")
 	public String showNyamHistory(HttpServletRequest request,
