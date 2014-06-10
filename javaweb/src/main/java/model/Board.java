@@ -9,6 +9,7 @@ public class Board {
 	private String date;
 	private int recommend;
 	private int notRecommend;
+	
 	public String removeTag(String str) {
 		str = str.replace("<", "&lt;");
 		str = str.replace(">", "&gt;");
@@ -22,11 +23,11 @@ public class Board {
 	}
 	public Board(String title, String content, String userId,
 			String writingNo, String date) {
-		this.title = title;
-		this.content = content;
-		this.userId = userId;
-		this.writingNo = writingNo;
-		this.date = date;
+		this.title = removeTag(title);
+		this.content = removeTag(content);
+		this.userId = removeTag(userId);
+		this.writingNo = removeTag(writingNo);
+		this.date = removeTag(date);
 	}
 
 
