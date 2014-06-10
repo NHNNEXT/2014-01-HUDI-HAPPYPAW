@@ -23,8 +23,9 @@ th[name="writer"]{
 }
 
 th[name="title"]{
-	width: 500px;
-	text-align:left;
+	width: 70%;
+	text-align:center;
+	
 }
 
 th[name="date"]{
@@ -56,10 +57,17 @@ td{
 	border-bottom: 1px solid #ccc;
 }
 td[name="title"]{
+	max-width: 500px;
 	text-align:left;
 	overflow:hidden;
+
 }
 
+td[name="title"] a{
+		overflow:hidden;
+	text-overflow:ellipsis; 
+	white-space: nowrap;
+}
 .btn {
 	padding: 10px 20px;
 	background:#E5743E;
