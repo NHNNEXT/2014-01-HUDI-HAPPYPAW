@@ -129,6 +129,8 @@ public class BoardController extends DefaultController {
 			if (totalCount <= (page - 1) * 15)
 				page = (int) (totalCount / 15) + 1;
 			
+			request.setAttribute("page", page);
+			request.setAttribute("totalCount", totalCount);
 		} catch (Exception e) {
 			session.setAttribute("error", "페이지가 잘못되었습니다.");
 			return "redirect:/nyam/board/boardList";

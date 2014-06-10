@@ -29,4 +29,13 @@
 </aside>
 
 </body>
+<%
+String error = (String)session.getAttribute("error");
+if(error != null && !error.equals("")) {
+	session.removeAttribute("error");
+%>
+<script>
+alert("<%=error%>");
+</script>
+<%} %>
 </html>

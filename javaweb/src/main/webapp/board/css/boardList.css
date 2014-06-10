@@ -14,41 +14,40 @@ table {
 
 th[name="no"]{
 	width: 20px;
+	max-width: 20px;
 	text-align:center;
 }
 
 th[name="writer"]{
 	width: 100px;
+	max-width: 100px;
 	text-align:center;
+
 }
 
-th[name="title"]{
-	width: 70%;
-	text-align:center;
-	
-}
 
 th[name="date"]{
-	width: 130px;
+
 	text-align:center;
+	max-width: 100px;
+	width: 100px;
 }
 
-th[name="recommend"]{
+.recommend{
 	width: 50px;
 	text-align:center;
+	white-space:nowrap;
+	min-width: 50px;
 }
 
-th[name="notRecommend"]{
+.notRecommend{
 	width: 50px;
-
+	min-width: 50px;
 	text-align:center;
+	white-space:nowrap;
 }
 
-th[name="read"]{
-	width: 50px;
-	text-align:center;
-	
-}
+
 
 td{
 	text-align:center;
@@ -57,16 +56,18 @@ td{
 	border-bottom: 1px solid #ccc;
 }
 td[name="title"]{
-	max-width: 500px;
+	max-width: 400px;
 	text-align:left;
-	overflow:hidden;
-
+	1overflow:hidden;
+	text-overflow:ellipsis; 
+	white-space: nowrap;
 }
 
 td[name="title"] a{
-		overflow:hidden;
+	overflow:hidden;
 	text-overflow:ellipsis; 
 	white-space: nowrap;
+	
 }
 .btn {
 	padding: 10px 20px;
@@ -82,4 +83,18 @@ td[name="title"] a{
 .content header {
 	text-align:right;
 	height:auto;
+}
+
+ul.pagination {
+	text-align:center;
+}
+ul.pagination li{
+	display:inline-block;
+}
+ul.pagination li a {
+	padding:10px;
+}
+ul.pagination li.selected a{
+	color:#E5743E;
+	font-weight:bold;
 }
