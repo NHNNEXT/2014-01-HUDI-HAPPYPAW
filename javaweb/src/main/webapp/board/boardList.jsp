@@ -6,6 +6,9 @@
 
 <div class= "content">
 <div class="title">정직한 식사 신청</div>
+<header>
+<a href = "/nyam/board/writing"><button class="btn">글쓰기</button></a>
+</header>
 	<table>
 		<tr>
 			<thead>
@@ -30,7 +33,7 @@
 			</tr>
 	</table>
 	<footer>
-			<a href = "/nyam/board/writing"><button class="btn">글쓰기</button></a>
+			
 	</footer>
 </div>
 
