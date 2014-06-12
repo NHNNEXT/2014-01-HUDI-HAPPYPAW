@@ -15,7 +15,6 @@
 			<thead>
 				<th class="no">NO</th>
 				<th class="name">상호</th>
-				<th class="desc">설명</th>
 				<th class="location">위치</th>
 			</thead>
 			</tr>
@@ -32,7 +31,6 @@
 					
 						<td><%=no%></td>
 						<td><a href = "/nyam/user/restInfo?no=<%=no%>"><%=name%></a></td>
-						<td><%=desc %></td>
 						<td><%=location%></td>
 					
 				</tr>
