@@ -14,6 +14,14 @@ public class DefaultController {
 	public String goLoginPage() {
 		return "redirect:/nyam/login";
 	}
+	public String goBack() {
+		String script = "text:<script type=\"text/javascript\">history.go(-1);</script>";
+		return script;
+	}
+	public String goBack(String message) {
+		String script = "text:<script type=\"text/javascript\">alert(\""+message+"\");history.go(-1);</script>";
+		return script;
+	}
 	public boolean isLogin(HttpSession session) {
 		String id = (String) session.getAttribute("users_id");
 		if(id == null || id.equals(""))

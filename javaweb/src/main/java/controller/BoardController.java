@@ -75,6 +75,13 @@ public class BoardController extends DefaultController {
 		String no = multipart.getParameter("no");
 		String usersId = user.getId();
 
+		if(title == null || title.equals(""))
+			return goBack("제목을 입력해주세요.");
+		
+		if(content == null || content.equals(""))
+			return goBack("내용을 입력해주세요.");
+		
+		
 		if (multipart.getOriginalFileName("file") == null) {
 			board = new Board(title, content, usersId);
 		} else {
