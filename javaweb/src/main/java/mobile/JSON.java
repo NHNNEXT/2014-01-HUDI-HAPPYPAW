@@ -15,26 +15,45 @@ import database.DAO;
 
 public class JSON {
 	private static Logger logger = LoggerFactory.getLogger(JSON.class);
-	public static String makeJSON(ArrayList arr) {
+	public static boolean has(Object obj, Object...objects) {
+		for(int j = 0; j < objects.length; ++j) {
+			if(objects[j].equals(obj))
+				return true;
+		}
+		return false;
+	}
+	public static String makeJSON(ArrayList arr, Object...ignores) {
 		String json = "[";
+		boolean is_first = true;
 		for (int i = 0; i < arr.size(); ++i) {
-			if (i != 0)
+			boolean is_ignore = has(arr.get(i), ignores);
+			if(is_ignore)
+				continue;
+			
+			if (!is_first)
 				json += ",";
-
+			
 			json += JSON.makeJSON(arr.get(i));
+			is_first = false;
 		}
 		json += "]";
 		return json;
 	}
 
-	public static String makeJSON(HashMap hash) {
+	public static String makeJSON(HashMap hash, Object...ignores) {
 		String json = "{";
 		Iterator iterator = hash.keySet().iterator();
 		boolean is_first = true;
 		while (iterator.hasNext()) {
+			Object key = iterator.next();
+			
+			boolean is_ignore = has(key, ignores);
+			if(is_ignore)
+				continue;
+			
 			if (!is_first)
 				json += ",";
-			Object key = iterator.next();
+			
 			String value = hash.get(key) + "";
 			value = value.replace("\"", "\\\"");
 			value = value.replace("\r", "");
@@ -52,12 +71,12 @@ public class JSON {
 		return json;
 	}
 
-	public static String makeJSON(Object obj) {
+	public static String makeJSON(Object obj, Object...ignores) {
 		Method[] methods = obj.getClass().getMethods();
 		if (obj instanceof HashMap)
-			return makeJSON((HashMap) obj);
+			return makeJSON((HashMap) obj, ignores);
 		else if(obj instanceof ArrayList)
-			return makeJSON((ArrayList) obj);
+			return makeJSON((ArrayList) obj, ignores);
 		
 		String sValue = "";
 		String json = "{";
@@ -72,7 +91,13 @@ public class JSON {
 						continue;
 					name = name.substring(3, name.length());
 					name = name.toLowerCase();
+					
+					
 					logger.info("invoke : " + name);
+					
+					boolean is_ignore = has(name, ignores);
+					if(is_ignore)
+						continue;
 					
 					Object value = method.invoke(obj, new Object[] {});
 					if(value == null)

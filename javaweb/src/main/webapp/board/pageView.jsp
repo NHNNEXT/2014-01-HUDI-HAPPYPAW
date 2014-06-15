@@ -20,8 +20,8 @@ ${board.content }
 	
 
 <div class="like-area">
-<a href="/nyam/board/recommend?no=${board.writingNo}" class="like">${recommendInfo.recommend}</a>
-<a href="/nyam/board/notRecommend?no=${board.writingNo}" class="dislike">${recommendInfo.notRecommend}</a>
+<a href="/nyam/board/recommend?no=${board.writingNo}" class="like">${board.recommend}</a>
+<a href="/nyam/board/notRecommend?no=${board.writingNo}" class="dislike">${board.notRecommend}</a>
 </div>
 	
 	<%

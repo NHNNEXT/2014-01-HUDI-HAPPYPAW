@@ -156,7 +156,7 @@ public class BoardController extends DefaultController {
 
 		DAO dao = DAO.getInstance();
 		String no = (String) request.getParameter("no");
-		dao.plusRecommend(no);
+		dao.plusRecommend(no, user.getId());
 		return "redirect:/nyam/board/view?no=" + no;
 	}
 
@@ -168,7 +168,7 @@ public class BoardController extends DefaultController {
 
 		DAO dao = DAO.getInstance();
 		String no = (String) request.getParameter("no");
-		dao.minusRecommend(no);
+		dao.plusRecommend(no, user.getId());
 		return "redirect:/nyam/board/view?no=" + no;
 	}
 
@@ -181,9 +181,11 @@ public class BoardController extends DefaultController {
 		DAO dao = DAO.getInstance();
 		String no = (String) request.getParameter("no");
 		Board board = dao.getBoard(Integer.parseInt(no));
-		HashMap<String, Integer> map = dao.getRecommend(Integer.parseInt(no));
+		if(board == null)
+			return "redirect:/nyam/board/boardList";
+		//HashMap<String, Integer> map = dao.getRecommend(Integer.parseInt(no));
 		request.setAttribute("board", board);
-		request.setAttribute("recommendInfo", map);
+		//request.setAttribute("recommendInfo", map);
 
 		String userId = (String) session.getAttribute("users_id");
 		request.setAttribute("userId", userId);

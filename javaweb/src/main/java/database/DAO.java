@@ -311,8 +311,10 @@ public class DAO {
 	public void exportExcel(String path) {
 		System.out.println("exportExcel");
 		MakeExcel me = new MakeExcel();
-		int year = 2013;// 임의 지정 수정해야합니다.
-		int month = 11;
+		Calendar calendar = Calendar.getInstance();
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH);
+		
 		HSSFWorkbook book = me.fillExcel(adminNyamHistory(year, month));
 		FileOutputStream fout = me.makeFile(path);
 		try {
@@ -631,8 +633,8 @@ public class DAO {
 			};
 			is_result = (boolean) template.execute();
 		}
-		if (is_result)
-			insertRecommendNo();// foreign keyㅋㅋ연동!
+		//if (is_result)
+		//	insertRecommendNo();// foreign keyㅋㅋ연동!
 
 	}
 
@@ -713,7 +715,7 @@ public class DAO {
 
 
 		int startNum = (page - 1) * 15;
-		String query = "select * from request_board b inner join recommend r on b.no = r.no order by r.no desc limit ?, 15;";
+		String query = "select b.*, count(recommend) as recommend, -(select count(recommend) from recommends where no=b.no and recommend= -1) as not_recommend from request_board b  left join recommends r on b.no = r.no and r.recommend= 1 group by b.no  order by b.no desc limit ?, 15;";
 		ReadTemplate<ArrayList<HashMap<String, String>>> template = new ReadTemplate<ArrayList<HashMap<String, String>>>(
 				query, startNum) {
 
@@ -726,7 +728,7 @@ public class DAO {
 					String writer = rs.getString("users_id");
 					// User user = getUser(writer);
 
-					map.put("no", rs.getString("r.no"));
+					map.put("no", rs.getString("b.no"));
 					map.put("userId", rs.getString("users_id"));
 					// map.put("contents", rs.getString("contents"));
 					map.put("fileName", rs.getString("file_name"));
@@ -746,13 +748,22 @@ public class DAO {
 		return template.execute();
 	}
 
-	public void plusRecommend(String id) {
-		String plusRecommend = "UPDATE recommend SET recommend = recommend+1 where no=?";
-		QueryTemplate.executeQuery(plusRecommend, id);
+	public void plusRecommend(String boardNo, String user_id) {
+		/*
+		 * insert into recommends (userid, password, 게시글 번호, 리커맨드 여부)true false
+		 * */
+		String insertRecommend = "insert into recommends(no, user_id, recommend) values(?, ?, ?)";
+		QueryTemplate.executeQuery(insertRecommend, boardNo, user_id, 1);
+		//String plusRecommend = "UPDATE recommend SET recommend = recommend+1 where no=?";
+		//QueryTemplate.executeQuery(plusRecommend, id);
+	}
+	public void minusRecommen(String boardNo, String user_id) {
+		String insertRecommend = "insert into recommends(no, user_id, recommend) values(?, ?, ?)";
+		QueryTemplate.executeQuery(insertRecommend, boardNo, user_id, -1);
 	}
 
 	public Board getBoard(final int no) {
-		String selectBoard = "select * from request_board b inner join recommend r on b.no = r.no where b.no= ?";
+		String selectBoard = "select b.*, (select count(recommend) from recommends where no=b.no and recommend= 1) as recommend, -(select count(recommend) from recommends where no=b.no and recommend= -1) as not_recommend from request_board b where b.no=?";
 		ReadTemplate<Board> template = new ReadTemplate<Board>(selectBoard, no) {
 
 			@Override
@@ -778,10 +789,7 @@ public class DAO {
 		return template.execute();
 	}
 
-	public void minusRecommend(String id) {
-		String minusRecommend = "UPDATE recommend SET not_recommend = not_recommend + 1 where no=?";
-		QueryTemplate.executeQuery(minusRecommend, id);
-	}
+
 
 	/**
 	 * pageview에서 추천 비추천 확인하도록.

@@ -109,7 +109,7 @@ public class MobileController extends DefaultController {
 	public String restaurant(HttpSession session, HttpServletRequest request) {
 		DAO dao = DAO.getInstance();
 		ArrayList<Restaurant> restList = dao.manageRestaurant();
-		return "text:" + JSON.makeJSON(restList);
+		return "text:" + JSON.makeJSON(restList, "date", "renew");
 	}
 
 	@RequestMapping("/m/restaurant/view")
@@ -120,7 +120,7 @@ public class MobileController extends DefaultController {
 		if (hash == null)
 			return "text:";
 		else
-			return "text:" + JSON.makeJSON((HashMap) hash);
+			return "text:" + JSON.makeJSON((HashMap) hash, "date", "renew");
 	}
 
 	@RequestMapping("/m/requestBoard")
@@ -147,9 +147,13 @@ public class MobileController extends DefaultController {
 	}
 
 	@RequestMapping("/m/requestBoard/write")
-	public String requestBoardWrite(HttpSession session,
+	public Object requestBoardWrite(HttpSession session,
 			HttpServletRequest request) {
 		User user = getLoginuser(session);
+		if(user == null)
+			return InfoMessage.getMessage(500, "로그인을 해주세요.");
+		
+		
 		DAO dao = DAO.getInstance();
 		String originalFileName, uploadPath;
 
@@ -182,11 +186,13 @@ public class MobileController extends DefaultController {
 			title = request.getParameter("title");
 			content = request.getParameter("content");
 		}
-
-		if (!is_multipart) {
-			board = new Board(title, content, usersId);
-
-		} else {
+			
+		if(title == null || title.equals(""))
+			return InfoMessage.getMessage(-300, "제목을 입력해주세요.");
+		if(content == null || content.equals(""))
+			return InfoMessage.getMessage(-400, "내용을 입력해주세요.");
+		board = new Board(title, content, usersId);
+		if (is_multipart) {
 			Enumeration files = multipart.getFileNames();
 			String name1 = (String) files.nextElement();
 
@@ -195,12 +201,11 @@ public class MobileController extends DefaultController {
 
 			File uf = multipart.getFile(name1);
 			File f = new File(realPath + filesystemName);
-			board = new Board(title, content, usersId);
 			board.setFileName(filesystemName);
 		}
 		logger.debug(board.toString());
 		dao.insertBoard(board);// 보드에 정보입력.
-		return "text:" + JSON.makeJSON(InfoMessage.getMessage(200, "OK"));
+		return InfoMessage.getMessage(200, "OK");
 	}
 
 	@RequestMapping("/m/ranking")
