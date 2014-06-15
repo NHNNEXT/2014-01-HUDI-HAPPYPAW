@@ -35,7 +35,7 @@
 	<tr>
 		<td><%=count%></td>
 		<td><a
-			href="/nyam/individual?studentId=<%=nyamRanking.get(i).get("id")%>&year=<%=year%>&month=<%=month%>">
+			href="/nyam/admin/individual?studentId=<%=nyamRanking.get(i).get("id")%>&year=<%=year%>&month=<%=month%>">
 				<%=id%>
 		</a></td>
 		<td><%=name%></td>

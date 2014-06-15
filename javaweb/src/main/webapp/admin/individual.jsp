@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" import="java.util.*, model.*"%>
 <%@include file="/admin/head.jsp" %>
+<link rel="stylesheet" type="text/css"
+	href="/nyam/user/css/user_nyamHistory.css" />
 			<script>
 		<%HashMap<String, Integer> map = (HashMap<String, Integer>) request
 				.getAttribute("nyamPerDay");
@@ -63,9 +65,7 @@
 	
 
 		<section> 
-			<header>
-				<p class="logo">넥스트인의 정식</p>
-			</header> 
+
 			<article>
 				<div class="title"><%=id%>
 					<%=name%></div>
