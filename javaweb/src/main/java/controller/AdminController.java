@@ -98,16 +98,15 @@ public class AdminController {
 		String name = user.getName();
 		request.setAttribute("id", users_id);
 		request.setAttribute("name", name);
-
+		String year = request.getParameter("year");
+		String month = request.getParameter("month");
 		ArrayList<StampHistory> stampList = dao.selectMonthHistory(users_id,
-				2014, 11);// 임의의 숫자를 넣었습니다. 고쳐야됨.
+				Integer.parseInt(year),Integer.parseInt(month));// 임의의 숫자를 넣었습니다. 고쳐야됨.
 		HashMap<String, Integer> map = dao.arrangeNyamHistory(stampList);
 		request.setAttribute("nyamPerDay", map);
 
-		Calendar cal = Calendar.getInstance();
-		int month = cal.get(Calendar.MONTH);
-		int year = cal.get(cal.YEAR);
-		DateInfo info = dao.setDate(year, month);
+
+		DateInfo info = dao.setDate(Integer.parseInt(year), Integer.parseInt(month));
 		request.setAttribute("dateInfo", info);
 
 
