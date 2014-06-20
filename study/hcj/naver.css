@@ -163,3 +163,13 @@ body{
 	height: auto;
 	
 }
+
+@media all and (max-width:400px){
+	li[data="now"]{
+		display:none;
+	}
+	
+	.menu ul li {
+		width: 16.66666%;
+	} 
+}

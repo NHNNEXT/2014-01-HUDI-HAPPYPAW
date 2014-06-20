@@ -49,7 +49,6 @@ public abstract class DAOTemplate {
 
 	DAOTemplate(String query, Object... objects) {
 		try {
-			connect();
 			this.query = query;
 			statement = con.prepareStatement(query);
 			for (int i = 0; i < objects.length; ++i) {

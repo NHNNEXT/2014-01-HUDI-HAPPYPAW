@@ -1,5 +1,5 @@
 var DATA = {
-	TabCount : 7;
+	TabCount : 7
 }
 
 window.onload=function(){
